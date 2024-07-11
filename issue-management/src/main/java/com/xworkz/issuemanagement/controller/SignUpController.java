@@ -3,6 +3,7 @@ package com.xworkz.issuemanagement.controller;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 import com.xworkz.issuemanagement.model.service.MailService;
 import com.xworkz.issuemanagement.model.service.SignUpService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class SignUpController
 {
     @Autowired
@@ -27,6 +29,7 @@ public class SignUpController
 
     public SignUpController()
     {
+        log.info("IssueManagementController constructor:");
         System.out.println("IssueManagementController constructor");
     }
 
@@ -35,6 +38,7 @@ public class SignUpController
     public String signUp(@Valid SignUpDTO signUpDTO, BindingResult bindingResult, Model model, @RequestParam("email") String email)
     {
         System.out.println("SignUp data:"+signUpDTO);
+        log.info("Jyothi SignUp data:{}",signUpDTO);
 
         if(bindingResult.hasErrors())
         {
@@ -56,7 +60,7 @@ public class SignUpController
 
                model.addAttribute("msg", "Signup successful. Please check your email for your password.");
 
-                return "SignInSuccessfull";
+                return "SignIn";
             }
             else {
                 System.out.println("service saveAndvalidate() in service not successfully: " + validate);

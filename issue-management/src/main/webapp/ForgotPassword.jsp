@@ -1,7 +1,5 @@
-<%@ page  isELIgnored="false"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
+<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,55 +12,92 @@
 <!--Font Awesome cdn icon-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+
+ <!--css link-->
+ <link rel="stylesheet" href="css/SignUp.css">
+
+ <!-- Placeholder styling -->
+ <style>
+   ::placeholder {
+     font-family: 'Arial', sans-serif;
+     font-size: 14px;
+     color: #6c757d;
+     opacity: 1;
+   }
+ </style>
+
 <!--Script link-->
- <script src="/issue-management/js/SignIn.js"></script>
+  <script src="/issue-management/js/ForgotPassword.js"></script>
+
 
 </head>
+<body>
 
-    <body>
-    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
-      <div class="container-fluid">
+<nav class="navbar navbar navbar-light bg-primary " >
+  <div class="container-fluid">
+   <div class="navbar-header">
 
       <!-- Add your logo here -->
-                              <a class="navbar-brand" href="#">
-                                  <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50" >
-                              </a>
+              <a class="navbar-brand" href="#">
+                  <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
+              </a>
 
-        <a class="navbar-brand text-light" href="SignUp.jsp"><b>Sign Up</b></a>
-        <a class="navbar-brand text-light" href="SignIn.jsp"><b>Sign In</b></a>
-
-
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon">jy</span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#"></a>
-
-          </div>
-        </div>
+   <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+ </div>
+</div>
+</nav>
 
 
-         <form class="d-flex" action="forgotPassword" method="post">
-                                                 <!--email: Email-->
-                                <div style="margin-bottom:0px;" class="form-group">
-                                   <span id="emailError"></span><br>
-                                   <label for="email" class="form-label"><b></b></label>
-                                   <div class="input-icon">
-                                   <i class="fa-regular fa-envelope"></i>
-                                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" placeholder="Enter Email">
-                                 </div>
-                                 </div>
+    <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
+        <!--<div class="card-header">
+           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
+        </div>-->
+
+              <div style = "margin-top: 5px;">
+                   <h2 style= "color:blue; "><center>Forgot Password</center></h2>
+              </div>
+
+       <!--text/word colors-->
+         <div class="card-body text-dark">
+
+             <!---showing errors--!>
+                <span style="color:red;">
+                    <c:forEach items="${errors}" var="objectError">
+                        ${objectError.defaultMessage}<br>
+                    </c:forEach>
+                </span>
+
+               <!--Displaying messages -->
+                   <div class="text-primary"><h6><b>${msg}</b></h6></div>
+
+                   <div class="text-danger"><h6><b>${forgotPasswordError}</b></h6></div>
 
 
+<!--Form-->
+<form action="forgotPassword" method="post">
 
-                <button class="btn btn-outline-success" type="submit">Search</button>
-              </form>
+<!--<input type="hidden" id="accountLocked" value="true">-->
 
-      </div>
-    </nav>
-    </body>
 
-    </html>
+                                   <!--email: Email-->
+                <div style="margin-bottom:0px;" class="form-group">
+                   <span id="emailError"></span><br>
+                   <label for="email" class="form-label"><b></b></label>
+                   <div class="input-icon">
+                   <i class="fa-regular fa-envelope"></i>
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" placeholder="Enter Email">
+                 </div>
+                 </div>
+                 </br>
+
+              <div class="d-grid gap-2" style="margin-bottom:10px;">
+                  <input type="submit" class="btn btn-primary btn-lg "   value="Submit">
+              </div>
+
+         </form>
+ </div>
+  </div>
+
+ </body>
+</html>
+

@@ -16,7 +16,7 @@
  <!--css link-->
  <link rel="stylesheet" href="css/SignUp.css">
 
- <!-- Placeholder styling -->
+ <!-- Placeholder styling
  <style>
    ::placeholder {
      font-family: 'Arial', sans-serif;
@@ -24,96 +24,20 @@
      color: #6c757d;
      opacity: 1;
    }
- </style>
+ </style>-->
 
  <!--Script link-->
+  <script src="/issue-management/js/SignIn.js"></script>
 
   <script>
-  <!--<script src="/issue-management/js/SignUp.js">-->
-  let fieldsChecks =
-  {
-          "email" : false,
-  	    "password" : false,
-
-  }
-
-  function validate()
-  {
-      let flag = false;
-
-      for(let [key, value] of Object.entries(fieldsChecks))
-      {
-
-          if(value === false)
-          {
-              flag = true;
-              break;
-          }
-      }
-
-      if(!flag)
-      {
-        document.getElementById("submit").removeAttribute("disabled");
-      }
-      else
-      {
-          document.getElementById("submit").setAttribute("disabled","");
-      }
-  }
-
-        function emailValidation() {
-            let element = document.getElementById("email");
-            let error = document.getElementById("emailError");
-
-            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            let trimmedValue = element.value.trim();
-
-            if (trimmedValue === "") {
-              error.innerHTML = "Please enter an email address.";
-              error.style.color = "red";
-              fieldsChecks["email"] = false;
-            } else if (!emailRegex.test(trimmedValue)) {
-              error.innerHTML = "Invalid email address.";
-              error.style.color = "red";
-              fieldsChecks["email"] = false;
-            } else {
-              error.innerHTML = "";
-              fieldsChecks["email"] = true;
-            }
-
-            validate();
-          }
-
-            function passwordValidation()
-            {
-                let element = document.getElementById("password");
-                let error = document.getElementById("passwordError");
-
-               if(element.value.length != "0")
-               {
-                    error.innerHTML = "";
-                    fieldsChecks["password"] = true;
-                }
-                else
-                {
-                    error.innerHTML = "please Enter password";
-                    error.style.color="red"
-                    fieldsChecks["password"] = false;
-
-
-                }
-                validate();
-            }
-
-
-            <!--this button disabled is not working in js file-->
-                 function disableButton() {
-             var accountLocked = "${accountLocked}";
-             if (accountLocked === "true") {
-                 document.getElementById("submit").disabled = true;
+  <!--this button disabled is not working in js file-->
+                     function disableButton() {
+                 var accountLocked = "${accountLocked}";
+                 if (accountLocked === "true") {
+                     document.getElementById("signinsubmit").disabled = true;
+                 }
              }
-         }
-         window.onload = disableButton;
+             window.onload = disableButton;
 
   </script>
 
@@ -159,6 +83,15 @@
                       <div class="text-primary"><h6><b>${error}</b></h6></div>
                       <div class="text-primary"><h6><b>${accountLocked}</b></h6></div>
 
+                     <div class="text-primary"><h6><b>${forgotPasswordMsg}</b></h6></div>
+
+                     <div class="text-primary"><h6><b>${passwordResetMessage}</b></h6></div>
+
+
+
+
+
+
 <!--Form-->
 <form action="signin" method="post">
 
@@ -171,7 +104,7 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" placeholder="Enter Email">
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" style="border-radius: 15px;" placeholder="Enter Email">
                  </div>
                  </div>
 
@@ -181,19 +114,18 @@
                     <label for="password" class="form-label"><b></b></label>
                     <div class="input-icon">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" class="form-control"  id="password" onblur="passwordValidation()" name="password" placeholder="Enter password">
+                    <input type="password" class="form-control"  id="password" onblur="passwordValidation()" name="password" style="border-radius: 15px;" placeholder="Enter password">
                </div>
                </div>
 
-                   <div>
-                   <a href="ForgotPassword">Forgot Password?</a>
-
-                   </div>
+                   <div style="text-align:center;">
+                   <a href="ForgotPassword.jsp">Forgot Password?</a>
+                   </div><br>
 
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="SignIn">
+                  <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="SignIn">
               </div>
 
          </form>

@@ -15,4 +15,6 @@ public interface SignInService
 
     void lockAccount(String email);
 
+    void unLockAccount(String email);
+
 }

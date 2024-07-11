@@ -1,6 +1,7 @@
 package com.xworkz.issuemanagement.model.service;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.model.repo.ForgotPasswordRepo;
 import com.xworkz.issuemanagement.model.repo.SignInRepo;
 import com.xworkz.issuemanagement.model.repo.SignUpRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ public class SignInServiceImpli implements SignInService
 {
      @Autowired
     private SignInRepo signInRepo;
+
+     @Autowired
+     private ForgotPasswordRepo forgotPasswordRepo;
 
     //To store password in db with respective mail
     @Override
@@ -74,4 +78,14 @@ public class SignInServiceImpli implements SignInService
         }
     }
 
+    @Override
+    public void unLockAccount(String email)
+    {
+       SignUpDTO signUpDTO= signInRepo.findByEmail(email);
+        if(signUpDTO!=null)
+        {
+            signUpDTO.setAccountLocked(false);
+            signInRepo.updateFailedAttempts(signUpDTO);
+        }
+    }
 }

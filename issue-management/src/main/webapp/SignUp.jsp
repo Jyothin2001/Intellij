@@ -12,20 +12,22 @@
 <!--Font Awesome cdn icon link-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-<!-- Placeholder styling -->
-<style>
-  ::placeholder {
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
-    color: #6c757d;
-    opacity: 1;
-  }
-</style>
+
+<!--Script link-->
+  <script src="/issue-management/js/SignUp.js"></script>
+
 
 <!--css link-->
 <link rel="stylesheet" href="/issue-management/css/SignUp.css">
 
+<style>
+.form-check-input {
+      /* Add any other styles you need, but avoid border-radius if you want the default checkbox look */
+      appearance: auto; /* Ensures default checkbox style is applied */
+    }
 
+
+</style>
 </head>
 
 <body>
@@ -76,7 +78,7 @@
                    <label for="firstName" class="form-label"><b></b></label>
                      <div class="input-icon">
                         <i class="fas fa-user"></i>
-                     <input type="text" class="form-control" id="firstName" onblur="firstNameValidation()" name="firstName"   placeholder="Enter First Name" value="${signUpDTO.firstName}"/>
+                     <input type="text" class="form-control" id="firstName" onblur="firstNameValidation()" name="firstName"   placeholder="Enter First Name" style="border-radius: 15px;" value="${signUpDTO.firstName}"/>
                </div>
                </div>
 
@@ -87,7 +89,7 @@
                     <label for="lastName" class="form-label"><b></b></label>
                     <div class="input-icon">
                     <i class="fas fa-user"></i>
-                    <input type="text" class="form-control"  id="lastName" onblur="lastNameValidation()" name="lastName"  placeholder="Enter last Name" value="${signUpDTO.lastName}"/>
+                    <input type="text" class="form-control"  id="lastName" onblur="lastNameValidation()" name="lastName"  placeholder="Enter last Name" style="border-radius: 15px;"  value="${signUpDTO.lastName}"/>
                </div>
                </div>
 
@@ -97,7 +99,7 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" onchange="emailAjaxValidation()"   name="email" value="${signUpDTO.email}" placeholder="Enter Email"/>
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" onchange="emailAjaxValidation()"   name="email"  style="border-radius: 15px;" value="${signUpDTO.email}" placeholder="Enter Your Email"/>
                  </div>
                  </div>
 
@@ -108,7 +110,7 @@
                      <label for="contactNumber" class="form-label"><b></b></label>
                      <div class="input-icon">
                      <i class="fa-solid fa-phone"></i>
-                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" onchange="numberAjaxValidation()" name="contactNumber" value="${signUpDTO.contactNumber}" placeholder="Enter Contact Number"/>
+                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" onchange="numberAjaxValidation()" name="contactNumber"  style="border-radius: 15px;" value="${signUpDTO.contactNumber}" placeholder="Enter Contact Number"/>
                 </div>
                 </div>
 
@@ -119,7 +121,7 @@
                   <label for="alternateContactNumber" class="form-label"><b></b></label>
                   <div class="input-icon">
                   <i class="fa-solid fa-phone"></i>
-                 <input type="tel" class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" value="${signUpDTO.alternateContactNumber}" placeholder="Enter Alternative Number"/>
+                 <input type="tel"  class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" style="border-radius: 15px;" value="${signUpDTO.alternateContactNumber}" placeholder="Enter Alternative Number"/>
                </div>
                </div>
 
@@ -130,7 +132,8 @@
                  <label for="address" class="form-floating"></label>
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder -->
-                 <textarea class="form-control " id="address" placeholder="Enter your address" name="address" onblur="addressValidation()">${signUpDTO.address}</textarea>
+                 <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
+                 <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" onblur="addressValidation()">${signUpDTO.address}</textarea>
                 </div>
                 </div><br>
 
@@ -138,16 +141,26 @@
               <!--checkbox: Agree-->
             <div>
                 <span  id="agreeError"></span>
-                <label  for="agree" >
-                <input  class="form-check-input"  id="agree" type="checkbox"    onchange="agreeValidation()"   type="checkbox" ${signUpDTO.agree eq 'agree' ? 'checked' : ''}  value="agree" / >
+                <label  for="agree" ></label></br>
+                <input  class="form-check-input"  id="agree" type="checkbox" onchange="agreeValidation()"  style="border-radius: 15px;"  type="checkbox" ${signUpDTO.agree eq 'agree' ? 'checked' : ''}  value="agree" / >
                 <b>I agree to </b><a href="#"> Terms & condition</a>
                 </label>
            </div>
            </div><br>
 
+
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="Sign up">
+                                <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="SignUp">
+                            </div>
+
+
+              <div style="text-align:center;">
+              Already have an account?<a href="SignIn.jsp">Sign In</a>
               </div>
+
+             <!--<div style="text-align:center;" class="proxima-nova">
+                  Already have an account? <a href="SignIn.jsp">Sign In</a>
+                </div>-->
 
          </form>
 

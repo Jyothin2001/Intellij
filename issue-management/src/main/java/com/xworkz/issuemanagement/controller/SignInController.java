@@ -1,10 +1,12 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.model.service.ForgotPasswordService;
 import com.xworkz.issuemanagement.model.service.MailService;
 import com.xworkz.issuemanagement.model.service.SignInService;
 import com.xworkz.issuemanagement.model.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,9 @@ public class SignInController
 {
     @Autowired
     private SignInService signInService;
+
+    @Autowired
+    private ForgotPasswordService forgotPasswordService;
 
 
     public SignInController()
@@ -35,7 +40,7 @@ public class SignInController
             signInService.resetFailedAttempts(email);
             System.out.println("service password in controller successfully login with:"+signUpDTO1.getEmail());
             model.addAttribute("msg", signUpDTO1.getFirstName() + " , Successfully login with : "+signUpDTO1.getEmail());
-            return "SignInSuccessfull";
+            return "Profile";
         }
         else
         {
@@ -62,5 +67,6 @@ public class SignInController
 
         }
     }
+
 
 }
