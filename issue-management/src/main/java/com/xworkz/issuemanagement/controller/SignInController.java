@@ -5,6 +5,7 @@ import com.xworkz.issuemanagement.model.service.ForgotPasswordService;
 import com.xworkz.issuemanagement.model.service.MailService;
 import com.xworkz.issuemanagement.model.service.SignInService;
 import com.xworkz.issuemanagement.model.service.SignUpService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class SignInController
 {
     @Autowired
@@ -22,6 +26,9 @@ public class SignInController
 
     @Autowired
     private ForgotPasswordService forgotPasswordService;
+
+    @Autowired
+   private  HttpSession httpSession;
 
 
     public SignInController()
@@ -32,14 +39,24 @@ public class SignInController
     @PostMapping("signin")
     public String signIn(SignUpDTO signUpDTO,@RequestParam  String email, @RequestParam String password, Model model)
     {
-        System.out.println("Running signIn method: ");
+        log.info("Running signIn method:");
 
         SignUpDTO signUpDTO1=signInService.findByEmailAndPassword(email,password);
         if(signUpDTO1!=null)
         {
             signInService.resetFailedAttempts(email);
-            System.out.println("service password in controller successfully login with:"+signUpDTO1.getEmail());
+
+            log.info("service password in controller successfully login with:{} " , signUpDTO1.getEmail());
+
             model.addAttribute("msg", signUpDTO1.getFirstName() + " , Successfully login with : "+signUpDTO1.getEmail());
+
+            // User Details: "Set" the signed-in user's email in the session
+            httpSession.setAttribute("SignedInUserEmail",email);
+
+            //user Edit details :"set"
+            httpSession.setAttribute("signUpDTO",signUpDTO);
+
+
             return "Profile";
         }
         else

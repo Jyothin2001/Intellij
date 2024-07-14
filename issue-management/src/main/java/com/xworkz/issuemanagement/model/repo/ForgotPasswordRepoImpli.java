@@ -1,12 +1,14 @@
 package com.xworkz.issuemanagement.model.repo;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
 @Repository
+@Slf4j
 public class ForgotPasswordRepoImpli implements ForgotPasswordRepo{
 
     @Autowired
@@ -18,9 +20,10 @@ public class ForgotPasswordRepoImpli implements ForgotPasswordRepo{
        EntityManager entityManager= entityManagerFactory.createEntityManager();
 
        try {
-
+           log.info("findByEmail method running  in ForgotPasswordRepoImpl .");
            Query query = entityManager.createQuery("SELECT dto from SignUpDTO dto where dto.email=:email");
            query.setParameter("email", email);
+           log.info("email in repo:{}",query);
            SignUpDTO signUpDTO = (SignUpDTO) query.getSingleResult();
            return signUpDTO;
        }

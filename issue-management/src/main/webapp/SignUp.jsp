@@ -135,7 +135,7 @@
                  <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
                  <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" onblur="addressValidation()">${signUpDTO.address}</textarea>
                 </div>
-                </div><br>
+                </div>
 
 
               <!--checkbox: Agree-->
@@ -151,7 +151,7 @@
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
                                 <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="SignUp">
-                            </div>
+                            </div><br>
 
 
               <div style="text-align:center;">

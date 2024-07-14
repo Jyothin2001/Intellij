@@ -44,16 +44,18 @@
  </div>
  <div class="dropdown">
 
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+  <div class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 
       <!--<img src="${pageContext.request.contextPath}/images/profileicon.jpg" alt="Profile" width="30" height="30" class="rounded-circle"> <!-- Add your profile icon path -->
       <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" alt="Profile" width="40" height="40" class="rounded-circle"> <!-- Add your profile icon path -->
 
-             </button>
+             </div>
    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-     <li><a class="dropdown-item" href="SignUp.jsp"><strong>Edit</strong></a></li>
+   <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
+
+     <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
      <li><a class="dropdown-item" href="PasswordReset.jsp"><strong>Password Reset</strong></a></li>
-     <li><a class="dropdown-item" href="ViewUserPage.jsp"><strong>View</strong></a></li>
+     <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
    </ul>
  </div>
 

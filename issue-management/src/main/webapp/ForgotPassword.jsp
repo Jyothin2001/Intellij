@@ -49,29 +49,24 @@
 
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
+    <img src="https://static.vecteezy.com/system/resources/previews/007/746/400/original/unlock-password-correct-success-login-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg" style="height:250px;"  alt="Card Image" class="card-image">
         <!--<div class="card-header">
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
         </div>-->
 
-              <div style = "margin-top: 5px;">
+              <div>
                    <h2 style= "color:blue; "><center>Forgot Password</center></h2>
-              </div>
+                  <p style="margin-bottom:5px;"> Enter your email we'll send you a new password to get back into your account.</p>
+                </div>
 
        <!--text/word colors-->
-         <div class="card-body text-dark">
+         <div  class="card-body text-dark">
 
-             <!---showing errors--!>
-                <span style="color:red;">
-                    <c:forEach items="${errors}" var="objectError">
-                        ${objectError.defaultMessage}<br>
-                    </c:forEach>
-                </span>
 
                <!--Displaying messages -->
                    <div class="text-primary"><h6><b>${msg}</b></h6></div>
 
                    <div class="text-danger"><h6><b>${forgotPasswordError}</b></h6></div>
-
 
 <!--Form-->
 <form action="forgotPassword" method="post">
@@ -95,6 +90,7 @@
               </div>
 
          </form>
+
  </div>
   </div>
 

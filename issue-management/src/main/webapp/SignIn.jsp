@@ -12,6 +12,9 @@
 <!--Font Awesome cdn icon-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<!--Script link-->
+  <script src="/issue-management/js/SignIn.js"></script>
+
 
  <!--css link-->
  <link rel="stylesheet" href="css/SignUp.css">
@@ -26,20 +29,18 @@
    }
  </style>-->
 
- <!--Script link-->
-  <script src="/issue-management/js/SignIn.js"></script>
 
-  <script>
+<script>
   <!--this button disabled is not working in js file-->
-                     function disableButton() {
-                 var accountLocked = "${accountLocked}";
-                 if (accountLocked === "true") {
-                     document.getElementById("signinsubmit").disabled = true;
-                 }
-             }
-             window.onload = disableButton;
 
-  </script>
+                           function disableButton() {
+                       var accountLocked = "${accountLocked}";
+                       if (accountLocked === "true") {
+                           document.getElementById("signinsubmit").disabled = true;
+                       }
+                   }
+                   window.onload = disableButton;
+ </script>
 
 </head>
 <body>
@@ -60,7 +61,8 @@
 
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
-        <!--<div class="card-header">
+
+      <!-- <div class="card-header">
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
         </div>-->
 
@@ -95,8 +97,6 @@
 <!--Form-->
 <form action="signin" method="post">
 
-<input type="hidden" id="accountLocked" value="true">
-
 
                                    <!--email: Email-->
                 <div style="margin-bottom:0px;" class="form-group">
@@ -123,14 +123,19 @@
                    </div><br>
 
 
-
               <div class="d-grid gap-2" style="margin-bottom:10px;">
                   <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="SignIn">
-              </div>
 
+              </div>
+              <div>
+             <center>Do not have an account?<a href="SignUp.jsp" class="link-primary"> &nbsp;SignUp </a><center>
+               </div>
          </form>
+
  </div>
   </div>
+
+
 
  </body>
 </html>
