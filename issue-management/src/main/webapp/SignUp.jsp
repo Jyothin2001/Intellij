@@ -68,7 +68,7 @@
                 </span>
 <!--Form-->
 
-      <form action="signup" method="post">
+      <form action="signUp" method="post">
 
 <div class="text-primary"><b>${msg}</b></div>
 
@@ -78,7 +78,7 @@
                    <label for="firstName" class="form-label"><b></b></label>
                      <div class="input-icon">
                         <i class="fas fa-user"></i>
-                     <input type="text" class="form-control" id="firstName" onblur="firstNameValidation()" name="firstName"   placeholder="Enter First Name" style="border-radius: 15px;" value="${signUpDTO.firstName}"/>
+                     <input type="text" class="form-control" id="firstName" onblur="firstNameValidation()" name="firstName"   placeholder="Enter First Name" style="border-radius: 15px;" />
                </div>
                </div>
 
@@ -89,7 +89,7 @@
                     <label for="lastName" class="form-label"><b></b></label>
                     <div class="input-icon">
                     <i class="fas fa-user"></i>
-                    <input type="text" class="form-control"  id="lastName" onblur="lastNameValidation()" name="lastName"  placeholder="Enter last Name" style="border-radius: 15px;"  value="${signUpDTO.lastName}"/>
+                    <input type="text" class="form-control"  id="lastName" onblur="lastNameValidation()" name="lastName"  placeholder="Enter last Name" style="border-radius: 15px;" />
                </div>
                </div>
 
@@ -99,7 +99,7 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" onchange="emailAjaxValidation()"   name="email"  style="border-radius: 15px;" value="${signUpDTO.email}" placeholder="Enter Your Email"/>
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" onchange="emailAjaxValidation()"   name="email"  style="border-radius: 15px;"  placeholder="Enter Your Email"/>
                  </div>
                  </div>
 
@@ -110,7 +110,7 @@
                      <label for="contactNumber" class="form-label"><b></b></label>
                      <div class="input-icon">
                      <i class="fa-solid fa-phone"></i>
-                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" onchange="numberAjaxValidation()" name="contactNumber"  style="border-radius: 15px;" value="${signUpDTO.contactNumber}" placeholder="Enter Contact Number"/>
+                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" onchange="numberAjaxValidation()" name="contactNumber"  style="border-radius: 15px;"  placeholder="Enter Contact Number"/>
                 </div>
                 </div>
 
@@ -121,7 +121,7 @@
                   <label for="alternateContactNumber" class="form-label"><b></b></label>
                   <div class="input-icon">
                   <i class="fa-solid fa-phone"></i>
-                 <input type="tel"  class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" style="border-radius: 15px;" value="${signUpDTO.alternateContactNumber}" placeholder="Enter Alternative Number"/>
+                 <input type="tel"  class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" style="border-radius: 15px;"  placeholder="Enter Alternative Number"/>
                </div>
                </div>
 
@@ -133,7 +133,7 @@
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder -->
                  <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
-                 <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" onblur="addressValidation()">${signUpDTO.address}</textarea>
+                 <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" onblur="addressValidation()"></textarea>
                 </div>
                 </div>
 
@@ -142,7 +142,7 @@
             <div>
                 <span  id="agreeError"></span>
                 <label  for="agree" ></label></br>
-                <input  class="form-check-input"  id="agree" type="checkbox" onchange="agreeValidation()"  style="border-radius: 15px;"  type="checkbox" ${signUpDTO.agree eq 'agree' ? 'checked' : ''}  value="agree" / >
+                <input  class="form-check-input"  id="agree" type="checkbox" onchange="agreeValidation()"  style="border-radius: 15px;"  type="checkbox"  value="agree" / >
                 <b>I agree to </b><a href="#"> Terms & condition</a>
                 </label>
            </div>

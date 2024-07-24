@@ -49,13 +49,20 @@
    <a class="navbar-brand text-light" href="SignIn.jsp"><b>SignIn</b></a>
    <a class="navbar-brand text-light" href="Profile.jsp"><b>Profile</b></a>
  </div>
+
+              <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user--!>
+              <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle profile-image" alt="Profile Image">
+
+
 </div>
 </nav>
 
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
         <!--<div class="card-header">
+
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
+           <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" alt="Profile" class="profile-img rounded-circle">
         </div>-->
 
               <div style = "margin-top: 5px;">
@@ -64,11 +71,11 @@
 
        <!--text/word colors-->
          <div class="card-body text-dark">
-                <strong class="card-title">Name: ${signUpDTO1.firstName} ${signUpDTO.lastName}</strong><br><br>
-                <p class="card-text"><strong>Email: ${signUpDTO1.email}</strong></p>
-                <p class="card-text"><strong>Contact Number: ${signUpDTO1.contactNumber}<strong></p>
-                <p class="card-text"><strong>Alternative Contact Number: ${signUpDTO1.alternateContactNumber}</strong></p>
-                <p class="card-text"><strong>Address: ${signUpDTO1.address}</strong></p>
+                <strong class="card-title">Name: ${signUpDTO.firstName} ${signUpDTO.lastName}</strong><br><br>
+                <p class="card-text"><strong>Email: ${signUpDTO.email}</strong></p>
+                <p class="card-text"><strong>Contact Number: ${signUpDTO.contactNumber}<strong></p>
+                <p class="card-text"><strong>Alternative Contact Number: ${signUpDTO.alternateContactNumber}</strong></p>
+                <p class="card-text"><strong>Address: ${signUpDTO.address}</strong></p>
             </div>
         </div>
     </div>

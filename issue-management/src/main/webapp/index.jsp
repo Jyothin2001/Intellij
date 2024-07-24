@@ -21,8 +21,7 @@
 
         <a class="navbar-brand text-light" href="SignUp.jsp"><b>Sign Up</b></a>
         <a class="navbar-brand text-light" href="SignIn.jsp"><b>Sign In</b></a>
-         <a class="navbar-brand text-light" href="Profile.jsp"><b>profile</b></a>
-          <a class="navbar-brand text-light" href="PasswordReset.jsp"><b>Password Reset</b></a>
+          <a class="navbar-brand text-light" href="ComplaintRaise.jsp"><b>complaint</b></a>
 
 
 

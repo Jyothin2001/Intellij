@@ -39,6 +39,7 @@ public class SignUpServiceImpli implements SignUpService
         //calling Random password generator method
         String generatedPassword= PasswordGenerator.generatePassword();
         signUpDTO.setPassword(generatedPassword);
+        signUpDTO.setImageName("ProfileIcon.png");
 
         boolean data=this.signUpRepo.saveAndValidate(signUpDTO);
         if(data)

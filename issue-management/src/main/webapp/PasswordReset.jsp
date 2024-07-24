@@ -170,6 +170,9 @@ function confirmPasswordValidation() {
 
    <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
  </div>
+              <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user-->
+              <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle profile-image" alt="Profile Image" id="profileImage">
+
 </div>
 </nav>
 

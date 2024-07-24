@@ -23,7 +23,7 @@ public class ForgotPasswordController
     }
     //Forgot Password
     @PostMapping("forgotPassword")
-    public String ForgotPassword(@RequestParam String email, Model model)
+    public String forgotPassword(@RequestParam String email, Model model)
     {
         System.out.println("***********");
         boolean password=forgotPasswordService.forgotPassword(email);

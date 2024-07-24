@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.dto.ProfileImageDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 
 public interface EditUserDetailsRepo {
@@ -9,5 +10,5 @@ public interface EditUserDetailsRepo {
 
     void updateUserDetails(SignUpDTO signUpDTO);
 
-    
+   //void updateUserProfileImage(ProfileImageDTO profileImageDTO);
 }

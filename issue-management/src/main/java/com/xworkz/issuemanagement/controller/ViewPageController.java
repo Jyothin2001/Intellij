@@ -32,24 +32,24 @@ public class ViewPageController
     }
 
     @GetMapping("view-Page")
-public String showUserDetails(Model model)
+      public String showUserDetails(Model model)
     {
         // Fetch the signed-in user's email from the session
         //get the userDetails based on email while signIn
         //after user signIn go to profilePage then we provided "viewPage" action it comes here
         //and write session in signIn controller
 
-           String userEmail=(String) httpSession.getAttribute("SignedInUserEmail");
+           String userEmail=(String) httpSession.getAttribute("signedInUserEmail");
 
            log.info("Signed-in user email: "+userEmail);
 
            if(userEmail!=null)
            {
                // Fetch user data based on the email
-               SignUpDTO signUpDTO1=viewPageService.getUserByEmail(userEmail);
+               SignUpDTO signUpDTO=viewPageService.getUserByEmail(userEmail);
 
                // Add the user data to the viewPage
-               model.addAttribute("signUpDTO1",signUpDTO1);
+               model.addAttribute("signUpDTO",signUpDTO);
            }
            else
            {

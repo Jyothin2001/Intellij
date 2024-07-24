@@ -44,6 +44,9 @@ public class SpringConfiguration implements WebMvcConfigurer
         WebMvcConfigurer.super.addResourceHandlers(registry);
         registry.addResourceHandler("/js/**").addResourceLocations("/javascript/");
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+
+        //set images in configuration
+        registry.addResourceHandler("/images/**").addResourceLocations("file:C:/Users/Jyothi/Desktop/project_Library/User_images/");
     }
 
 

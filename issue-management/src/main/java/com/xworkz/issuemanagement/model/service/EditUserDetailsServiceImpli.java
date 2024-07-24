@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 public class EditUserDetailsServiceImpli implements EditUserDetailsService
 {
 
-    @Autowired
-    private SignInRepo signInRepo;
-// use either of the repo for findByEmail()
+
     @Autowired
     private EditUserDetailsRepo editUserDetailsRepo;
 
@@ -29,7 +27,7 @@ public class EditUserDetailsServiceImpli implements EditUserDetailsService
     @Override
     public SignUpDTO getUserDetails(String email)
     {
-        SignUpDTO signUpDTO=signInRepo.findByEmail(email);
+        SignUpDTO signUpDTO=editUserDetailsRepo.findByEmail(email);
 
         return signUpDTO;
     }
@@ -53,9 +51,9 @@ public class EditUserDetailsServiceImpli implements EditUserDetailsService
     @Override
     public String getSignedInUserEmail() {
 
-        httpSession.getAttribute("SignedInUserEmail");
+       return (String) httpSession.getAttribute("signedInUserEmail");
 
-        return "String";
+
     }
 
     @Override

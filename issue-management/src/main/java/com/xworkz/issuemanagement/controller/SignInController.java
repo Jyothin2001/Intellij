@@ -13,14 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
 @Slf4j
-public class SignInController
-{
+//@SessionAttributes("signUpDTO")
+public class SignInController {
     @Autowired
     private SignInService signInService;
 
@@ -28,33 +29,41 @@ public class SignInController
     private ForgotPasswordService forgotPasswordService;
 
     @Autowired
-   private  HttpSession httpSession;
+    private HttpSession httpSession;
 
 
-    public SignInController()
-    {
+    public SignInController() {
         System.out.println("SignInController constructor:");
     }
 
-    @PostMapping("signin")
-    public String signIn(SignUpDTO signUpDTO,@RequestParam  String email, @RequestParam String password, Model model)
-    {
+    @PostMapping("signIn")
+    public String signIn(@RequestParam String email, @RequestParam String password, Model model) {
         log.info("Running signIn method:");
 
-        SignUpDTO signUpDTO1=signInService.findByEmailAndPassword(email,password);
-        if(signUpDTO1!=null)
+        SignUpDTO signUpDTO = signInService.findByEmailAndPassword(email, password);
+        if (signUpDTO != null)
         {
             signInService.resetFailedAttempts(email);
 
-            log.info("service password in controller successfully login with:{} " , signUpDTO1.getEmail());
+            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
 
-            model.addAttribute("msg", signUpDTO1.getFirstName() + " , Successfully login with : "+signUpDTO1.getEmail());
+            model.addAttribute("msg", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
 
+            //Sessions in a web application are used to store user-specific information across multiple requests.
             // User Details: "Set" the signed-in user's email in the session
-            httpSession.setAttribute("SignedInUserEmail",email);
+            httpSession.setAttribute("signedInUserEmail", email);
 
             //user Edit details :"set"
-            httpSession.setAttribute("signUpDTO",signUpDTO);
+            httpSession.setAttribute("signUpDTO", signUpDTO);//also used for saving signUp user id in complaint table
+
+
+
+            String profileImageUrl = "/images/" + signUpDTO.getImageName();
+            httpSession.setAttribute("profileImage", profileImageUrl);
+
+            //compliantRaise set
+           // httpSession.setAttribute("complaintRaise",id);
+
 
 
             return "Profile";
@@ -67,17 +76,18 @@ public class SignInController
             System.out.println("Failed attempts for " + email + ": " + failedAttempts);
 
 
-            if (failedAttempts >= 3  )
+            if (failedAttempts >= 3)
             {
                 signInService.lockAccount(email); // Lock account after 3 failed attempts
                 model.addAttribute("error", "Your account is locked due to too many failed attempts.");
                 model.addAttribute("accountLocked", true);
             }
-            else {
+            else
+            {
 
                 model.addAttribute("error", "Invalid email id and password. Attempts: " + failedAttempts);
                 model.addAttribute("accountLocked", false);
-             }
+            }
 
 
             return "SignIn";

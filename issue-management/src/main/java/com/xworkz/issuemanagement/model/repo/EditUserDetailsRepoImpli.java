@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.dto.ProfileImageDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,15 @@ public class EditUserDetailsRepoImpli implements EditUserDetailsRepo {
             catch (PersistenceException e)
             {
                 e.printStackTrace();
-                entityTransaction.rollback();
+                if (entityTransaction.isActive()) {
+                    entityTransaction.rollback();
+                }
+
             }
             finally {
                 entityManager.close();
             }
     }
+
+
 }

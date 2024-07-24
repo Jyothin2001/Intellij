@@ -2,6 +2,7 @@ package com.xworkz.issuemanagement.dto;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -11,13 +12,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "signup")
 @Data
+@Slf4j
 public @ToString class SignUpDTO
 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @NotEmpty(message = "FirstName cannot be empty")
     @Size(min = 3, max = 30, message = "First Name should contain letters between >2 and <30")
@@ -54,6 +56,12 @@ public @ToString class SignUpDTO
     @Column(name = "address")
     private String address;
 
+    @Transient
+    private String agree;
+
+
+
+
     @Column(name = "created_by")
     private String createdBy;
 
@@ -69,8 +77,8 @@ public @ToString class SignUpDTO
     @Column(name = "is_active")
     private boolean isActive;
 
-    @Transient
-    private String agree;
+
+
 
     @Column(name = "password")
     private String password;
@@ -80,6 +88,15 @@ public @ToString class SignUpDTO
 
     @Column(name="failed_attempted")
     private Integer failedAttempt=0;
+
+
+    @Column(name="image_name")
+    private String imageName;
+
+    public SignUpDTO()
+    {
+        log.info("created SignUpDTO.. constructor");
+    }
 
 }
 

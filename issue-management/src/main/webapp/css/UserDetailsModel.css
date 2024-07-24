@@ -1,0 +1,27 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+}
+
+.modal-header h5 {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.profile-info p {
+  margin-bottom: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-dark:hover {
+  background-color: #343a40;
+}

@@ -12,14 +12,20 @@
 <!--Font Awesome cdn icon link-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-ND83p6+2LC9sNGvzFgiptEh0Wt3veCHpdwwvWY3Aj23FR5f4ob0C5sHbPkzJf6Hm" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-5mrLOimZlMFbbXUpiH8eAFKmKXbLqaW8GDoAWF+Q6h4Ec8Q2pSyyKhcvwwa3fznK" crossorigin="anonymous"></script>
-
 
 <!--Script link
 <script src="/issue-management/js/EditUserDetails.js"></script>-->
 
+
 <script>
+
+// Function to handle profile image click
+function handleImageClick()
+ {
+    document.getElementById('file').click();
+}
+
+
 // FirstName
 function firstNameValidation() {
     let element = document.getElementById("firstName");
@@ -174,15 +180,52 @@ function validateAndEnableSubmit() {
 <link rel="stylesheet" href="/issue-management/css/SignUp.css">
 
 <style>
+
 .form-check-input {
       /* Add any other styles you need, but avoid border-radius if you want the default checkbox look */
        /* Ensures default checkbox style is applied */
 
        appearance: auto;
     }
+/* Hide the file input */
+#file {
+  display: none;
+}
 
 
-</style>
+/* Style the profile image as a clickable element */
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.profile-image {
+  cursor: pointer;
+  border: 2px solid #007bff;
+  padding: 5px;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Style the "+" icon */
+.add-icon {
+  position: absolute;
+  top:70px;
+  left: 60px;
+  font-size: 30px;
+
+  color: white;
+  background-color: blue;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}</style>
 </head>
 
 <body>
@@ -199,10 +242,11 @@ function validateAndEnableSubmit() {
    <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
    <a class="navbar-brand text-light" href="SignIn.jsp"><b>SignIn</b></a>
  </div>
-             <li class="nav-item">
+
+
              <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user--!>
-             <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle profile-image" alt="Profile Image" id="profileImage">
-              </li>
+             <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle " alt="Profile Image" id="profileImage">
+
 
 </div>
 </nav>
@@ -210,21 +254,29 @@ function validateAndEnableSubmit() {
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
 
-
               <div style = "margin-top: 15px;">
-                   <h1 style= "color:blue; "><center>Edit user Details</center></h1>
+                   <h2 style= "color:blue; "><center>Edit Profile</center></h2>
               </div>
 
                <!--text/word colors-->
          <div class="card-body text-dark">
 
+<!-- Display users profile image -->
+   <center> <div class="profile-image-container">
+      <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="100" height="100" class="rounded-circle " alt="Profile Image" id="profileImage" >
+      <span class="add-icon" onclick="handleImageClick()">+</span>
+    </div>
+    </center>
+  </div>
 
 <!--Form-->
 
-      <form action="edit-profile" method="post" enctype="multipart/form-data">
+      <form action="updateUserProfile" method="post" enctype="multipart/form-data">
 
-<div class="text-primary"><b>${msg}</b></div>
-<span style="color:green"><strong>${profileUploadMsg}</strong></span>
+       <div class="text-primary"><b>${msg}</b></div>
+       <span style="color:green"><strong>${profileUploadMsg}</strong></span>
+        <span style="color:red"><strong>${errorMessage}</strong></span>
+        <span style="color:red"><strong>${errorUploadMsg}</strong></span>
 
 
            <!--Text: First Name-->
@@ -293,18 +345,19 @@ function validateAndEnableSubmit() {
                 </div>
                 </div><br>
 
-              <!--file:file-->
-                <div >
-                <label for="file" class="form-label">Add image:</label>
-                <div class="input-icon">
-                <i class="fa-solid fa-file-arrow-up"></i>
-                <input type="file" class="form-control" id="file" name="file">
-                </div>
-                </div></br>
+                <div class="d-grid gap-2" style="margin-bottom:10px;">
+                                 <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="Update">
+                                 </div>
 
-                            <div class="d-grid gap-2" style="margin-bottom:10px;">
-                                <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="Update">
-                            </div>
+<!-- File: Image -->
+      <div>
+        <label for="file" class="form-label"></label>
+       <!-- <div class="input-icon">
+          <i class="fa-solid fa-file-arrow-up"></i>-->
+          <input type="file" class="form-control" id="file" name="file">
+        </div>
+      </div></br>
+
 
          </form>
 

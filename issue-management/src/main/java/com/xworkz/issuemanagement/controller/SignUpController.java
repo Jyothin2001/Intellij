@@ -34,7 +34,7 @@ public class SignUpController
     }
 
 
-    @PostMapping("signup")
+    @PostMapping("signUp")
     public String signUp(@Valid SignUpDTO signUpDTO, BindingResult bindingResult, Model model, @RequestParam("email") String email)
     {
         System.out.println("SignUp data:"+signUpDTO);
@@ -53,7 +53,11 @@ public class SignUpController
 
             boolean validate = this.signUpService.saveAndValidate(signUpDTO);
             if (validate) {
+
                 System.out.println("service saveAndvalidate() in controller successfully: " + validate);
+
+                signUpDTO.setImageName("ProfileIcon.png");
+
                 String subject = "Welcome to issue management";
                 String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();
                 this.mailService.sendSimpleEmail(email, subject, body);

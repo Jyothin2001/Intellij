@@ -4,6 +4,7 @@ import com.xworkz.issuemanagement.dto.SignUpDTO;
 
 public interface ViewPageService
 {
+    //user Details:
     //calling findByEmail from ForgotPasswordRepo
     SignUpDTO getUserByEmail(String email);
 
