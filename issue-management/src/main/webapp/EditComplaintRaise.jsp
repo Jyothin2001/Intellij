@@ -135,82 +135,67 @@
                 <!--text/word colors-->
                 <div class="card-body text-dark">
 
-                    <!---showing errors--!>
-                <span style="color:red;">
-                    <c:forEach items="${errors}" var="objectError">
-                        ${objectError.defaultMessage}<br>
-                    </c:forEach>
-                </span>
-<form action="complaintRaise" method="post">
+
+                <!--localhost:/issuemanagement/editComplaintRaise/updateComplaintDetails:it is not work
+                localhost:/issuemanagement/updateComplaintDetails:it is working-->
+
+          <form action="${pageContext.request.contextPath}/updateComplaintDetails" method="post">
+
+                    <span style="color:green"><h4>${updateMsg}</h4></span>
+
+                     <span style="color:red"><h4>${updateErrorMsg}</h4></span>
+
+<!--from view  id should not go ::not declare it NoSuchValuePresentException-->
+<input type="hidden" name="complaintId" value="${complaintRaiseDTO.complaintId}"/>
+
 
                 <!---dropdown select issue-->
                 <div style="margin-bottom:2px;">
-                    <span id="complaintTypeError" class="text-danger"></span>
-                    <label for="complaintType" class="form-label"></label>
                     <b>Complaint Type:</b>
-                    <select class="form-select custom-select-width" id="complaintType" value=${} name="complaintType" readonly required>
-                        <option value="0">Select</option>
-                        <option value="Electric issue">Electric issue</option>
-                        <option value="Water Supply">Water Supply</option>
-                        <option value="Network Problem">Network Problem</option>
-                        <option value="System Problem">System Problem</option>
-                        <option value="Water Problem">Water Problem</option>
-                    </select>
-                </div>
+                    <input type="text" class="form-control" id="complaintType" style="border-radius: 15px;" value="${complaintRaiseDTO.complaintType}" name="complaintType" readonly required>
+                    </div>
                 <br>
 
                 <!---Country --->
                 <div style="margin-bottom:2px;">
-                    <span id="countryNameError" class="text-danger"></span>
-                    <label for="countryName" class="form-label"></label>
                     <b>Country:</b>
-                    <select class="form-select custom-select-width" id="countryName" style="border-radius: 15px;" name="country" ${} placeholder="Enter country" readonly required>
-                        <!-- Countries will be loaded here by JavaScript -->
-                    </select><br>
+                    <input type="text"class="form-control"  id="countryName" style="border-radius: 15px;" name="country" value="${complaintRaiseDTO.country}"   readonly required>
                 </div>
+                <br>
 
                 <!---State --->
                 <div style="margin-bottom:2px;">
-                    <span id="stateNameError" class="text-danger"></span>
-                    <label for="state" class="form-label"></label>
                     <b>State:</b>
-                    <select class="form-select custom-select-width" id="state" name="state" ${} style="border-radius: 15px;" readonly required>
-                        <!-- States will be loaded here by JavaScript -->
-                    </select>
-                </div>
+                    <input type="text"  class="form-control" id="state" name="state" value="${complaintRaiseDTO.state}" style="border-radius: 15px;" readonly required>
+                  </div>
                 <br>
 
                 <!---City --->
                 <div style="margin-bottom:2px;">
-                    <span id="cityNameError" class="text-danger"></span>
-                    <label for="city" class="form-label"></label>
                     <b>City:</b>
-                    <select class="form-select custom-select-width" id="city" style="border-radius: 15px;" name="city" ${} placeholder="Enter city" readonly required>
-                        <!-- Cities will be loaded here by JavaScript -->
-                    </select>
-                </div>
+                    <input type="text" class="form-control" id="city" style="border-radius: 15px;" name="city" value="${complaintRaiseDTO.city}"  readonly required>
+                     </div>
+                     </br>
 
                 <div style="margin-bottom:2px;">
-                    <span id="areaError" class="text-danger"></span><br>
                     <b>Area:</b>
-                    <label for="area" class="form-label"></label>
-                    <input type="text" class="form-control" id="area" style="border-radius: 15px;" name="area" ${} placeholder="Enter area" readonly required>
-                </div>
-
-                <div style="margin-bottom:2px;">
-                    <span id="errorAddress" class="text-danger"></span><br>
-                    <b>Address:</b>
-                    <label for="address" class="form-floating"></label>
-                    <textarea class="form-control" placeholder="Enter address" style="border-radius: 15px;" id="address" style="height: 80px" name="address"  readonly required></textarea>
+                    <input type="text" class="form-control" id="area" style="border-radius: 15px;" name="area" value="${complaintRaiseDTO.area}"  readonly required>
                 </div>
                 <br>
 
                 <div style="margin-bottom:2px;">
+                    <b>Address:</b>
+                    <input type="text" class="form-control"  style="border-radius: 15px;" id="address" value="${complaintRaiseDTO.address}"style="height: 80px" name="address"  readonly required>
+                </div>
+
+
+                <div style="margin-bottom:2px;">
                     <span id="descriptionError" class="text-danger"></span><br>
                     <label for="description"><b>Description:</b></label>
-                    <textarea class="form-control" style="border-radius: 15px;" placeholder="Leave a comment here" name="description"
+                    <textarea class="form-control" style="border-radius: 15px;" placeholder="Leave a comment here" name="description" value="${complaintRaiseDTO.description}"
                         id="description" style="height:80px" oninput="validateForm()" maxlength="300" onblur="validateForm()" required></textarea>
                 </div>
+                <br>
 
 
                 <div class="d-grid gap-2" style="margin-bottom:10px;">

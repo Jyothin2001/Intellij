@@ -52,7 +52,7 @@ public class ComplaintRaiseRepoImpli implements ComplaintRaiseRepo
             List<ComplaintRaiseDTO> listOfComplaintDTO=query.getResultList();
             if(listOfComplaintDTO!=null)
             {
-                log.info("listOfComplaintDTO for view complaintRaise:{} {}",listOfComplaintDTO.size(),userId);
+                log.info("listOfComplaintDTO for view complaintRaise: no. of  complaints:{} and userId: {} ",listOfComplaintDTO.size(),userId);
                 return listOfComplaintDTO;
             }
 
@@ -86,13 +86,18 @@ public class ComplaintRaiseRepoImpli implements ComplaintRaiseRepo
         }
 
     }
-
+/*Conversion to Stream: query.getResultList().stream() converts the list of results into a stream.
+Find First Element: findFirst() retrieves the first element in the stream, if present.
+Optional: If the list is empty, findFirst() returns Optional.empty().
+If it contains elements, it returns the first element wrapped in an Optional.
+*/
+    //edit
     @Override
     public Optional<ComplaintRaiseDTO> findByComplaintId(int complaintId) {
         EntityManager entityManager=entityManagerFactory.createEntityManager();
         //warning unchecked exaception so use typedQuery ,there is no need to casting
         try {
-            TypedQuery<ComplaintRaiseDTO> query = entityManager.createQuery("SELECT c FROM ComplaintRaiseDTO c WHERE c.complaintId:=complaintId",ComplaintRaiseDTO.class);
+            TypedQuery<ComplaintRaiseDTO> query = entityManager.createQuery("SELECT c FROM ComplaintRaiseDTO c WHERE c.complaintId=:complaintId",ComplaintRaiseDTO.class);
             query.setParameter("complaintId", complaintId);
 
            return query.getResultList().stream().findFirst();
@@ -109,6 +114,27 @@ public class ComplaintRaiseRepoImpli implements ComplaintRaiseRepo
 
     @Override
     public ComplaintRaiseDTO updateEditedComplaints(ComplaintRaiseDTO complaintRaiseDTO) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+
+        try
+        {
+            entityTransaction.begin();
+            entityManager.merge(complaintRaiseDTO);
+            entityTransaction.commit();
+
+            return complaintRaiseDTO;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            entityTransaction.rollback();
+        }
+        finally {
+            entityManager.close();
+            log.info("updateRaiseComplaintUserDetails connection closed");
+        }
+
         return null;
     }
 

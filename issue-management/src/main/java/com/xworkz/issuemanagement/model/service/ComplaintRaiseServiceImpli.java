@@ -71,6 +71,34 @@ public class ComplaintRaiseServiceImpli implements ComplaintRaiseService
       }
         return Optional.empty();
     }
+    //edit
+    @Override
+    public ComplaintRaiseDTO findByComplaintId(int complaintId) {
+
+        return complaintRaiseRepo.findByComplaintId(complaintId).orElse(null);
+    }
+//update
+    ////to set the signUpDTO id to stored id in
+    @Override
+    public List<ComplaintRaiseDTO> updateEditedComplaints(ComplaintRaiseDTO complaintRaiseDTO){
+
+            ComplaintRaiseDTO complaintId=this.complaintRaiseRepo.findByComplaintId(complaintRaiseDTO.getComplaintId()).get();
+            complaintRaiseDTO.setSignUpDTO(complaintId.getSignUpDTO());
+
+            ComplaintRaiseDTO complaintRaiseDTO1=complaintRaiseRepo.updateEditedComplaints(complaintRaiseDTO);
+
+       List<ComplaintRaiseDTO> dto=this.complaintRaiseRepo.findByComplaintsByUserId(complaintRaiseDTO1.getSignUpDTO().getId());
+        if(dto!=null)
+        {
+            System.out.println("update data successful");
+            return  dto;
+        }
+        else
+        {
+            System.out.println("update not successful");
+            return  null;
+        }
+    }
 
 
 }

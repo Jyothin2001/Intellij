@@ -81,6 +81,31 @@ public class ComplaintRaiseController
     //log.info("complaint data in view page:{}",listOfComplaintData);
     return "ComplaintRaiseView";
 }
+//just getting complaintId
+    @GetMapping("/editComplaintRaise/{complaintId}")
+    public String showEditComplaintRaise(@PathVariable("complaintId") int complaintId,Model model)
+    {
+       ComplaintRaiseDTO complaintRaiseDTO= complaintRaiseService.findByComplaintId(complaintId);
+       model.addAttribute("complaintRaiseDTO",complaintRaiseDTO);//values should be retain in page
 
-    //editComplaintRaise
+
+        return "EditComplaintRaise";
+    }
+
+
+    @PostMapping("updateComplaintDetails")
+    public String updateComplaintDetails(@ModelAttribute("complaintRaiseDTO")ComplaintRaiseDTO complaintRaiseDTO,Model model)
+    {
+       List<ComplaintRaiseDTO> complaintUpdated=complaintRaiseService.updateEditedComplaints(complaintRaiseDTO);
+        if (complaintUpdated!=null)
+        {
+            model.addAttribute("updateMsg", "Complaint updated successfully!");
+            model.addAttribute("viewComplaintRaise", complaintUpdated); //for table data view raise complaint
+            return "ComplaintRaiseView";
+        } else
+        {
+            model.addAttribute("updateErrorMsg", "Failed to update complaint. Please try again.");
+        }
+        return "EditComplaintRaise";
+    }
 }

@@ -48,12 +48,13 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
               <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
 
-              <!--get action = edit?email=${signUpDTO.email}-->
+              <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
               <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
               <li><a class="dropdown-item" href="PasswordReset.jsp"><strong>Password Reset</strong></a></li>
               <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
               <li><a class="dropdown-item" href="ComplaintRaise.jsp"><strong>Complaint Raise</strong></a></li>
               <li><a class="dropdown-item" href="viewComplaintRaise"><strong>view ComplaintRaise</strong></a></li>
+               <li><a class="dropdown-item" href="SearchComplaintType.jsp"><strong>Search ComplaintRaise</strong></a></li>
 
 
                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> Modal</strong></a></li>
