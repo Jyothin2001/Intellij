@@ -16,18 +16,48 @@
  <!--css link-->
  <link rel="stylesheet" href="css/SignUp.css">
 
- <!-- Placeholder styling -->
+
  <style>
+
+ <!-- password styling-->
+     .form-group {
+         margin-bottom: 24px;
+         position: relative;
+         width: 100%;
+     }
+     .oldPassword {
+         position: relative;
+         width: 100%;
+     }
+     <!--.password input {
+         width: 100%;
+         padding: 10px;
+         padding-right: 40px; /* Space for the icon */
+         outline: none;
+         border: 1px solid #000;
+         border-radius: 15px;
+         box-sizing: border-box;
+     }-->
+     .pass-icon {
+         position: absolute;
+         top: 52%;
+         right: 40px;
+         width: 25px;
+         height: 25px; /* Ensures the icon fits within the field */
+         cursor: pointer;
+         transform: translateY(-50%);
+     }
+
+ \
+<!-- Placeholder styling
    ::placeholder {
      font-family: 'Arial', sans-serif;
      font-size: 14px;
      color: #6c757d;
-     opacity: 1;
+     opacity: 1;-->
    }
  </style>
 
-<!--Script link
-  <script src="/issue-management/js/PasswordReset.js"></script>-->
 <script>
 let fieldsChecks = {
     "email": false,
@@ -154,6 +184,60 @@ function confirmPasswordValidation() {
     validateAndEnableSubmit();
 }
 
+<!--password-->
+var a;
+function oldPass()
+{
+if(a==1)
+{
+document.getElementById('oldPassword').type='password';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=0;
+}
+else
+{
+document.getElementById('oldPassword').type='text';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=1;
+}
+}
+
+var a;
+function newPass()
+{
+if(a==1)
+{
+document.getElementById('newPassword').type='password';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=0;
+}
+else
+{
+document.getElementById('newPassword').type='text';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=1;
+}
+}
+
+var a;
+function confirmPass()
+{
+if(a==1)
+{
+document.getElementById('confirmPassword').type='password';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=0;
+}
+else
+{
+document.getElementById('confirmPassword').type='text';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=1;
+}
+}
+
+
+
 </script>
 
 </head>
@@ -168,7 +252,7 @@ function confirmPasswordValidation() {
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
               <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user-->
               <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle profile-image" alt="Profile Image" id="profileImage">
@@ -215,13 +299,17 @@ function confirmPasswordValidation() {
                  </div>
                  </div>
 
+
                          <!--Text: old password-->
-               <div style="margin-bottom:0px;" class="form-group">
+               <div style="margin-bottom:0px;" >
                     <span id="oldPasswordError"></span><br>
                     <label for="password" class="form-label"><b></b></label>
+                   <div class=" form-group ">
                     <div class="input-icon">
                     <i class="fa-solid fa-key"></i>
                     <input type="password" class="form-control"  id="oldPassword" onblur="oldPasswordValidation()" autocomplete="old-password" name="oldPassword" style="border-radius: 15px;" placeholder="Old password">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="oldPass()" class="pass-icon" id="pass-icon">
+               </div>
                </div>
                </div>
 
@@ -229,9 +317,12 @@ function confirmPasswordValidation() {
                               <div style="margin-bottom:0px;" class="form-group">
                                    <span id="newPasswordError"></span><br>
                                    <label for="password" class="form-label"><b></b></label>
+                                   <div class=" form-group ">
                                    <div class="input-icon">
                                    <i class="fa-solid fa-key"></i>
                                    <input type="password" class="form-control"  id="newPassword" onblur="newPasswordValidation()" autocomplete="new-password" name="newPassword" style="border-radius: 15px;" placeholder="New Password">
+                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="newPass()" class="pass-icon" id="pass-icon">
+                              </div>
                               </div>
                               </div>
 
@@ -239,9 +330,12 @@ function confirmPasswordValidation() {
                                              <div style="margin-bottom:24px;" class="form-group">
                                              <span id="confirmPasswordError"></span><br>
                                                   <label for="password" class="form-label"><b></b></label>
+                                                  <div class=" form-group ">
                                                   <div class="input-icon">
                                                   <i class="fa-solid fa-key"></i>
                                                   <input type="password" class="form-control"  id="confirmPassword" autocomplete="confirm-password" onblur="confirmPasswordValidation()" name="confirmPassword" style="border-radius: 15px;" placeholder="Confirm Password">
+                                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="confirmPass()" class="pass-icon" id="pass-icon">
+                                             </div>
                                              </div>
                                              </div>
 

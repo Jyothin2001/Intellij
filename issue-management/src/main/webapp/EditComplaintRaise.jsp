@@ -89,8 +89,8 @@
                                 width="100" height="50">
                         </a>
 
-                        <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
-                        <a class="navbar-brand text-light" href="SignIn.jsp"><b>Sign IN</b></a>
+                        <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
+                        <a class="navbar-brand text-light" href="LogInPage"><b>Sign IN</b></a>
                     </div>
                     <div class="dropdown">
                                 <div class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

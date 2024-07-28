@@ -10,17 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
+@SessionAttributes("signUpDTO")
 @Slf4j
-//@SessionAttributes("signUpDTO")
+
 public class SignInController {
     @Autowired
     private SignInService signInService;
@@ -40,40 +38,44 @@ public class SignInController {
     public String signIn(@RequestParam String email, @RequestParam String password, Model model) {
         log.info("Running signIn method:");
 
+        log.info("Email: {} ", email);
+        log.info("password: {}" ,password);
+
+
         SignUpDTO signUpDTO = signInService.findByEmailAndPassword(email, password);
         if (signUpDTO != null)
         {
+            // Reset failed attempts
             signInService.resetFailedAttempts(email);
+           log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
+           model.addAttribute("msgSignIn", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
 
-            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
-
-            model.addAttribute("msg", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
 
             //Sessions in a web application are used to store user-specific information across multiple requests.
-            // User Details: "Set" the signed-in user's email in the session
+            // Set user-specific information in the session
             httpSession.setAttribute("signedInUserEmail", email);
-
             //user Edit details :"set"
             httpSession.setAttribute("signUpDTO", signUpDTO);//also used for saving signUp user id in complaint table
 
-
-
+            // Set the profile image in the session
             String profileImageUrl = "/images/" + signUpDTO.getImageName();
             httpSession.setAttribute("profileImage", profileImageUrl);
 
-            //compliantRaise set
-           // httpSession.setAttribute("complaintRaise",id);
+            // Set the default profile image before storing signUpDTO in the session
+          //  signUpDTO.setImageName("ProfileIcon.png");
 
 
 
-            return "Profile";
+           // Redirect to the profile page
+            return "Profile"; // This will change the URL to /profilepage
+
         }
         else
         {
             // model.addAttribute("ErrorMsg","Invalid Email and password:");
             signInService.incrementFailedAttempts(email);
             int failedAttempts = signInService.getFailedAttempts(email);
-            System.out.println("Failed attempts for " + email + ": " + failedAttempts);
+            log.info("Failed attempts for{} " , email +": " + failedAttempts);
 
 
             if (failedAttempts >= 3)
@@ -95,5 +97,16 @@ public class SignInController {
         }
     }
 
+    @GetMapping("ProfilePage")
+    public String profilePage()
+    {
+        return "Profile";
+    }
+
+    @GetMapping("logout")
+    public  String logout()
+    {
+        return "index";
+    }
 
 }

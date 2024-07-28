@@ -42,7 +42,7 @@
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
 </div>
 </nav>

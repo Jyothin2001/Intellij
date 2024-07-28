@@ -33,7 +33,7 @@
                 height="50">
             </a>
 
-            <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+            <a class="navbar-brand text-light" href="HomePage"><b>Log Out</b></a>
           </div>
 
           <div class="dropdown">
@@ -50,11 +50,12 @@
 
               <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
               <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
-              <li><a class="dropdown-item" href="PasswordReset.jsp"><strong>Password Reset</strong></a></li>
+              <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
               <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
-              <li><a class="dropdown-item" href="ComplaintRaise.jsp"><strong>Complaint Raise</strong></a></li>
+              <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
               <li><a class="dropdown-item" href="viewComplaintRaise"><strong>view ComplaintRaise</strong></a></li>
-               <li><a class="dropdown-item" href="SearchComplaintType.jsp"><strong>Search ComplaintRaise</strong></a></li>
+               <li><a class="dropdown-item" href="SearchComplaintRaise"><strong>Search ComplaintRaise</strong></a></li>
+                 <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
 
 
                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> Modal</strong></a></li>
@@ -115,10 +116,9 @@
 
         <form action="signin" method="post">
 
-          <!--update-->
-          <!-- <input type="hidden" name="id" value="${contactDTO.id !=null ? contactDTO.id:''}"/>--!>
-      <div class="text-primary"><h6><b>${msg}</b></h6></div>
-       <div class="text-primary"><h6><b>${ErrorMsg}</b></h6></div>
+       <div class="text-primary"><h6><b>${msgSignIn}</b></h6></div>
+       <div class="text-red"><h6><b>${ErrorMsg}</b></h6></div>
+
        </form>
        </div>
          </div>

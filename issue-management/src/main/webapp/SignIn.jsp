@@ -16,21 +16,137 @@
   <script src="/issue-management/js/SignIn.js"></script>
 
 
- <!--css link-->
- <link rel="stylesheet" href="css/SignUp.css">
+ <!--css link
+ <link rel="stylesheet" href="css/SignIn.css">-->
 
- <!-- Placeholder styling
+
  <style>
+ <!-- icons styling-->
+
+         .form-container {
+             width: 300px;
+             margin: 0 auto;
+             padding: 20px;
+             border: 1px solid #ccc;
+             border-radius: 10px;
+         }
+         .form-group {
+             margin-bottom: 15px;
+         }
+         .form-label {
+             display: block;
+             margin-bottom: 5px;
+             font-weight: bold;
+         }
+         .form-control {
+             width: 100%;
+             padding: 10px;
+             font-size: 14px;
+         }
+         .small-placeholder::-webkit-input-placeholder {
+             font-size: 18px;
+         }
+         .small-placeholder:-moz-placeholder {
+             font-size: 18px;
+         }
+         .small-placeholder::-moz-placeholder {
+             font-size: 18px;
+         }
+         .small-placeholder:-ms-input-placeholder {
+             font-size: 18px;
+         }
+         .input-icon {
+             position: relative;
+         }
+         .input-icon i {
+             position: absolute;
+             left: 10px;
+             top: 50%;
+             transform: translateY(-50%);
+             font-size: 14px;
+             color: #aaa;
+         }
+         .input-icon input
+         {
+             padding-left: 30px;
+         }
+         :root {
+             --blue-100: #cce4ff; <!-- var(--blue-100) Replace with your desired blue shade -->
+         }
+
+         .form-width {
+             width: 500px;
+             margin-left: 550px;
+             background-color:;
+             border-radius:5;
+         }
+
+ body
+ {
+ background-color:;
+ }
+
+<!-- password styling-->
+    .form-group {
+        margin-bottom: 24px;
+        position: relative;
+        width: 100%;
+    }
+    .password {
+        position: relative;
+        width: 100%;
+    }
+    <!--.password input {
+        width: 100%;
+        padding: 10px;
+        padding-right: 40px; /* Space for the icon */
+        outline: none;
+        border: 1px solid #000;
+        border-radius: 15px;
+        box-sizing: border-box;
+    }-->
+    .pass-icon {
+        position: absolute;
+        top: 52%;
+        right: 40px;
+        width: 25px;
+        height: 25px; /* Ensures the icon fits within the field */
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+<!-- Placeholder styling
    ::placeholder {
      font-family: 'Arial', sans-serif;
      font-size: 14px;
      color: #6c757d;
      opacity: 1;
-   }
- </style>-->
+   }-->
+ </style>
 
 
 <script>
+<!--password-->
+var a;
+function pass()
+{
+if(a==1)
+{
+document.getElementById('password').type='password';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=0;
+}
+else
+{
+document.getElementById('password').type='text';
+document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+a=1;
+}
+}
+
+
+
+
   <!--this button disabled is not working in js file-->
 
                            function disableButton() {
@@ -54,7 +170,7 @@
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
 </div>
 </nav>
@@ -67,7 +183,7 @@
         </div>-->
 
               <div style = "margin-top: 5px;">
-                   <h2 style= "color:blue; "><center>Sign In</center></h2>
+                   <h2 style= "color:blue; "><center>Login Page</center></h2>
               </div>
 
        <!--text/word colors-->
@@ -90,10 +206,6 @@
                      <div class="text-primary"><h6><b>${passwordResetMessage}</b></h6></div>
 
 
-
-
-
-
 <!--Form-->
 <form action="signIn" method="post">
 
@@ -108,23 +220,25 @@
                  </div>
                  </div>
 
+
                          <!--Text: password-->
-               <div style="margin-bottom:24px;" class="form-group">
-                    <span id="passwordError"></span><br>
-                    <label for="password" class="form-label"><b></b></label>
-                    <div class="input-icon">
-                    <i class="fa-solid fa-key"></i>
-                    <input type="password" class="form-control"  id="password" onblur="passwordValidation()" name="password" style="border-radius: 15px;" placeholder="Enter password">
-               </div>
-               </div>
+                    <div class="form-group">
+                             <span id="passwordError"></span><br>
+                             <label for="password" class="form-label"><b></b></label>
+                             <div class=" form-group ">
+                                 <input type="password" class="form-control" id="password" onblur="passwordValidation()" style="border-radius: 15px;" name="password" placeholder="Enter password">
+                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="pass()" class="pass-icon" id="pass-icon">
+                             </div>
+                         </div>
+
 
                    <div style="text-align:center;">
-                   <a href="ForgotPassword.jsp">Forgot Password?</a>
+                   <a href="ForgotPasswordPage">Forgot Password?</a>
                    </div><br>
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="SignIn">
+                  <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="Login">
 
               </div>
               <div>

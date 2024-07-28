@@ -62,7 +62,7 @@ public class ComplaintRaiseController
        }
 
 
-        return "redirect:/viewComplaintRaise"; //the request is redirect to another page that page should get the request
+        return "redirect:/viewComplaintRaise"; //the request is redirect to another page that page should "get" the request
 
     }
 //    @GetMapping("complaintRaise")

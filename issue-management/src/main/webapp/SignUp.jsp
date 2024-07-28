@@ -41,7 +41,7 @@
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
 </div>
 </nav>
@@ -99,7 +99,7 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" onchange="emailAjaxValidation()"   name="email"  style="border-radius: 15px;"  placeholder="Enter Your Email"/>
+                   <input type="email" class="form-control" id="email" oninput="emailValidation()"    name="email"  style="border-radius: 15px;"  placeholder="Enter Your Email"/>
                  </div>
                  </div>
 
@@ -110,7 +110,7 @@
                      <label for="contactNumber" class="form-label"><b></b></label>
                      <div class="input-icon">
                      <i class="fa-solid fa-phone"></i>
-                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" onchange="numberAjaxValidation()" name="contactNumber"  style="border-radius: 15px;"  placeholder="Enter Contact Number"/>
+                     <input type="tel" class="form-control" id="contactNumber" oninput="contactNumberValidation()"  name="contactNumber"  style="border-radius: 15px;"  placeholder="Enter Contact Number"/>
                 </div>
                 </div>
 
@@ -121,7 +121,7 @@
                   <label for="alternateContactNumber" class="form-label"><b></b></label>
                   <div class="input-icon">
                   <i class="fa-solid fa-phone"></i>
-                 <input type="tel"  class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" style="border-radius: 15px;"  placeholder="Enter Alternative Number"/>
+                 <input type="tel"  class="form-control" id="alternateContactNumber"  name="alternateContactNumber" style="border-radius: 15px;"  placeholder="Enter Alternative Number"/>
                </div>
                </div>
 
@@ -168,4 +168,5 @@
      </div>
   </div>
  </body>
+
 </html>
