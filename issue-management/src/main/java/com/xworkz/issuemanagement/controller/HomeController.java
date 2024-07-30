@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
+    //for the first time
     @RequestMapping("/")
     public String homePage()
     {
         return"Home";
     }
+    //for return to home like logout time
     @GetMapping("HomePage")
-    public String HomePage() {
+    public String homePages() {
         return "Home";
     }
 
@@ -37,7 +39,7 @@ public class HomeController {
     @GetMapping("AdminPage")
     public String admin()
     {
-        return "Admin";
+        return "AdminPage";
     }
 
     @GetMapping("PasswordReset")
@@ -57,6 +59,12 @@ public class HomeController {
     public String complaintRaisePage()
     {
         return "ComplaintRaise";
+    }
+
+    @GetMapping("AddDepartment")
+    public String SaveDepartment()
+    {
+        return "AdminAddDepartment";
     }
 
 

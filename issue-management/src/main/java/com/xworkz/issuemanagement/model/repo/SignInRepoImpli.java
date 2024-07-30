@@ -1,12 +1,14 @@
 package com.xworkz.issuemanagement.model.repo;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.util.List;
 @Repository
+@Slf4j
 public class SignInRepoImpli implements SignInRepo
 {
     @Autowired
@@ -26,7 +28,7 @@ public class SignInRepoImpli implements SignInRepo
             query.setParameter("email",email);
             query.setParameter("password",password);
             SignUpDTO signUpDTO = (SignUpDTO) query.getSingleResult();
-            System.out.println("Email and password saved in db:"+signUpDTO);
+            log.info("Email and password saved in db:{}",signUpDTO);
             entityTransaction.commit();
             return signUpDTO;
         }
@@ -36,7 +38,7 @@ public class SignInRepoImpli implements SignInRepo
         }
         catch (PersistenceException e)
         {
-            System.out.println("Transaction is closed:");
+            log.info("Transaction is closed:");
             e.printStackTrace();
             entityTransaction.rollback();
         }
@@ -85,6 +87,32 @@ public class SignInRepoImpli implements SignInRepo
         }
 
 
+    }
+
+    @Override
+    public String getUserName(String email, String password) {
+        EntityManager entityManager=entityManagerFactory.createEntityManager();
+        try
+        {
+            Query query=entityManager.createQuery("SELECT a.username FROM SignUpDTO a WHERE a.email = :email AND a.password = :password");
+            query.setParameter("email",email);
+            query.setParameter("password",password);
+            String list= (String) query.getSingleResult();
+            log.info("AdminDTO username:{}",list);
+            return  list;
+
+        }
+        catch (PersistenceException e)
+        {
+            log.info("error while fetching admin username : " ,e);
+
+        }
+        finally {
+            log.info(" connection close");
+            entityManager.close();
+        }
+
+        return null;
     }
 
     //to save and update failed attempts in db

@@ -6,6 +6,9 @@ public interface SignInService
 {
     SignUpDTO findByEmailAndPassword(String email, String password);
 
+    //fetch adminName to display in navBar
+    //String getUserName(String email,String password);
+
     //to lock  sign in/ page disabled button
     void incrementFailedAttempts(String email);
 

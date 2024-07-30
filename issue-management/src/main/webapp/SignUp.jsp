@@ -121,7 +121,7 @@
                   <label for="alternateContactNumber" class="form-label"><b></b></label>
                   <div class="input-icon">
                   <i class="fa-solid fa-phone"></i>
-                 <input type="tel"  class="form-control" id="alternateContactNumber"  name="alternateContactNumber" style="border-radius: 15px;"  placeholder="Enter Alternative Number"/>
+                 <input type="tel"  class="form-control" id="alternateContactNumber" onblur="alternateContactNumberValidation()" name="alternateContactNumber" style="border-radius: 15px;"  placeholder="Enter Alternative Number"/>
                </div>
                </div>
 

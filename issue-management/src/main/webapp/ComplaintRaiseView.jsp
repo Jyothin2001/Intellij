@@ -33,7 +33,7 @@
                       height="50">
                   </a>
 
-                  <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+                  <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
                 </div>
 
                 <div class="dropdown">
@@ -49,10 +49,13 @@
                     <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
 
                     <!--get action = edit?email=${signUpDTO.email}-->
-                    <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
-                    <li><a class="dropdown-item" href="PasswordReset.jsp"><strong>Password Reset</strong></a></li>
-                    <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
-                    <li><a class="dropdown-item" href="ComplaintRaise.jsp"><strong>Complaint Raise</strong></a></li>
+                   <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
+                                 <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
+                                 <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                                 <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
+                                 <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
+                                    <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
+
 
 
 

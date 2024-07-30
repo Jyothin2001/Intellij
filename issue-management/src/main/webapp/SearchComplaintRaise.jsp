@@ -33,7 +33,7 @@
                       height="50">
                   </a>
 
-                  <a class="navbar-brand text-light" href="index.jsp"><b>Home</b></a>
+                  <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
                 </div>
 
                 <div class="dropdown">
@@ -66,8 +66,7 @@
             </nav>
 
 
-      <div
-        class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width ">
+      <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width ">
 
         <!--<div class="card-header">
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
@@ -157,7 +156,7 @@
                 <th>Area</th>
                 <th>Address</th>
                 <th>Description</th>
-                <th>Edit</th>
+
               </tr>
             </thead>
 

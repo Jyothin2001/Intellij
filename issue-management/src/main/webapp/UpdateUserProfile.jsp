@@ -247,13 +247,14 @@ function validateAndEnableSubmit() {
                 <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80" class="rounded-circle" alt="Profile Image">
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
-                <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
-                <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
-                <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
-                <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View Complaint Raise</strong></a></li>
-               <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
-                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal"><strong>Modal</strong></a></li>
+                <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
+                              <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                              <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
+                              <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
+                              <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
+                                 <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
+
+<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal"><strong>View Your Details</strong></a></li>
             </ul>
         </div>
     </div>

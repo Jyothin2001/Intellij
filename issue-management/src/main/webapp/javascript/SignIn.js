@@ -69,7 +69,7 @@
                 else
                 {
                     error.innerHTML = "please Enter password";
-                    error.style.color="red"
+                    error.style.color="red";
                     console.log("not crt password");
                     fieldsChecks["password"] = false;
 

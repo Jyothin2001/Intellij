@@ -44,8 +44,65 @@
 
    <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
+ <div class="dropdown">
+                          <div class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+                            <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user-->
+                            <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80"
+                              class="rounded-circle profile-image" alt="Profile Image">
+
+                          </div>
+
+                          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+
+                            <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
+                           <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
+
+                           <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
+                            <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
+                            <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                            <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
+                            <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
+                               <li><a class="dropdown-item" href="HomePage"><strong>Log j Out</strong></a></li><!--not working get=action(logout)-->
+
+
+                             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> View your Details</strong></a></li>
+                          </ul>
+                        </div>
+
 </div>
 </nav>
+ <!-- ******************************************************************************** --!>
+
+    <div class="modal fade" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #007bff; color: white; padding: 15px;">
+            <h5 class="modal-title" id="exampleModalLabel">USER PROFILE</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="background: none; border: none; color: white; font-size: 1.5rem;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <center> <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80"
+                          class="rounded-circle profile-image" alt="Profile Image"></center>
+
+            <div class="profile-info" style="font-size: 16px; line-height: 1.5;">
+              <p><strong>Name:</strong> ${signUpDTO.firstName} ${signUpDTO.lastName}</p>
+              <p><strong>Email:</strong> ${signUpDTO.email}</p>
+              <p><strong>Contact Number:</strong> ${signUpDTO.contactNumber}</p>
+              <p><strong>Alternative Contact Number:</strong> ${signUpDTO.alternateContactNumber}</p>
+              <p><strong>Address:</strong> ${signUpDTO.address}</p>
+            </div>
+          </div>
+         <!-- <div class="modal-footer" style="border-top: 1px solid #dee2e6;">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" style="transition: background-color 0.3s;">Close</button>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <!-- End of View Profile Modal -->
 
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >

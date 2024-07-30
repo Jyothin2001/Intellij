@@ -37,30 +37,15 @@
           </div>
 
           <div class="dropdown">
-            <div class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            <b>${Username}</b>
-
-              <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user-->
-              <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80"
-                class="rounded-circle profile-image" alt="Profile Image">
-
-            </div>
+            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${username}
+            </button>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+               <li><a class="dropdown-item" href="viewUserDetails"><strong>ViewUserDetails</strong></a></li>
 
-              <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
-             <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
+              <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>ViewRaiseComplaintDetails</strong></a></li>
 
-             <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
-              <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
-              <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
-              <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
-              <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
-              <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
-                 <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
-
-
-               <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> View your Details</strong></a></li>
+              <li><a class="dropdown-item" href="AddDepartment"><strong>AddComplaints</strong></a></li>
             </ul>
           </div>
 
@@ -116,10 +101,9 @@
 
         <!--Form-->
 
-        <form action="signin" method="post">
+        <form action="admin" method="post">
 
-       <div class="text-primary"><h6><b>${msgSignIn}</b></h6></div>
-       <div class="text-red"><h6><b>${ErrorMsg}</b></h6></div>
+       <div style="color:green;"><h6><b>${AdminProfilePageMessage}</b></h6></div>
 
        </form>
        </div>

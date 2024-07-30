@@ -55,7 +55,7 @@ public class SignUpController
 
                 log.info("service saveAndvalidate() in controller successfully:{} " , validate);
 
-                //signUpDTO.setImageName("ProfileIcon.png");
+                signUpDTO.setImageName("ProfileIcon.png");
 
                 String subject = "Welcome to issue management";
                 String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();

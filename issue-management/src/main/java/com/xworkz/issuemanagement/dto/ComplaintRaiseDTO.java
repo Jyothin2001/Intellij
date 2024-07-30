@@ -42,6 +42,14 @@ public class ComplaintRaiseDTO
     private SignUpDTO signUpDTO;// Many complaint Raise can be associated with one user
 
 
+    //its coming from department table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    private DepartmentDTO departmentDTO;
+
+    @Column(name = "status")
+    private String status;
+
     //@Data= getter,setter,toString,equals(),hashcode()
    // @RequiredArgsConstructor: Generates a constructor with required arguments (final fields and fields marked as @NonNull).
 }

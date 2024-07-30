@@ -49,6 +49,8 @@ public class SignInController {
             signInService.resetFailedAttempts(email);
            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
            model.addAttribute("msgSignIn", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
+           model.addAttribute("UserFirstName",signUpDTO.getFirstName());
+           model.addAttribute("UserLastName",signUpDTO.getLastName());
 
 
             //Sessions in a web application are used to store user-specific information across multiple requests.

@@ -12,6 +12,9 @@ public interface SignInRepo {
     // Add this method to find a user by email
     SignUpDTO findByEmail(String email);
 
+    //fetch adminName to display in navBar
+    String getUserName(String email,String password);
+
     boolean updateFailedAttempts(SignUpDTO signUpDTO);
 
 }

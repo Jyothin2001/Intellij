@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Controller
+//@Controller
 @RequestMapping("/")
 @Slf4j
 @SessionAttributes("/signupDTO")
