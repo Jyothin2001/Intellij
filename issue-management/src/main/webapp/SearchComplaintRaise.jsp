@@ -50,7 +50,7 @@
 
                     <!--get action = edit?email=${signUpDTO.email}-->
                     <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit</strong></a></li>
-                    <li><a class="dropdown-item" href="PasswordReset.jsp"><strong>Password Reset</strong></a></li>
+                    <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
                     <li><a class="dropdown-item" href="view-Page"><strong>View</strong></a></li>
                     <li><a class="dropdown-item" href="ComplaintRaise.jsp"><strong>Complaint Raise</strong></a></li>
 

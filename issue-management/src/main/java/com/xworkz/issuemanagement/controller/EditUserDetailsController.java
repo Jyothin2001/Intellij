@@ -59,7 +59,7 @@ public class EditUserDetailsController {
     }
 
     @GetMapping("edit")
-    public String editUserProfile(@RequestParam("email") String email, Model model)
+    public String editUserProfile(Model model)
     {
 
         //call httpSession on signInController also
@@ -67,9 +67,9 @@ public class EditUserDetailsController {
 
         log.info("user data in editUserProfile() :{}", signedInUserEmail);
 
-        if (signedInUserEmail != null && signedInUserEmail.equals(email))
+        if (signedInUserEmail != null && signedInUserEmail.equals(signedInUserEmail))
         {
-            SignUpDTO signUpDTO = editUserDetailsService.getUserDetails(email);
+            SignUpDTO signUpDTO = editUserDetailsService.getUserDetails(signedInUserEmail);
 
             if(signUpDTO!=null)
             {

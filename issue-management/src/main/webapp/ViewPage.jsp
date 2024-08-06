@@ -66,7 +66,7 @@
 
                           <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
                            <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
-                           <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                           <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
                            <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
                            <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
                               <li><a class="dropdown-item" href="HomePage"><strong>Log j Out</strong></a></li><!--not working get=action(logout)-->

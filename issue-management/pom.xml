@@ -88,7 +88,6 @@
         </dependency>
 
 
-
         <!--to send mail and get password-->
         <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
         <dependency>
@@ -98,17 +97,20 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
-        <dependency>
+      <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-mail</artifactId>
           <version>2.6.3</version>
-        </dependency>
+      </dependency>
 
       <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-web</artifactId>
-          <version>2.7.4</version> <!-- Ensure this version matches the one you intend to use -->
+          <groupId>com.zaxxer</groupId>
+          <artifactId>HikariCP</artifactId>
+          <version>3.4.5</version> <!-- Example of an older version compatible with Java 8 -->
       </dependency>
+
+
+
 
       <dependency>
           <groupId>org.springframework.boot</groupId>
@@ -123,6 +125,22 @@
 <!--          <version>2.7.5</version>-->
 <!--          <scope>test</scope>-->
 <!--      </dependency>-->
+
+      <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+      This dependency provides various utilities, including password encoders like BCryptPasswordEncoder,
+       which is commonly used for securely hashing passwords.-->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-security</artifactId>
+          <version>2.5.5</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-crypto</artifactId>
+          <version>5.6.4</version>
+      </dependency>
+
 
   </dependencies>
   <build>

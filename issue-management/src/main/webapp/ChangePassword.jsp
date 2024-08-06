@@ -349,7 +349,7 @@ a=1;
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" autocomplete="email" style="border-radius: 15px;" placeholder="Enter Your Email">
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" value="${sessionScope.signedInUserEmail}" readonly autocomplete="email" style="border-radius: 15px;" placeholder="Enter Your Email">
                  </div>
                  </div>
 

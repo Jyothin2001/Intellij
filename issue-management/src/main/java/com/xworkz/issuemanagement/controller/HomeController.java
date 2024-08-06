@@ -42,10 +42,23 @@ public class HomeController {
         return "AdminPage";
     }
 
-    @GetMapping("PasswordReset")
-    public String asswordReset()
+    @GetMapping("DepartmentSignUpPage")
+    public String departmentSignUpPage()
     {
-        return "PasswordReset";
+        return "DepartmentSignUpPage";
+    }
+
+    @GetMapping("DepartmentLogInPage")
+    public String departmentLogInPage()
+    {
+        return "DepartmentLogInPage";
+    }
+
+
+    @GetMapping("ChangePassword")
+    public String passwordReset()
+    {
+        return "ChangePassword";
     }
 
 

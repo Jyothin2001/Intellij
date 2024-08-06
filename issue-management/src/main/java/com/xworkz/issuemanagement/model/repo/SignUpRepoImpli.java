@@ -1,12 +1,14 @@
 package com.xworkz.issuemanagement.model.repo;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
 @Repository
+@Slf4j
 public class SignUpRepoImpli implements SignUpRepo {
 
     @Autowired
@@ -14,7 +16,7 @@ public class SignUpRepoImpli implements SignUpRepo {
 
     public SignUpRepoImpli()
     {
-        System.out.println("IssuemanagmentRepoImpli constructor:");
+        log.info("IssuemanagmentRepoImpli constructor:");
     }
 
 
@@ -28,17 +30,22 @@ public class SignUpRepoImpli implements SignUpRepo {
       try
       {
           entityTransaction.begin();
-          entityManager.persist(signUpDTO);
-          entityTransaction.commit();
 
-      }
-      catch (PersistenceException e)
-      {
+          // Persist the entity object
+          entityManager.persist(signUpDTO);
+
+          // Commit the transaction
+          entityTransaction.commit();
+      } catch (PersistenceException e) {
           e.printStackTrace();
-          entityTransaction.rollback();
-      }
-      finally
-      {
+
+          // Rollback in case of an exception
+          if (entityTransaction.isActive()) {
+              entityTransaction.rollback();
+          }
+          return false;
+      } finally {
+          // Always close the EntityManager
           entityManager.close();
       }
         return true;

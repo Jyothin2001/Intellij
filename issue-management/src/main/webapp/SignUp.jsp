@@ -42,6 +42,7 @@
               </a>
 
    <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="LogInPage"><b>Log In</b></a>
  </div>
 </div>
 </nav>
@@ -155,11 +156,11 @@
 
 
               <div style="text-align:center;">
-              Already have an account?<a href="SignIn.jsp">Sign In</a>
+              Already have an account?<a href="LogInPage">Sign In</a>
               </div>
 
              <!--<div style="text-align:center;" class="proxima-nova">
-                  Already have an account? <a href="SignIn.jsp">Sign In</a>
+                  Already have an account? <a href="LogInPage">Sign In</a>
                 </div>-->
 
          </form>

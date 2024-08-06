@@ -108,7 +108,7 @@
                                 <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
 
                                 <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName} ${UserLastName}</h4></li>
-                                 <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                                 <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
                                  <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
                                  <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
                                  <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>

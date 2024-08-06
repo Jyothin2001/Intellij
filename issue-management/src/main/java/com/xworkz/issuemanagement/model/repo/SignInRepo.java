@@ -9,7 +9,7 @@ public interface SignInRepo {
 
     //count the failed attempts in db
     //Lock account when give 3 times wrong Password
-    // Add this method to find a user by email
+    //Add this method to find a user by email
     SignUpDTO findByEmail(String email);
 
     //fetch adminName to display in navBar

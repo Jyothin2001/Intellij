@@ -248,7 +248,7 @@ function validateAndEnableSubmit() {
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                 <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
-                              <li><a class="dropdown-item" href="PasswordReset"><strong>Password Reset</strong></a></li>
+                              <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
                               <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
                               <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
                               <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
@@ -349,7 +349,7 @@ function validateAndEnableSubmit() {
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email"   name="email"  style="border-radius: 15px;" value="${signUpDTO.email}" placeholder="Enter Your Email"/ disabled>
+                   <input type="email" class="form-control" id="email"  name="email"  style="border-radius: 15px;" value="${signUpDTO.email}" placeholder="Enter Your Email" disabled>
                  </div>
                  </div>
 

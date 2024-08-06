@@ -30,7 +30,8 @@
 
         <a class="navbar-brand  text-white" href="AdminPage"><b>Admin</b></a>
 
-        <a class="navbar-brand  text-white" href="ForgotPasswordPage"><b></b></a>
+        <a class="navbar-brand  text-white" href="DepartmentSignUpPage"><b>Department Sign Up</b></a>
+
 
       </div>
    </div>

@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -26,51 +25,54 @@ public class SignUpController
     private MailService mailService;
 
 
-
     public SignUpController()
     {
         log.info("IssueManagementController constructor:");
-        System.out.println("IssueManagementController constructor");
+
     }
 
 
     @PostMapping("signUp")
-    public String signUp(@Valid SignUpDTO signUpDTO, BindingResult bindingResult, Model model, @RequestParam("email") String email)
+    public String signUp(@Valid SignUpDTO signUpDTO, BindingResult bindingResult,Model model,RedirectAttributes redirectAttributes, @RequestParam("email") String email)
     {
-        log.info("Jyothi SignUp data:{}",signUpDTO);
+        log.info("SignUp data:{}", signUpDTO);
 
-        if(bindingResult.hasErrors())
+        if (bindingResult.hasErrors())
         {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.getDefaultMessage()));
+            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.getDefaultMessage()));
 
-            model.addAttribute("errors",bindingResult.getAllErrors());
-            model.addAttribute("signUpDTO",signUpDTO);
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("signUpDTO", signUpDTO);
 
             return "SignUp";
-        }
-        else {
-
+        } else
+        {
             boolean validate = this.signUpService.saveAndValidate(signUpDTO);
             if (validate) {
-
-                log.info("service saveAndvalidate() in controller successfully:{} " , validate);
-
+                log.info("service saveAndValidate() in controller successfully:{} ", validate);
                 signUpDTO.setImageName("ProfileIcon.png");
 
-                String subject = "Welcome to issue management";
-                String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();
-                this.mailService.sendSimpleEmail(email, subject, body);
+//                String subject = "Welcome to issue management";
+//                String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();
+//                this.mailService.sendSimpleEmail(email, subject, body);
 
-               model.addAttribute("msg", "Signup successful. Please check your email for your password.");
 
-                return "SignIn";
+                redirectAttributes.addFlashAttribute("msg", "Signup successful " + signUpDTO.getFirstName() + " Please check your email for your password.");
+                //return "SignIn";
+                return "redirect:sign-up-success";
+            } else {
+                log.info("service saveAndValidate() in service not successfully:{} ", validate);
             }
-            else {
-                System.out.println("service saveAndvalidate() in service not successfully: " + validate);
-            }
-            model.addAttribute("msg", "successfully Sign Up: " + signUpDTO.getFirstName());
 
+            //return "SignUp";
+            return "redirect:sign-up-success";
         }
+    }
+
+    //use redirect for redirect: to display data otherwise do like this get model in @ModelAttribute
+    @GetMapping("/sign-up-success")
+    public String signUpSuccess() {
+        // Return the success view
         return "SignUp";
     }
 }

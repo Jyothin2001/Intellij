@@ -11,6 +11,7 @@ import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -35,7 +36,7 @@ public class SignInController {
     }
 
     @PostMapping("signIn")
-    public String signIn(@RequestParam String email, @RequestParam String password, Model model) {
+    public String signIn(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
         log.info("Running signIn method:");
 
         log.info("Email: {} ", email);
@@ -48,9 +49,9 @@ public class SignInController {
             // Reset failed attempts
             signInService.resetFailedAttempts(email);
            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
-           model.addAttribute("msgSignIn", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
-           model.addAttribute("UserFirstName",signUpDTO.getFirstName());
-           model.addAttribute("UserLastName",signUpDTO.getLastName());
+           redirectAttributes.addFlashAttribute("msgSignIn", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
+           redirectAttributes.addFlashAttribute("UserFirstName",signUpDTO.getFirstName());
+           redirectAttributes.addFlashAttribute("UserLastName",signUpDTO.getLastName());
 
 
             //Sessions in a web application are used to store user-specific information across multiple requests.
@@ -66,10 +67,8 @@ public class SignInController {
             // Set the default profile image before storing signUpDTO in the session
           //  signUpDTO.setImageName("ProfileIcon.png");
 
-
-
            // Redirect to the profile page
-            return "Profile"; // This will change the URL to /profilepage
+            return "redirect:ProfilePage"; // This will change the URL to /profilePage
 
         }
         else
@@ -83,18 +82,18 @@ public class SignInController {
             if (failedAttempts >= 3)
             {
                 signInService.lockAccount(email); // Lock account after 3 failed attempts
-                model.addAttribute("error", "Your account is locked due to too many failed attempts.");
-                model.addAttribute("accountLocked", true);
+                redirectAttributes.addFlashAttribute("error", "Your account is locked due to too many failed attempts.");
+                redirectAttributes.addFlashAttribute("accountLocked", true);
             }
             else
             {
 
-                model.addAttribute("error", "Invalid email id and password. Attempts: " + failedAttempts);
-                model.addAttribute("accountLocked", false);
+                redirectAttributes.addFlashAttribute("error", "Invalid email id and password. Attempts: " + failedAttempts);
+                redirectAttributes.addFlashAttribute("accountLocked", false);
             }
 
 
-            return "SignIn";
+            return "redirect:log-in-page";
 
         }
     }
@@ -104,6 +103,13 @@ public class SignInController {
     {
         return "Profile";
     }
+
+    @GetMapping("log-in-page")
+    public String logInPage()
+    {
+        return "SignIn";
+    }
+
 
     @GetMapping("logout")
     public  String logout()

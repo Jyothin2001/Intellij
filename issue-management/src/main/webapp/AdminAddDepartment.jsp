@@ -13,10 +13,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 
-<!--Script link-->
-  <script src="/issue-management/js/SignUp.js"></script>
-
-
 <!--css link-->
 <link rel="stylesheet" href="/issue-management/css/SignUp.css">
 
@@ -26,9 +22,65 @@
       appearance: auto; /* Ensures default checkbox style is applied */
     }
 
-
 </style>
 </head>
+<script>
+    let fieldsChecks = {
+                departmentName: false,
+                address: false,
+                area: false
+            };
+
+            function validateForm() {
+                // Validate Department Name
+                const departmentName = document.getElementById('departmentName');
+                const departmentError = document.getElementById('departmentError');
+                const departmentNameValue = departmentName.value.trim();
+                if (departmentNameValue === "") {
+                    departmentError.innerHTML = "Department name is required.";
+                    departmentError.style.color = "red";
+                    console.log("Department name not entered");
+                    fieldsChecks["departmentName"] = false;
+                } else {
+                    departmentError.innerHTML = "";
+                    console.log("Correct department name");
+                    fieldsChecks["departmentName"] = true;
+                }
+
+                // Validate Address
+                const address = document.getElementById('address');
+                const addressError = document.getElementById('addressError');
+                const addressValue = address.value.trim();
+                if (addressValue === "") {
+                    addressError.innerHTML = "Address is required.";
+                    addressError.style.color = "red";
+                    console.log("Address not entered");
+                    fieldsChecks["address"] = false;
+                } else {
+                    addressError.innerHTML = "";
+                    console.log("Correct address");
+                    fieldsChecks["address"] = true;
+                }
+
+                // Validate Area
+                const area = document.getElementById('area');
+                const areaError = document.getElementById('areaError');
+                const areaValue = area.value.trim();
+                if (areaValue === "") {
+                    areaError.innerHTML = "Area is required.";
+                    areaError.style.color = "red";
+                    console.log("Area not entered");
+                    fieldsChecks["area"] = false;
+                } else {
+                    areaError.innerHTML = "";
+                    console.log("Correct area");
+                    fieldsChecks["area"] = true;
+                }
+
+                // Enable or disable the submit button based on field validation
+                document.getElementById('submit').disabled = !Object.values(fieldsChecks).every(Boolean);
+            }
+        </script>
 
 <body>
 
@@ -88,11 +140,11 @@
            <!--Text: First Name-->
               <div style="margin-bottom:2px;" class="form-group">
                   <span id="departmentError"></span><br>
-                  <b>Department Name:</b>
+                  <b></b>
                    <label for="departmentName" class="form-label"><b></b></label>
                      <div class="input-icon">
                         <!--<i class="fas fa-user"></i>-->
-                     <input type="text" class="form-control" id="departmentName" name="departmentName"   placeholder="Enter Department Name" style="border-radius: 15px;" />
+                     <input type="text" class="form-control" id="departmentName" name="departmentName"  onblur="validateForm()" placeholder="Enter Department Name" style="border-radius: 15px;" />
                </div>
                </div>
 
@@ -101,24 +153,24 @@
                 <!--textarea: address-->
               <div style="margin-bottom:2px;"  class="form-group">
                  <span id="addressError"></span><br>
-                 <b>Address:</b>
+                 <b></b>
                  <label for="address" class="form-floating"></label>
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder -->
                  <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
-                 <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" ></textarea>
+                 <textarea class="form-control " id="address" placeholder="Enter Address" onblur="validateForm()" name="address" style="border-radius: 15px;" ></textarea>
                 </div>
                 </div>
 
 <!--text: Area-->
               <div style="margin-bottom:2px;"  class="form-group">
                  <span id="areaError"></span><br>
-                 <b>Area:</b>
+                 <b></b>
                  <label for="area" class="form-floating"></label>
                  <div class="input-icon">
-                 <!--words are not visible if other css override the placeholder -->
-                 <i class="fa fa-map-marker" aria-hidden="true"></i>
-                 <input type="text" class="form-control " id="area" placeholder="Enter Area" name="departmentArea" style="border-radius: 15px;" >
+                 <!--words are not visible if other css override the placeholder
+                 <i class="fa fa-map-marker" aria-hidden="true"></i>-->
+                 <input type="text" class="form-control " id="area" onblur="validateForm()" placeholder="Enter Area" name="departmentArea" style="border-radius: 15px;" >
                 </div>
                 </div>
 <br>
@@ -126,7 +178,7 @@
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                                <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="Log In">
+                                <input type="submit" class="btn btn-primary btn-lg " id="submit"  value="Log In" disabled>
                             </div><br>
 
 
