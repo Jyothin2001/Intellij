@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>User Sign up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department admin register up</title>
 
 <!--BooteStrap link-->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,8 +13,6 @@
 <!--Font Awesome cdn icon-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-<!--Script link-->
-  <script src="/issue-management/js/SignIn.js"></script>
 
 
  <!--css link
@@ -88,31 +87,30 @@
 
 <!-- password styling-->
     .form-group {
-        margin-bottom: 24px;
+        margin-bottom:24px;
         position: relative;
         width: 100%;
     }
-    .password {
+    .password-container {
         position: relative;
-        width: 100%;
+        width: 100%; /* Full width of the parent container */
     }
-    <!--.password input {
-        width: 100%;
-        padding: 10px;
-        padding-right: 40px; /* Space for the icon */
-        outline: none;
-        border: 1px solid #000;
+
+    .form-control {
+        width: 100%; /* Full width of the container */
+        padding: 10px 40px 10px 10px; /* Add space on the right for the icon */
         border-radius: 15px;
         box-sizing: border-box;
-    }-->
+    }
+
     .pass-icon {
         position: absolute;
-        top: 57%;
-        right: 40px;
-        width: 25px;
-        height: 25px; /* Ensures the icon fits within the field */
+        top: 50%;
+        right: 10px; /* Space from the right edge */
+        width: 25px; /* Adjust icon size */
+        height: 25px;
         cursor: pointer;
-        transform: translateY(-50%);
+        transform: translateY(-50%); /* Center vertically */
     }
 
 <!-- Placeholder styling
@@ -122,29 +120,94 @@
      color: #6c757d;
      opacity: 1;
    }-->
+
+
+
  </style>
 
 
 <script>
+function emailValidation() {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(emailInput.value)) {
+        emailError.textContent = 'Please enter a valid email address.';
+        return false;
+    } else {
+        emailError.textContent = '';
+        return true;
+    }
+}
+
+function passwordValidation() {
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('passwordError');
+
+    if (passwordInput.value.length < 8) {
+        passwordError.textContent = 'Password must be at least 8 characters long.';
+        return false;
+    } else {
+        passwordError.textContent = '';
+        return true;
+    }
+}
+
+function validateDepartmentName() {
+    const departmentInput = document.getElementById('departmentName');
+    const departmentError = document.getElementById('DepartmentNameError');
+
+    if (departmentInput.value === "") {
+        departmentError.textContent = 'Please select a department.';
+        return false;
+    } else {
+        departmentError.textContent = '';
+        return true;
+    }
+}
+
+
+function validateFormForEmail() {
+    const isEmailValid = emailValidation();
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = !(isEmailValid);
+}
+function validateFormForPassword() {
+
+    const isPasswordValid = passwordValidation();
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = !(isPasswordValid);
+}
+function validateFormForDepartmentName() {
+
+    const isDepartmentValid = validateDepartmentName();
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = !(isDepartmentValid);
+}
+
 <!--password-->
+<!--sticky=relative(like static it obey parent but top,width..make change it overlap to other div..) + fixed(not moving fix in html top)-->
+    <!--absolute=it overlap the parent but use relative with parent work good-->
+
 var a;
 function pass()
 {
 if(a==1)
 {
+<!--showing password-->
 document.getElementById('password').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
 a=0;
 }
 else
 {
+
 document.getElementById('password').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
 a=1;
 }
 }
-
-
 
 
   <!--this button disabled is not working in js file-->
@@ -179,7 +242,7 @@ a=1;
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
 
       <!-- <div class="card-header">
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
+           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>sub Admin Register</center></b></h3>
         </div>-->
 
               <div style = "margin-top: 5px;">
@@ -198,52 +261,62 @@ a=1;
 
                <!--Displaying messages -->
                    <div class="text-primary"><h6><b>${msg}</b></h6></div>
-                      <div class="text-primary"><h6><b>${error}</b></h6></div>
-                      <div class="text-primary"><h6><b>${accountLocked}</b></h6></div>
-
-                     <div class="text-primary"><h6><b>${forgotPasswordMsg}</b></h6></div>
+                      <span class="text-primary"><h6><b>${errorMsg}</b></h6></span>
+                      <div class="text-primary"><h6><b>${accountError}</b></h6></div>
 
                      <div class="text-primary"><h6><b>${passwordResetMessage}</b></h6></div>
+                      <div class="text-primary"><b>${forgotPasswordMsg}</b></div>
 
 
 <!--Form-->
 <form action="DepartmentLogInPage" method="post">
 
 
-                                   <!--email: Email-->
-                <div style="margin-bottom:0px;" class="form-group">
-                   <span id="emailError"></span><br>
-                   <label for="email" class="form-label">Email:</label>
-                   <div class="input-icon">
-                   <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" style="border-radius: 15px;" placeholder="Enter Email">
-                 </div>
-                 </div>
+                                <form id="myForm">
+                                    <!-- Email -->
+                                    <div style="margin-bottom:0px;" class="form-group">
+                                        <span class="error-message" id="emailError" style="color: red;"></span><br>
+                                        <label for="email" class="form-label">Email:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-regular fa-envelope"></i>
+                                            <input type="email" class="form-control" id="email" oninput="validateForm()" onblur="validateFormForEmail()" name="email" style="border-radius: 15px;" placeholder="Enter Email">
+                                        </div>
+                                    </div>
 
+                                    <!-- Password -->
+                                    <div class="form-group">
+                                        <span class="error-message" id="passwordError" style="color: red;"></span><br>
+                                        <label for="password" class="form-label">Password:</label>
+                                        <div class="password-container">
+                                            <input type="password" class="form-control" id="password" oninput="validateFormForPassword()" onblur="passwordValidation()" style="border-radius: 15px;" name="password" placeholder="Enter password">
+                                            <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="pass()" class="pass-icon" id="pass-icon">
+                                        </div>
+                                    </div>
+ <!---dropdown select issue-->
 
-                         <!--Text: password-->
-                    <div class="form-group">
-                             <span id="passwordError"></span><br>
-                             <label for="password" class="form-label">password:</label>
-                             <div class=" form-group ">
-                                 <input type="password" class="form-control" id="password" onblur="passwordValidation()" style="border-radius: 15px;" name="password" placeholder="Enter password">
-                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="pass()" class="pass-icon" id="pass-icon">
-                             </div>
-                         </div>
+                          <label for="departmentName" class="form-label">Department:</label>
+                          <span id="DepartmentNameError" class="error-message" style="color: red;"></span>
+                 <select onblur="validateDepartmentName()" class="form-select custom-select-width" oninput="validateFormForDepartmentName()" id="departmentName" name="departmentName">
+                 <option value="">Select Department</option>
+               <c:forEach items="${departments}" var="departmentName">
+                 <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
+               </c:forEach>
+             </select>
+
 
 
                    <div style="text-align:center;">
-                   <a href="ForgotPasswordPage">Forgot Password?</a>
+                   <a href="SubAdminForgotPasswordPage">Forgot Password?</a>
                    </div><br>
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="Login">
+                  <input type="submit" class="btn btn-primary btn-lg " id="submitButton" disabled  value="Login">
 
               </div>
-              <div>
-             <center>Do not have an account?<a href="SignUp.jsp" class="link-primary"> &nbsp;SignUp </a><center>
-               </div>
+              <!--<div>
+             <center>Do not have an account?<a href="" class="link-primary"> &nbsp;SignUp </a><center>
+               </div>-->
          </form>
 
  </div>

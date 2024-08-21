@@ -22,29 +22,14 @@ public class SignInServiceImpli implements SignInService
      @Autowired
      private PasswordEncoder passwordEncoder;
 
-
-
-//    //To store password in db with respective mail
-//    @Override
-//    public SignUpDTO findByEmailAndPassword(String email, String password)
-//    {
-//
-//        SignUpDTO signUpDTO= signInRepo.findByEmailAndPassword(email, password);
-//        System.out.println("repo password mathod in service:"+signUpDTO);
-//        if (signUpDTO != null && !signUpDTO.isAccountLocked() && signUpDTO.getPassword().equals(password)) {
-//            return signUpDTO;
-//        }
-//        return null;
-//    }
-
-
     @Override
     public SignUpDTO findByEmailAndPassword(String email, String password) {
       SignUpDTO user=  signInRepo.findByEmail(email);
 
       if(user!=null && !user.isAccountLocked() && passwordEncoder.matches(password,user.getPassword()))
       {
-          log.info("Data is present:{} " ,user);
+          log.info("Data is present:{} ,{}" ,user,password);
+
           return user;
       }
         log.info("Data is not present:{} " , email);

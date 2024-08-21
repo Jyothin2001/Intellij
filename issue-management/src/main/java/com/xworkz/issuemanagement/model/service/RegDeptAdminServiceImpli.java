@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
@@ -42,4 +43,91 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         }
         return false;
     }
+
+    @Override
+    public RegDeptAdminDTO getEmailAndPassword(String email, String password,String departmentName)
+    {
+         //RegDeptAdminDTO emailData=regDeptAdminRepo.getEmailAndPassword(email,password); //generated password is not there/match the query because in db encrypt password is there so no match get via email only (no query found exception)
+        RegDeptAdminDTO emailData=regDeptAdminRepo.getEmail(email);
+         log.info("email and password matching data:{}",emailData);
+
+         if(emailData!=null && passwordEncoder.matches(password,emailData.getPassword()))
+         {log.info("findEmailAndPassword successful in  AdminServiceImpl..");
+             return emailData;
+         }
+         else
+         {
+             log.info("findEmailAndPassword not successful in AdminServiceImpl..");
+         }
+return null;
+}
+
+    @Override
+    public void incrementFailedAttempts(String email) {
+        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+        if(user!=null)
+        {
+            int attempts=user.getFailedAttempt() + 1;  //0+1=1,1+1=2,2+1=3..
+            user.setFailedAttempt(attempts);// set and get the number
+            if(attempts>3)
+            {
+                user.setAccountLocked(true);
+            }
+            regDeptAdminRepo.update(user);
+        }
+    }
+
+    @Override
+    public int getFailedAttempts(String email) {
+       RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+       return (user!=null) ? user.getFailedAttempt():0;
+    }
+
+    @Override
+    public void resetFailedAttempts(String email) {
+      RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+      if(user!=null)
+      {
+          user.setFailedAttempt(0);//false
+          regDeptAdminRepo.update(user);
+      }
+    }
+
+    @Override
+    public void lockAccount(String email) {
+        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+        if(user!=null)
+        {
+            user.setAccountLocked(true);
+            regDeptAdminRepo.update(user);
+        }
+
+    }
+
+    @Override
+    public void unlockAccount(String email) {
+        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+        if(user!=null)
+        {
+            user.setAccountLocked(false);
+            regDeptAdminRepo.update(user);
+        }
+    }
+
+    @Override
+    public DepartmentDTO findByDepartmentType(String regDepartmentName)
+    {
+        DepartmentDTO departmentType= regDeptAdminRepo.findByDepartmentType(regDepartmentName);
+        if(departmentType!=null)
+        {
+            log.info("fetching RegDepartmentDetails:{}",departmentType);
+            return departmentType;
+        }
+        else
+        {
+            log.info("Not fetching RegDepartmentDetails:");
+        }
+        return null;
+    }
+
 }

@@ -37,4 +37,20 @@ public class ChangePasswordController
 
 
     }
+
+    @PostMapping("subAdminChangePassword")
+    public String changePasswordSubAdmin(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword,Model model)
+    {
+        boolean password=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
+        if(password) {
+            model.addAttribute("passwordResetMessage", "Password reset successful");
+            return "DepartmentLogInPage";
+        }
+        else {
+            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
+            return "SubAdminChangePassword";
+        }
+
+
+    }
 }

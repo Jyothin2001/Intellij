@@ -36,6 +36,14 @@ public class HomeController {
     {
         return "ForgotPassword";
     }
+    @GetMapping("ChangePassword")
+    public String passwordReset()
+    {
+        return "ChangePassword";
+    }
+
+
+
     @GetMapping("AdminPage")
     public String admin()
     {
@@ -55,11 +63,6 @@ public class HomeController {
     }
 
 
-    @GetMapping("ChangePassword")
-    public String passwordReset()
-    {
-        return "ChangePassword";
-    }
 
 
     @GetMapping("SearchComplaintRaise")
@@ -80,6 +83,19 @@ public class HomeController {
         return "AdminAddDepartment";
     }
 
+
+
+    @GetMapping("SubAdminForgotPasswordPage")
+    public String subAdminForgotPasswordPage()
+    {
+        return "SubAdminForgotPassword";
+    }
+
+    @GetMapping("SubAdminChangePassword")
+    public String subAdminChangePassword()
+    {
+        return "SubAdminChangePassword";
+    }
 
 
 }

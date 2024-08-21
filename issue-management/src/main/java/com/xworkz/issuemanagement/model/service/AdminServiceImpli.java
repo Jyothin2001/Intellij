@@ -1,11 +1,9 @@
 package com.xworkz.issuemanagement.model.service;
 
-import com.xworkz.issuemanagement.dto.AdminDTO;
-import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
-import com.xworkz.issuemanagement.dto.DepartmentDTO;
-import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.dto.*;
 import com.xworkz.issuemanagement.model.repo.AdminRepo;
 import com.xworkz.issuemanagement.model.repo.ComplaintRaiseRepoImpli;
+import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,7 @@ public class AdminServiceImpli implements AdminService
 {
     @Autowired
    private AdminRepo adminRepo;
+
 
     @Override
     public boolean findByEmailAndPassword(String email, String Password)
@@ -128,7 +127,7 @@ public class AdminServiceImpli implements AdminService
 
     @Override
     public DepartmentDTO saveDepartment(DepartmentDTO departmentDTO) {
-                   log.info("saveDepartment method running in AdminServiceImpl..");
+        log.info("saveDepartment method running in AdminServiceImpl..");
 
         DepartmentDTO data = adminRepo.saveDepartment(departmentDTO);
 
@@ -146,18 +145,18 @@ public class AdminServiceImpli implements AdminService
     }
 
     @Override
-    public List<DepartmentDTO> findByDepartmentName(String departmentName) {
+    public List<DepartmentDTO> findByDepartmentName() {
         log.info("findByDepartmentName method running in AdminServiceImpl..");
-        List<DepartmentDTO> data = adminRepo.findByDepartmentName(departmentName);
+        List<DepartmentDTO> data = adminRepo.findByDepartmentName();
 
         if(data!=null)
         {
-            System.out.println("findByDepartmentName successful in AdminServiceImpl..");
+            log.info("findByDepartmentName successful in AdminServiceImpl..");
             return data;
         }
         else
         {
-            System.out.println("findByDepartmentName  not successful in AdminServiceImpl..");
+            log.info("findByDepartmentName  not successful in AdminServiceImpl..");
         }
 
         return Collections.emptyList();
@@ -170,6 +169,7 @@ public class AdminServiceImpli implements AdminService
        return adminRepo.updateStatusAndDepartmentId(complaintId, departmentId, status);
 
     }
+
 
 
 }

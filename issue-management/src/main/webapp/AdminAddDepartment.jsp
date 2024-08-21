@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Add Department</title>
 
 <!--BootStrap link-->
@@ -103,6 +104,7 @@
                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                    <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
                   <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
+                   <li><a class="dropdown-item" href="getDepartmentName"><strong>AddDepartment Admin</strong></a></li>
 
                    </ul>
                  </div>
@@ -141,7 +143,7 @@
               <div style="margin-bottom:2px;" class="form-group">
                   <span id="departmentError"></span><br>
                   <b></b>
-                   <label for="departmentName" class="form-label"><b></b></label>
+                   <label for="departmentName" class="form-label"><b></b>Department Name:</label>
                      <div class="input-icon">
                         <!--<i class="fas fa-user"></i>-->
                      <input type="text" class="form-control" id="departmentName" name="departmentName"  onblur="validateForm()" placeholder="Enter Department Name" style="border-radius: 15px;" />
@@ -154,7 +156,7 @@
               <div style="margin-bottom:2px;"  class="form-group">
                  <span id="addressError"></span><br>
                  <b></b>
-                 <label for="address" class="form-floating"></label>
+                 <label for="address" class="form-label">Address:</label>
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder -->
                  <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
@@ -166,7 +168,7 @@
               <div style="margin-bottom:2px;"  class="form-group">
                  <span id="areaError"></span><br>
                  <b></b>
-                 <label for="area" class="form-floating"></label>
+                 <label for="area" class="form-label">Area:</label>
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder
                  <i class="fa fa-map-marker" aria-hidden="true"></i>-->

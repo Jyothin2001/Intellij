@@ -49,7 +49,7 @@
          transform: translateY(-50%);
      }
 
- \
+
 <!-- Placeholder styling
    ::placeholder {
      font-family: 'Arial', sans-serif;
@@ -61,7 +61,6 @@
 
 <script>
 let fieldsChecks = {
-    "email": false,
     "oldPassword": false,
     "newPassword": false,
     "confirmPassword": false
@@ -186,56 +185,66 @@ function confirmPasswordValidation() {
 }
 
 <!--password-->
-var a;
+var a=0;
 function oldPass()
 {
-if(a==1)
+console.log('Current state of a:', a); // Debugging line
+if(a==1)//close
 {
 document.getElementById('oldPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('old-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
 a=0;
 }
 else
 {
 document.getElementById('oldPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
-a=1;
+document.getElementById('old-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
+a=1;//open
 }
+console.log('New state of a:', a); // Debugging line
 }
 
-var a;
+
+var c=0;// 0 means password is hidden, 1 means password is visible
+
 function newPass()
 {
-if(a==1)
+console.log('Current state of c:', c); // Debugging line
+if(c==1)
 {
 document.getElementById('newPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
-a=0;
+document.getElementById('new-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
+c=0;
 }
 else
 {
 document.getElementById('newPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
-a=1;
+document.getElementById('new-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
+c=1;
 }
+console.log('New state of c:', c); // Debugging line
 }
 
-var a;
+
+var b;
 function confirmPass()
 {
-if(a==1)
+console.log('Current state of b:', b); // Debugging line
+if(b==1)
 {
 document.getElementById('confirmPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
-a=0;
+document.getElementById('confirm-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
+b=0;
 }
 else
 {
 document.getElementById('confirmPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
-a=1;
+document.getElementById('confirm-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
+b=1;
 }
+console.log('New state of b:', b); // Debugging line
 }
+
 
 
 
@@ -257,14 +266,14 @@ a=1;
  </div>
 
  <div class="dropdown">
-                         <div class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                         <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 
 
-                           <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user-->
+                           <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user
                            <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80"
-                             class="rounded-circle profile-image" alt="Profile Image">
+                             class="rounded-circle profile-image" alt="Profile Image">-->
 
-                         </div>
+                         </button>
 
                          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
 
@@ -341,7 +350,7 @@ a=1;
 
 
 <!--Form-->
-<form action="resetPassword" method="post">
+<form action="subAdminChangePassword" method="post">
 
 
                                    <!--email: Email-->
@@ -350,7 +359,7 @@ a=1;
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" value="${sessionScope.signedInUserEmail}" readonly autocomplete="email" style="border-radius: 15px;" placeholder="Enter Your Email">
+                   <input type="email" class="form-control" id="email"  name="email" value="${sessionScope.subAdminEmail}" readonly  style="border-radius: 15px;" placeholder="Enter Your Email">
                  </div>
                  </div>
 
@@ -363,7 +372,7 @@ a=1;
                     <div class="input-icon">
                     <i class="fa-solid fa-key"></i>
                     <input type="password" class="form-control"  id="oldPassword" onblur="oldPasswordValidation()" autocomplete="old-password" name="oldPassword" style="border-radius: 15px;" placeholder="Old password">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="oldPass()" class="pass-icon" id="pass-icon">
+                    <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="oldPass()" class="pass-icon" id="old-pass-icon">
                </div>
                </div>
                </div>
@@ -376,7 +385,7 @@ a=1;
                                    <div class="input-icon">
                                    <i class="fa-solid fa-key"></i>
                                    <input type="password" class="form-control"  id="newPassword" onblur="newPasswordValidation()" autocomplete="new-password" name="newPassword" style="border-radius: 15px;" placeholder="New Password">
-                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="newPass()" class="pass-icon" id="pass-icon">
+                                   <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="newPass()" class="pass-icon" id="new-pass-icon">
                               </div>
                               </div>
                               </div>
@@ -388,8 +397,8 @@ a=1;
                                                   <div class=" form-group ">
                                                   <div class="input-icon">
                                                   <i class="fa-solid fa-key"></i>
-                                                  <input type="password" class="form-control"  id="confirmPassword" autocomplete="confirm-password" onblur="confirmPasswordValidation()" name="confirmPassword" style="border-radius: 15px;" placeholder="Confirm Password">
-                                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="confirmPass()" class="pass-icon" id="pass-icon">
+                                                  <input type="password" class="form-control"  id="confirmPassword" autocomplete="confirm-password" oninput="confirmPasswordValidation()" name="confirmPassword" style="border-radius: 15px;" placeholder="Confirm Password">
+                                                  <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="confirmPass()" class="pass-icon" id="confirm-pass-icon">
                                              </div>
                                              </div>
                                              </div>

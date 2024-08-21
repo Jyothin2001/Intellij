@@ -68,4 +68,32 @@ public class ForgotPasswordRepoImpli implements ForgotPasswordRepo{
       }
 
     }
+
+
+    @Override
+    public void updateSubAdminPassword(String email, String newPassword) {
+        EntityManager entityManager= entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction= entityManager.getTransaction();
+
+        try {
+            entityTransaction.begin();
+            Query query = entityManager.createQuery("UPDATE RegDeptAdminDTO dto SET dto.password=:newPassword WHERE dto.email=:email");
+            query.setParameter("newPassword", newPassword);
+            query.setParameter("email", email);
+            query.executeUpdate();
+            entityTransaction.commit();
+        }
+        catch (PersistenceException e)
+        {
+            e.printStackTrace();
+            if(entityTransaction.isActive())
+            {
+                entityTransaction.rollback();
+            }
+        }
+        finally {
+            entityManager.close();
+        }
+
+    }
 }

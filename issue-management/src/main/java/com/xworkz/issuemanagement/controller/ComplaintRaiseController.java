@@ -1,7 +1,10 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
+import com.xworkz.issuemanagement.dto.DepartmentDTO;
+import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.model.service.AdminService;
 import com.xworkz.issuemanagement.model.service.ComplaintRaiseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ public class ComplaintRaiseController
 {
     @Autowired
     private ComplaintRaiseService complaintRaiseService;
+
+    @Autowired
+    private AdminService adminService;
 
     public ComplaintRaiseController()
     {
@@ -43,6 +49,8 @@ public class ComplaintRaiseController
         //set the signed in user id in raiseComplaintDTO
         SignUpDTO userId=new SignUpDTO();
         userId.setId(signedUserId);
+        //signUpDTO.setId(signedUserId);
+        //complaintRaiseDTO.setSignUpDTO(signUpDTO);
         complaintRaiseDTO.setSignUpDTO(userId);
 
        boolean data=complaintRaiseService.saveComplaintRaiseDetails(complaintRaiseDTO);
@@ -71,10 +79,14 @@ public class ComplaintRaiseController
 //    }
 
     @GetMapping("viewComplaintRaise")
-   public String viewComplaintRaise(@ModelAttribute("signUpDTO")SignUpDTO signUpDTO,Model model)
+   public String viewComplaintRaise(@ModelAttribute("signUpDTO")SignUpDTO signUpDTO,Model model,DepartmentDTO departmentDTO)
 {
     int userId=signUpDTO.getId();
     log.info("signUpDTO Id:{}",userId);
+
+// Fetch the list of departments for departmentName
+    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+    model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
 
     List<ComplaintRaiseDTO> listOfComplaintData = complaintRaiseService.findByComplaintsByUserId(userId);
     model.addAttribute("viewComplaintRaise",listOfComplaintData);
@@ -94,9 +106,9 @@ public class ComplaintRaiseController
 
 
     @PostMapping("updateComplaintDetails")
-    public String updateComplaintDetails(@ModelAttribute("complaintRaiseDTO")ComplaintRaiseDTO complaintRaiseDTO,Model model)
+    public String updateComplaintDetails(@ModelAttribute("complaintRaiseDTO")ComplaintRaiseDTO complaintRaiseDTO, Model model, DepartmentDTO departmentDTO, RegDeptAdminDTO regDeptAdminDTO)
     {
-       List<ComplaintRaiseDTO> complaintUpdated=complaintRaiseService.updateEditedComplaints(complaintRaiseDTO);
+        List<ComplaintRaiseDTO> complaintUpdated=complaintRaiseService.updateEditedComplaints(complaintRaiseDTO);
         if (complaintUpdated!=null)
         {
             model.addAttribute("updateMsg", "Complaint updated successfully!");

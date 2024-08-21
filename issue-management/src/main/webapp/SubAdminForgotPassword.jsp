@@ -5,7 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forgot Password</title>
+<title>Sub Admin Forgot Password</title>
 
 <!--BooteStrap link-->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,10 +27,6 @@
    }
  </style>
 
-<!--Script link-->
-  <script src="/issue-management/js/ForgotPassword.js"></script>
-
-
 </head>
 <body>
 
@@ -48,6 +44,8 @@
 
 </div>
 </nav>
+
+
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
     <img src="https://static.vecteezy.com/system/resources/previews/007/746/400/original/unlock-password-correct-success-login-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg" style="height:250px;"  alt="Card Image" class="card-image">
         <!--<div class="card-header">
@@ -64,12 +62,11 @@
 
 
                <!--Displaying messages -->
-                   <div class="text-primary"><h6><b>${msg}</b></h6></div>
 
                    <div class="text-danger"><h6><b>${forgotPasswordError}</b></h6></div>
 
 <!--Form-->
-<form action="forgotPassword" method="post">
+<form action="sub-admin-forgot-password" method="post">
 
 <!--<input type="hidden" id="accountLocked" value="true">-->
 
@@ -80,7 +77,8 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" value="${sessionScope.signedInUserEmail}" readonly name="email" placeholder="Enter Email">
+<input type="email" class="form-control" id="email" value="${sessionScope.subAdminEmail != null ? sessionScope.subAdminEmail : ''}" readonly name="email" placeholder="Enter Email">
+
                  </div>
                  </div>
                  </br>
@@ -95,6 +93,5 @@
   </div>
 
  </body>
-
 </html>
 

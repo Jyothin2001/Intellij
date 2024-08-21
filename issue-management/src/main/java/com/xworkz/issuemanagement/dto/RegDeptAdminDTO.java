@@ -53,5 +53,16 @@ public class RegDeptAdminDTO {
     @Column(name="password")
     private String password;
 
+   @Column(name="failed_attempts")
+    private Integer failedAttempt=0;
+
+    public static final int MAX_LOGIN_ATTEMPTS=3;
+
+   @Column(name="account_Locked")
+   private Boolean accountLocked=false;
+
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name="department_id", referencedColumnName="department_id")
+   private DepartmentDTO departmentDTO;
 
 }

@@ -28,7 +28,7 @@ public @ToString class SignUpDTO
     private String firstName;
 
     @NotEmpty(message = "LastName cannot be empty")
-    @Size(min = 1, max = 30, message = "LastName should be >1 and <4 letters")
+    @Size(min = 1, max = 10, message = "LastName should be >1 and <4 letters")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Last Name should contain only alphabetic letters")
     @Column(name = "last_name")
     private String lastName;

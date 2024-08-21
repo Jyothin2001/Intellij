@@ -1,10 +1,7 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.xworkz.issuemanagement.dto.AdminDTO;
-import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
-import com.xworkz.issuemanagement.dto.DepartmentDTO;
-import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.dto.*;
 import com.xworkz.issuemanagement.model.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,12 +101,12 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
         List<ComplaintRaiseDTO> viewData = adminService.findByComplaintRaiseId(complaintRaiseDTO);
 
         // Fetch the list of complaints and departments
-        List<DepartmentDTO> departments = adminService.findByDepartmentName(departmentDTO.getDepartmentName());
-
+        List<DepartmentDTO> departments = adminService.findByDepartmentName();
 
         if (viewData!=null || departments!=null) {
             model.addAttribute("viewRaiseComplaint", viewData);
-            model.addAttribute("departments", departments);// Fetch the list of complaints and departments
+            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+            // departments
             model.addAttribute("cities",listOfCities);
 
             log.info("View raise complaint data successful in AdminController");
@@ -138,8 +135,8 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
     List<ComplaintRaiseDTO> listOfTypeAndCity=adminService.searchByComplaintTypeAndCity(complaintRaiseDTO.getComplaintType(),complaintRaiseDTO.getCity());
     if(!listOfTypeAndCity.isEmpty())
     {
-        List<DepartmentDTO> departments = adminService.findByDepartmentName(departmentDTO.getDepartmentName());
-        model.addAttribute("departments", departments);// Fetch the list of complaints and departments
+        List<DepartmentDTO> departments = adminService.findByDepartmentName();
+        model.addAttribute("departments", departments);// Fetch the list of departmentName
 
         model.addAttribute("viewRaiseComplaint",listOfTypeAndCity);
         return "AdminViewComplaintRaiseDetails";
@@ -150,7 +147,7 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
 
            if(!listOfTypeOrCity.isEmpty())
            {
-               List<DepartmentDTO> departments = adminService.findByDepartmentName(departmentDTO.getDepartmentName());
+               List<DepartmentDTO> departments = adminService.findByDepartmentName();
                model.addAttribute("departments", departments);// Fetch the list of complaints and departments
 
                model.addAttribute("viewRaiseComplaint",listOfTypeOrCity);
@@ -158,30 +155,16 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
            }
     }
 
+
     return "AdminViewComplaintRaiseDetails";
 }
-//@GetMapping()
-////@GetMapping("cities")
-//    public String cityNames(ComplaintRaiseDTO complaintRaiseDTO, Model model)
-//{
-//     List<ComplaintRaiseDTO> listOfCities=adminService.findAllCities();
-//    if (listOfCities != null) {
-//        log.info("listOfCities data successful in AdminController");
-//        model.addAttribute("cities",listOfCities);
-//        return "AdminViewComplaintRaiseDetails";
-//    } else {
-//        log.info("listOfCities data not successful in AdminController.");
-//    }
-//
-//
-//    return "AdminViewComplaintRaiseDetails";
-//}
 
 @PostMapping("saveDepartment")
-    public String saveDepartment(DepartmentDTO departmentDTO,RedirectAttributes redirectAttributes)
+    public String saveDepartment(DepartmentDTO departmentDTO, RedirectAttributes redirectAttributes, RegDeptAdminDTO regDeptAdminDTO)
 {
    DepartmentDTO data= adminService.saveDepartment(departmentDTO);
     log.info("saveDepartment method running in AdminController..");
+
 
     if (data != null) {
         log.info("saveDepartment successful in AdminController..");

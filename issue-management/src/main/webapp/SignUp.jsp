@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Sign up</title>
 
 <!--BootStrap link-->
@@ -11,11 +12,6 @@
 
 <!--Font Awesome cdn icon link-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-
-<!--Script link-->
-  <script src="/issue-management/js/SignUp.js"></script>
-
 
 <!--css link-->
 <link rel="stylesheet" href="/issue-management/css/SignUp.css">
@@ -28,6 +24,280 @@
 
 
 </style>
+<script>
+let fieldsChecks = {
+  "firstName": false,
+  "lastName": false,
+  "email": false,
+  "contactNumber": false,
+  "alternateContactNumber": false,
+  "address": false,
+  "agree": false
+};
+
+function validateAndEnableSubmit() {
+  let flag = Object.values(fieldsChecks).includes(false);
+
+  if (!flag) {
+    document.getElementById("submit").removeAttribute("disabled");
+  } else {
+    document.getElementById("submit").setAttribute("disabled", "");
+  }
+}
+
+function firstNameValidation() {
+  const element = document.getElementById("firstName");
+  const error = document.getElementById("firstNameError");
+  const nameRegex = /^[A-Za-z ]+$/;
+  const value = element.value.trim(); // Trim to avoid issues with only spaces
+
+  // Check if the input is empty
+  if (value === '') {
+    error.innerHTML = "First Name is required.";
+    error.style.color = "red";
+    fieldsChecks["firstName"] = false;
+  }
+  // Check if the input matches the regex and length constraints
+  else if (!nameRegex.test(value)) {
+    error.innerHTML = "Name should be alphabetic characters only.";
+    error.style.color = "red";
+    fieldsChecks["firstName"] = false;
+  }
+  // Check for length constraints
+  else if (value.length < 3 || value.length > 30) {
+    error.innerHTML = "First Name should be greater than 3 and less than 30 characters.";
+    error.style.color = "red";
+    fieldsChecks["firstName"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["firstName"] = true;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function lastNameValidation() {
+  const element = document.getElementById("lastName");
+  const error = document.getElementById("lastNameError");
+  const nameRegex = /^[A-Za-z ]+$/;
+  const value = element.value.trim(); // Trim to avoid issues with only spaces
+
+  // Check if the input is empty
+  if (value === '') {
+    error.innerHTML = "Last Name is required.";
+    error.style.color = "red";
+    fieldsChecks["lastName"] = false;
+  }
+  // Check if the input matches the regex (alphabetic characters only)
+  else if (!nameRegex.test(value)) {
+    error.innerHTML = "Name should be alphabetic characters only.";
+    error.style.color = "red";
+    fieldsChecks["lastName"] = false;
+  }
+  // Check for length constraints
+  else if (value.length < 1 || value.length > 10) {
+    error.innerHTML = "Last Name should be between 1 and 20 characters.";
+    error.style.color = "red";
+    fieldsChecks["lastName"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["lastName"] = true;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function emailValidation() {
+  let element = document.getElementById("email");
+  let error = document.getElementById("emailError");
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Check if the email input is empty
+  if (element.value.trim() === '') {
+    error.innerHTML = "Email is required";
+    error.style.color = "red";
+    fieldsChecks["email"] = false;
+  } else if (emailRegex.test(element.value)) {
+    // If the email matches the regex
+    error.innerHTML = "";
+    fieldsChecks["email"] = true;
+
+  } else {
+    // If the email is invalid
+    error.innerHTML = "Invalid email address.";
+    error.style.color = "red";
+    fieldsChecks["email"] = false;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function contactNumberValidation() {
+  const element = document.getElementById("contactNumber");
+  const error = document.getElementById("contactNumberError");
+  const mobileRegex = /^\d{10}$/;
+  const value = element.value.trim(); // Trim to remove any extra spaces
+
+  // Check if the input is empty
+  if (value === '') {
+    error.innerHTML = "Contact Number is required.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // Check for non-numeric characters
+  else if (/\D/.test(value)) {
+    error.innerHTML = "Contact number must contain only digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // Check if the input matches the 10-digit pattern
+  else if (!mobileRegex.test(value)) {
+    error.innerHTML = "Contact Number should be exactly 10 digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["contactNumber"] = true;
+    numberAjaxValidation(); // Assuming this is for additional server-side validation
+  }
+
+  validateAndEnableSubmit();
+}
+
+function alternateContactNumberValidation() {
+  const element = document.getElementById("alternateContactNumber");
+  const error = document.getElementById("altContactNbrError");
+  const mobileRegex = /^\d{10}$/;
+  const nonNumericPattern = /\D/; // Matches any non-numeric character
+
+  // Check if the input is empty
+  if (element.value.trim() === '') {
+    error.innerHTML = "Alternate contact number is required.";
+    error.style.color = "red";
+    fieldsChecks["alternateContactNumber"] = false;
+  }
+  // Check for non-numeric characters
+  else if (nonNumericPattern.test(element.value)) {
+    error.innerHTML = "Alternate contact number must contain only digits.";
+    error.style.color = "red";
+    fieldsChecks["alternateContactNumber"] = false;
+  }
+  // Check if the input matches the 10-digit pattern
+  else if (!mobileRegex.test(element.value)) {
+    error.innerHTML = " contact number should be exactly 10 digits.";
+    error.style.color = "red";
+    fieldsChecks["alternateContactNumber"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["alternateContactNumber"] = true;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function addressValidation() {
+  let element = document.getElementById("address");
+  let error = document.getElementById("addressError");
+
+  if (element.value.length > 3 && element.value.length < 300) {
+    error.innerHTML = "";
+    fieldsChecks["address"] = true;
+  } else {
+    error.innerHTML = "Address should be greater than 3 and less than 300 characters.";
+    error.style.color = "red";
+    fieldsChecks["address"] = false;
+  }
+  validateAndEnableSubmit();
+}
+
+function agreeValidation() {
+  let element = document.getElementById("agree");
+  let error = document.getElementById("agreeError");
+
+  if (element.checked) {
+    error.innerHTML = "";
+    fieldsChecks["agree"] = true;
+  } else {
+    error.innerHTML = "Please agree to the terms.";
+    error.style.color = "red";
+    fieldsChecks["agree"] = false;
+  }
+  validateAndEnableSubmit();
+}
+
+function emailAjaxValidation() {
+  console.log("Validate email");
+  let email = document.getElementById("email").value;
+  let error = document.getElementById("emailError");
+
+  if (email == "") {
+    error.innerHTML = "Please Enter Valid email";
+    fieldsChecks["email"] = false;
+    validateAndEnableSubmit();
+    return;
+  }
+
+  const request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:8080/issue-management/validateEmail/" + email);
+  request.send();
+  request.onload = function ()
+  {
+    let ref = this.responseText;
+    error.innerHTML = ref;
+
+    if (ref === "") {
+      fieldsChecks["email"] = true;
+    } else {
+      fieldsChecks["email"] = false;
+    }
+    validateAndEnableSubmit();
+  };
+  request.onerror = function () {
+    console.error("Request failed");
+    error.innerHTML = "Validation failed. Please try again.";
+    fieldsChecks["email"] = false;
+    validateAndEnableSubmit();
+  };
+}
+
+function numberAjaxValidation() {
+  console.log("Validate contact number");
+  let contactNumber = document.getElementById("contactNumber").value;
+  let error = document.getElementById("contactNumberError");
+
+  if (contactNumber == "") {
+    error.innerHTML = "Please enter valid contactNumber";
+    fieldsChecks["contactNumber"] = false;
+    validateAndEnableSubmit();
+    return;
+  }
+
+  const request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:8080/issue-management/validateNumber/" + contactNumber);
+  request.send();
+  request.onload = function () {
+    let ref = this.responseText;
+    error.innerHTML = ref;
+
+    if (ref === "") {
+      fieldsChecks["contactNumber"] = true;
+    } else {
+      fieldsChecks["contactNumber"] = false;
+    }
+    validateAndEnableSubmit();
+  };
+  request.onerror = function () {
+    console.error("Request failed");
+    error.innerHTML = "Validation failed. Please try again.";
+    fieldsChecks["contactNumber"] = false;
+    validateAndEnableSubmit();
+  };
+}
+</script>
 </head>
 
 <body>
@@ -111,7 +381,7 @@
                      <label for="contactNumber" class="form-label"><b></b></label>
                      <div class="input-icon">
                      <i class="fa-solid fa-phone"></i>
-                     <input type="tel" class="form-control" id="contactNumber" oninput="contactNumberValidation()"  name="contactNumber"  style="border-radius: 15px;"  placeholder="Enter Contact Number"/>
+                     <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()"  name="contactNumber"  style="border-radius: 15px;"  placeholder="Enter Contact Number"/>
                 </div>
                 </div>
 

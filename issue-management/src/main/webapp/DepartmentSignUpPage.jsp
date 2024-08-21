@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Department Sign up</title>
 
 <!--BootStrap link-->
@@ -54,9 +55,9 @@
            }
 
            function validateDepartmentName() {
-               const departmentName = document.getElementById('DepartmentName').value;
+               const departmentName = document.getElementById('departmentName').value;
                const errorSpan = document.getElementById('DepartmentNameError');
-               if (departmentName === '0') {
+               if (departmentName === '') {
                    errorSpan.textContent = 'Please select a department.';
                    fieldsChecks["departmentName"] = false;
                } else {
@@ -66,36 +67,65 @@
                validateAndEnableSubmit();
            }
 
+
+
 function emailValidation() {
   let element = document.getElementById("email");
   let error = document.getElementById("emailError");
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (emailRegex.test(element.value)) {
+  // Check if the email input is empty
+  if (element.value.trim() === '') {
+    error.innerHTML = "Email is required";
+    error.style.color = "red";
+    fieldsChecks["email"] = false;
+
+  } else if (emailRegex.test(element.value)) {
+    // If the email matches the regex
     error.innerHTML = "";
     fieldsChecks["email"] = true;
+    emailAjaxValidation();
 
   } else {
+    // If the email is invalid
     error.innerHTML = "Invalid email address.";
     error.style.color = "red";
     fieldsChecks["email"] = false;
   }
+
   validateAndEnableSubmit();
 }
+
 function contactNumberValidation() {
-  let element = document.getElementById("contactNumber");
-  let error = document.getElementById("contactNumberError");
-  let mobileRegex = /^\d{10}$/;
+  const element = document.getElementById("contactNumber");
+  const error = document.getElementById("contactNumberError");
+  const mobileRegex = /^\d{10}$/;
+  const value = element.value.trim(); // Trim to remove any extra spaces
 
-  if (mobileRegex.test(element.value)) {
-    error.innerHTML = "";
-    fieldsChecks["contactNumber"] = true;
-
-  } else {
-    error.innerHTML = "Invalid contact number. It should be exactly 10 digits.";
+  // Check if the input is empty
+  if (value === '') {
+    error.innerHTML = "Contact Number is required.";
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
+  // Check for non-numeric characters
+  else if (/\D/.test(value)) {
+    error.innerHTML = "Contact number must contain only digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // Check if the input matches the 10-digit pattern
+  else if (!mobileRegex.test(value)) {
+    error.innerHTML = "Contact Number should be exactly 10 digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["contactNumber"] = true;
+    numberAjaxValidation(); // Assuming this is for additional server-side validation
+  }
+
   validateAndEnableSubmit();
 }
 
@@ -113,7 +143,7 @@ function contactNumberValidation() {
                }
 
                const request = new XMLHttpRequest();
-               request.open("GET", "http://localhost:8080/issue-management/validateEmail/" + encodeURIComponent(email));
+               request.open("GET", "http://localhost:8080/issue-management/subAdminEmailValidation/" + email);
                request.send();
                request.onload = function() {
                    let ref = this.responseText;
@@ -147,7 +177,7 @@ function contactNumberValidation() {
                }
 
                const request = new XMLHttpRequest();
-               request.open("GET", "http://localhost:8080/issue-management/validateNumber/" + encodeURIComponent(contactNumber));
+               request.open("GET", "http://localhost:8080/issue-management/subAdminNumberValidation/" + contactNumber);
                request.send();
                request.onload = function() {
                    let ref = this.responseText;
@@ -169,24 +199,43 @@ function contactNumberValidation() {
            }
 
            function validateAlternateContactNumber() {
-               const alternateContactNumber = document.getElementById('alternateContactNumber').value;
-               const errorSpan = document.getElementById('altContactNbrError');
-               const phonePattern = /^\d{10}$/;
-               if (alternateContactNumber.trim() !== '' && !phonePattern.test(alternateContactNumber)) {
-                   errorSpan.textContent = 'Alternate Number must be 10 digits.';
-                   fieldsChecks["alternateContactNumber"] = false;
-               } else {
-                   errorSpan.textContent = '';
-                   fieldsChecks["alternateContactNumber"] = true;
-               }
-               validateAndEnableSubmit();
+             const alternateContactNumber = document.getElementById('alternateContactNumber').value;
+             const errorSpan = document.getElementById('altContactNbrError');
+             const phonePattern = /^\d{10}$/;
+             const nonNumericPattern = /\D/; // Matches any non-numeric character
+
+             // Check if the alternate contact number is empty
+             if (alternateContactNumber.trim() === '') {
+               errorSpan.textContent = 'Alternate contact number is required.';
+               errorSpan.style.color = 'red';
+               fieldsChecks["alternateContactNumber"] = false;
+             }
+             // Check for non-numeric characters
+             else if (nonNumericPattern.test(alternateContactNumber)) {
+               errorSpan.textContent = 'Alternate number must contain only digits.';
+               errorSpan.style.color = 'red';
+               fieldsChecks["alternateContactNumber"] = false;
+             }
+             // Check if the input matches the 10-digit pattern
+             else if (!phonePattern.test(alternateContactNumber)) {
+               errorSpan.textContent = 'Alternate number must be exactly 10 digits.';
+               errorSpan.style.color = 'red';
+               fieldsChecks["alternateContactNumber"] = false;
+             }
+             else {
+               errorSpan.textContent = '';
+               fieldsChecks["alternateContactNumber"] = true;
+             }
+
+             validateAndEnableSubmit();
            }
+
 
            function validateAgree() {
                const agree = document.getElementById('agree').checked;
                const errorSpan = document.getElementById('agreeError');
                if (!agree) {
-                   errorSpan.textContent = 'You must agree to the terms and conditions.';
+                   errorSpan.textContent = 'You must agree  to the terms and conditions.';
                    fieldsChecks["agree"] = false;
                } else {
                    errorSpan.textContent = '';
@@ -247,6 +296,7 @@ function contactNumberValidation() {
 
               <div class="text-primary"><b>${saveDeptAdmin}</b></div>
 
+
               <!-- Admin Name -->
               <div style="margin-bottom:2px;" class="form-group">
                   <span id="AdminNameError" class="error-message"></span><br>
@@ -256,20 +306,18 @@ function contactNumberValidation() {
                       <input type="text" class="form-control" id="AdminName" onblur="validateAdminName()" name="adminName" placeholder="Enter Admin Name" />
                   </div>
               </div>
+              <br>
+              <!---dropdown select issue-->
 
-              <!-- Department Name -->
-              <div style="margin-bottom:2px;">
-                  <span id="DepartmentNameError" class="error-message"></span><br>
-                  <label for="DepartmentName" class="form-label">Department Name:</label>
-                  <select class="form-select" id="DepartmentName" onblur="validateDepartmentName()" name="departmentName" required>
-                      <option value="0">Select</option>
-                      <option value="Electric issue">Electric issue</option>
-                      <option value="Water Supply">Water Supply</option>
-                      <option value="Network Problem">Network Problem</option>
-                      <option value="System Problem">System Problem</option>
-                      <option value="Water Problem">Water Problem</option>
-                  </select>
-              </div>
+                          <label for="departmentName" class="form-label">Department:</label>
+                          <span id="DepartmentNameError" class="error-message"></span>
+                 <select onblur="validateDepartmentName()" class="form-select custom-select-width" id="departmentName" name="departmentName">
+                 <option value="">Select Department</option>
+               <c:forEach items="${departments}" var="departmentName">
+                 <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
+               </c:forEach>
+             </select>
+
 
               <!-- Email -->
               <div style="margin-bottom:2px;" class="form-group">
@@ -277,7 +325,7 @@ function contactNumberValidation() {
                   <label for="email" class="form-label">Email:</label>
                   <div class="input-icon">
                       <i class="fa-regular fa-envelope"></i>
-                      <input type="email" class="form-control" id="email" oninput="emailValidation()" name="email" placeholder="Enter Your Email" />
+                      <input type="email" class="form-control" id="email"   onblur="emailValidation()" name="email" placeholder="Enter Your Email" />
                   </div>
               </div>
 
@@ -287,7 +335,7 @@ function contactNumberValidation() {
                   <label for="contactNumber" class="form-label">Contact Number:</label>
                   <div class="input-icon">
                       <i class="fa-solid fa-phone"></i>
-                      <input type="tel" class="form-control" id="contactNumber" oninput="contactNumberValidation()" name="contactNumber" placeholder="Enter Contact Number" />
+                      <input type="tel" class="form-control" id="contactNumber"   onblur="contactNumberValidation()" name="contactNumber" placeholder="Enter Contact Number" />
                   </div>
               </div>
 
@@ -310,7 +358,7 @@ function contactNumberValidation() {
 
               <!-- Submit Button -->
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Sign Up" >
+                  <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Register" disabled >
               </div><br>
 
           </form>

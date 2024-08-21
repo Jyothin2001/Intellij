@@ -57,28 +57,8 @@ public class ImageUploadController {
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 return"";
     }
-
-
-
-
-
-
-
 
 
 

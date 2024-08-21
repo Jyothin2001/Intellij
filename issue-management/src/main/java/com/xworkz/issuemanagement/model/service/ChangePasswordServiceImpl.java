@@ -1,8 +1,10 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.repo.ChangePasswordRepo;
+import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 import com.xworkz.issuemanagement.model.repo.SignInRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,12 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
 
     @Autowired
     private MailSend mailSend;
+
+
+
+    @Autowired
+    private RegDeptAdminRepo regDeptAdminRepo;
+
 
     @Override
     public boolean changePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
@@ -84,8 +92,73 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
         return false; // Password update failed
     }
 
+    @Override
+    public boolean subAdminChangePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
+        log.info("Trying to change password for email : " + email);
 
-  }
+        // Step 1: Check if newPassword matches confirmPassword
+        if(!newPassword.equals(confirmPassword)) {
+            log.info("New password and confirm password do not match.");
+            return false;
+        }
+        // Step 2: Retrieve SignUpDto based on email
+        RegDeptAdminDTO regDeptAdminDTO=this.regDeptAdminRepo.getEmail(email);
+        if(regDeptAdminDTO==null)
+        {
+            log.info("User with email {} not found.", email);
+            return false; // User not found
+        }
+        String storedPassword= regDeptAdminDTO.getPassword();
+        log.info("Stored password:{}", storedPassword);
+
+        // Step 3: Verify oldPassword matches the stored password
+        if(!passwordEncoder.matches(oldPassword,storedPassword))
+        {
+            log.info("Old password verification failed for email:{} " , email);
+            return false; // Old password doesn't match
+        }
+
+        // Step 4: Encode and update the new password in RegDeptAdminDTO
+        regDeptAdminDTO.setPassword(passwordEncoder.encode(newPassword));
+
+        // Step 5: Save the updated password in the repository (database)
+        boolean saveEmail=resetPasswordRepo.updatePasswordSubAdmin(email,regDeptAdminDTO.getPassword());
+        if(saveEmail)
+        {
+            log.info("Password updated successfully for email:{} " , email);
+            //after update the encoded password in db then send to user email
+            try {
+                mailSend.sendChangePasswordSubAdmin(regDeptAdminDTO, newPassword);
+            }
+            catch (MailException e)
+            {
+                // Handle exception if email sending fails (log it or take appropriate action)
+                e.printStackTrace();
+                return false;
+            }
+            return true;// Password successfully updated
+
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
 //        if(!resetPasswordRepo.emailExists(email))
 //        {
 //            return false;

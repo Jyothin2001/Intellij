@@ -1,9 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
-import com.xworkz.issuemanagement.dto.AdminDTO;
-import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
-import com.xworkz.issuemanagement.dto.DepartmentDTO;
-import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -227,18 +224,16 @@ public class AdminRepoImpli implements AdminRepo
     }
 
     @Override
-    public List<DepartmentDTO> findByDepartmentName(String departmentName) {
+    public List<DepartmentDTO> findByDepartmentName() {
 
-        System.out.println("findAll method running AdminRepoImpl..");
+        log.info("findAll method running AdminRepoImpl..");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-
         try {
 
             Query query1 = entityManager.createQuery("SELECT d FROM DepartmentDTO d");
             //query1.setParameter("departmentName", departmentName);
             List<DepartmentDTO> data = query1.getResultList();
-            System.out.println("DepartmentName : " + data);
+            log.info("DepartmentName : " + data);
 
             return data;
 
@@ -285,6 +280,7 @@ public class AdminRepoImpli implements AdminRepo
 return true;
 
     }
+
 
 
 }

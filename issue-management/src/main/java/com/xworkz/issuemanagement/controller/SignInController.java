@@ -42,7 +42,7 @@ public class SignInController {
         log.info("Email: {} ", email);
         log.info("password: {}" ,password);
 
-
+        httpSession.setAttribute("signedInUserEmail", email);
         SignUpDTO signUpDTO = signInService.findByEmailAndPassword(email, password);
         if (signUpDTO != null)
         {
@@ -56,7 +56,8 @@ public class SignInController {
 
             //Sessions in a web application are used to store user-specific information across multiple requests.
             // Set user-specific information in the session
-            httpSession.setAttribute("signedInUserEmail", email);
+            //httpSession.setAttribute("signedInUserEmail", email);
+
             //user Edit details :"set"
             httpSession.setAttribute("signUpDTO", signUpDTO);//also used for saving signUp user id in complaint table
 
@@ -65,7 +66,7 @@ public class SignInController {
             httpSession.setAttribute("profileImage", profileImageUrl);
 
             // Set the default profile image before storing signUpDTO in the session
-          //  signUpDTO.setImageName("ProfileIcon.png");
+            signUpDTO.setImageName("ProfileIcon.png");
 
            // Redirect to the profile page
             return "redirect:ProfilePage"; // This will change the URL to /profilePage

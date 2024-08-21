@@ -8,5 +8,8 @@ public interface AjaxEmailAndNumberService {
 
     boolean existsByNumber(Long contactNumber);
 
+    boolean existsBySubAdminEmail(String email);
+
+    boolean existsBySubAdminNumber(Long contactNumber);
 
 }

@@ -126,6 +126,7 @@ public class SignInRepoImpli implements SignInRepo
             entityTransaction.begin();
             entityManager.merge(signUpDTO);
             entityTransaction.commit();
+            return true;
         }
         catch (PersistenceException e)
         {
@@ -139,7 +140,6 @@ public class SignInRepoImpli implements SignInRepo
             entityManager.close();
         }
 
-        return true;
     }
 
 }

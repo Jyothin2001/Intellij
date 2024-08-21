@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home page </title>
 
 
@@ -30,7 +31,7 @@
 
         <a class="navbar-brand  text-white" href="AdminPage"><b>Admin</b></a>
 
-        <a class="navbar-brand  text-white" href="DepartmentSignUpPage"><b>Department Sign Up</b></a>
+        <a class="navbar-brand  text-white" href="DepartmentLoginPage"><b>Department Login</b></a>
 
 
       </div>

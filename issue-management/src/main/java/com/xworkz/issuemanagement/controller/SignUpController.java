@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -23,6 +24,9 @@ public class SignUpController
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private HttpSession httpSession;
 
 
     public SignUpController()
@@ -51,6 +55,7 @@ public class SignUpController
             if (validate) {
                 log.info("service saveAndValidate() in controller successfully:{} ", validate);
                 signUpDTO.setImageName("ProfileIcon.png");
+               // httpSession.setAttribute("signedInUserEmail", email);
 
 //                String subject = "Welcome to issue management";
 //                String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();

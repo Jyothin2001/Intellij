@@ -8,4 +8,8 @@ public interface ForgotPasswordRepo
     public SignUpDTO findByEmail(String email);
 
     public void updatePassword(String email,String newPassword);
+
+    //public SignUpDTO findBySubAdminEmail(String email);
+
+    public void updateSubAdminPassword(String email,String newPassword);
 }

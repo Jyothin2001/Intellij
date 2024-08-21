@@ -1,8 +1,10 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.repo.ForgotPasswordRepo;
+import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 import com.xworkz.issuemanagement.util.PasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,14 @@ public class ForgotPasswordServiceImpli implements ForgotPasswordService{
     private ForgotPasswordRepo forgotPasswordRepo;
 
     @Autowired
+    private RegDeptAdminRepo regDeptAdminRepo;
+
+
+    @Autowired
     private SignInService signInService;
+
+    @Autowired
+    private RegDeptAdminServiceImpli regDeptAdminServiceImpli;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -29,6 +38,7 @@ public class ForgotPasswordServiceImpli implements ForgotPasswordService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -44,24 +54,42 @@ public class ForgotPasswordServiceImpli implements ForgotPasswordService{
            String newPassword= PasswordGenerator.generatePassword();
 
            forgotPasswordRepo.updatePassword(email,passwordEncoder.encode(newPassword));
-           user.setPassword(newPassword);//????
-           mailSend.forgotPassword(user);
+           user.setPassword(newPassword);//user generated Password
+           mailSend.forgotPassword(user);//mail
 
            //Reset failed attempts
              signInService.resetFailedAttempts(email);
              signInService.unLockAccount(email);
-
-//             //send reset password to mail
-//            SimpleMailMessage message=new SimpleMailMessage();
-//            message.setTo(email);
-//            message.setSubject("Password Reset");
-//            message.setText("Your new password is:"+newPassword);
-//           javaMailSender.send(message);
 
            return true;
 
         }
         return false;
 
+    }
+
+    @Override
+    public boolean forgotPasswordBySubAdmin(String email) {
+        //just reusing regDeptAdminRepo.getEmail()
+        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+        if(user!=null)
+        {
+            log.info("regDeptAdminRepo email data in ForgotPasswordServiceImpli:{}  ",user);
+
+            String newPassword=PasswordGenerator.generatePassword();
+
+            forgotPasswordRepo.updateSubAdminPassword(email,passwordEncoder.encode(newPassword));//db
+
+             user.setPassword(newPassword);   //user generated Password
+            mailSend.subAdminForgotPassword(user);//mail
+
+            //Reset failed attempts
+            regDeptAdminServiceImpli.resetFailedAttempts(email);
+            regDeptAdminServiceImpli.unlockAccount(email);
+            return true;
+        }
+
+
+        return false;
     }
 }

@@ -5,6 +5,7 @@
 
     <head>
       <meta charset="ISO-8859-1">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Profile</title>
 
     <!--Bootstrap link-->
@@ -41,11 +42,14 @@
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+
                <li><a class="dropdown-item" href="viewUserDetails"><strong>ViewUserDetails</strong></a></li>
 
               <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>ViewRaiseComplaintDetails</strong></a></li>
 
               <li><a class="dropdown-item" href="AddDepartment"><strong>AddComplaints</strong></a></li>
+
+              <li><a class="dropdown-item" href="getDepartmentName"><strong>AddDepartment Admin</strong></a></li>
 
             </ul>
           </div>

@@ -53,7 +53,7 @@ public class MailSend {
         javaMailSender.send(message);
     }
 
-
+//****************SubAdmin*****************
     public void sendDeptAdminPassword(RegDeptAdminDTO regDeptAdminDTO)
     {
         SimpleMailMessage message  = new SimpleMailMessage();
@@ -65,4 +65,26 @@ public class MailSend {
 
         javaMailSender.send(message);
     }
+
+    public void subAdminForgotPassword(RegDeptAdminDTO regDeptAdminDTO) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(regDeptAdminDTO.getEmail());
+        message.setSubject("SignIn password");
+        message.setText("Dear " + regDeptAdminDTO.getAdminName() + " " + ",  A new password has been sent to your email. ,\n\n" +
+                "Please Login in through new password: " + regDeptAdminDTO.getPassword() + "\n" +
+                "Thanks and Regards,\n" + " " +
+                "X-Workz Project Team");
+        javaMailSender.send(message);
+    }
+    public void sendChangePasswordSubAdmin(RegDeptAdminDTO regDeptAdminDTO,String newPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(regDeptAdminDTO.getEmail());
+        message.setSubject("Change password");
+        message.setText("Dear " + regDeptAdminDTO.getAdminName() +"," + "\n\n"   + "A Change Password has been sent to your email. \n" +
+                "Please Sign in through Change password: " + newPassword+ "\n\n" +
+                "Thanks and Regards,\n" + " " +
+                "X-workz Project Team");
+        javaMailSender.send(message);
+    }
+
 }

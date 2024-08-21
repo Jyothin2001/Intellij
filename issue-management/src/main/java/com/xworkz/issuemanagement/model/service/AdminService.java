@@ -1,9 +1,7 @@
 package com.xworkz.issuemanagement.model.service;
 
-import com.xworkz.issuemanagement.dto.AdminDTO;
-import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
-import com.xworkz.issuemanagement.dto.DepartmentDTO;
-import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.dto.*;
+import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 
 import java.util.List;
 
@@ -35,10 +33,11 @@ public interface AdminService {
     DepartmentDTO saveDepartment(DepartmentDTO departmentDTO);
 
     //find all departmentName for displaying in ViewComplaintRaise.jsp
-    List<DepartmentDTO> findByDepartmentName(String  departmentName);
+    List<DepartmentDTO> findByDepartmentName();
 
     //update status and department id
     boolean updateStatusAndDepartmentId(int complaintId, int departmentId, String status);
+
 
 
 }

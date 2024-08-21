@@ -1,9 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
-import com.xworkz.issuemanagement.dto.AdminDTO;
-import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
-import com.xworkz.issuemanagement.dto.DepartmentDTO;
-import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.dto.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -37,10 +34,11 @@ public interface AdminRepo  {
     DepartmentDTO saveDepartment(DepartmentDTO departmentDTO);
 
 //find all departmentName for displaying in ViewComplaintRaise.jsp
-List<DepartmentDTO> findByDepartmentName(String  departmentName);
+List<DepartmentDTO> findByDepartmentName();
 
 //update status and department id
  boolean updateStatusAndDepartmentId(int complaintId, int departmentId, String status);
+
 
 
 }
