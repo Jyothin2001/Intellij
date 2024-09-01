@@ -284,7 +284,7 @@ a=1;
                                     </div>
 
                                     <!-- Password -->
-                                    <div class="form-group">
+                                    <div  class="form-group">
                                         <span class="error-message" id="passwordError" style="color: red;"></span><br>
                                         <label for="password" class="form-label">Password:</label>
                                         <div class="password-container">
@@ -292,16 +292,18 @@ a=1;
                                             <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="pass()" class="pass-icon" id="pass-icon">
                                         </div>
                                     </div>
- <!---dropdown select issue-->
 
-                          <label for="departmentName" class="form-label">Department:</label>
+ <!---dropdown select issue-->
+                          <div style="margin-top:20px;">
                           <span id="DepartmentNameError" class="error-message" style="color: red;"></span>
-                 <select onblur="validateDepartmentName()" class="form-select custom-select-width" oninput="validateFormForDepartmentName()" id="departmentName" name="departmentName">
+                           <label for="departmentName" class="form-label">Department:</label>
+                 <select onblur="validateDepartmentName()" class="form-select custom-select-width" oninput="validateFormForDepartmentName()" style="border-radius: 15px;" id="departmentName" name="departmentName">
                  <option value="">Select Department</option>
                <c:forEach items="${departments}" var="departmentName">
                  <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
                </c:forEach>
              </select>
+             </div>
 
 
 

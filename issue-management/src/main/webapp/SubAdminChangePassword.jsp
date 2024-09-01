@@ -293,36 +293,6 @@ console.log('New state of b:', b); // Debugging line
 
 </div>
 </nav>
- <!-- ******************************************************************************** --!>
-
-    <div class="modal fade" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #007bff; color: white; padding: 15px;">
-            <h5 class="modal-title" id="exampleModalLabel">USER PROFILE</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="background: none; border: none; color: white; font-size: 1.5rem;">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          <center> <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" width="80" height="80"
-                          class="rounded-circle profile-image" alt="Profile Image"></center>
-
-            <div class="profile-info" style="font-size: 16px; line-height: 1.5;">
-              <p><strong>Name:</strong> ${signUpDTO.firstName} ${signUpDTO.lastName}</p>
-              <p><strong>Email:</strong> ${signUpDTO.email}</p>
-              <p><strong>Contact Number:</strong> ${signUpDTO.contactNumber}</p>
-              <p><strong>Alternative Contact Number:</strong> ${signUpDTO.alternateContactNumber}</p>
-              <p><strong>Address:</strong> ${signUpDTO.address}</p>
-            </div>
-          </div>
-         <!-- <div class="modal-footer" style="border-top: 1px solid #dee2e6;">
-            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" style="transition: background-color 0.3s;">Close</button>
-          </div>-->
-        </div>
-      </div>
-    </div>
-    <!-- End of View Profile Modal -->
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
         <!--<div class="card-header">

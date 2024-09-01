@@ -19,10 +19,15 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequestMapping("/")
+@SessionAttributes("adminDTO")
 public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private HttpSession httpSession;
+
 
 
 
@@ -36,15 +41,12 @@ public class AdminController {
         String adminUsername=adminService.getAdminName(email, password);
         log.info("username:{}",adminUsername);
 
+        //to get admin name
+        httpSession.setAttribute("AdminName",adminUsername);
 
          boolean data=adminService.findByEmailAndPassword(email,password);
         if (data) {
             log.info("findByEmailAndPassword successful in AdminController..");
-
-            //for next page to display msg
-            //model.addAttribute("AdminProfilePageMessage", "Welcome to Admin profile");
-            redirectAttributes.addFlashAttribute("AdminProfilePageMessage", "Welcome to Admin profile: "+email);
-            redirectAttributes.addFlashAttribute("username",adminUsername);
 
             //return "AdminProfilePage";
             return "redirect:/AdminProfilePage";
@@ -64,10 +66,27 @@ public String admin()
 }
 
     @GetMapping("AdminProfilePage")
-    public String AdminProfilePage()
+    public String AdminProfilePage(Model model)
     {
+        // Retrieve adminUsername from the session
+        String adminUsername = (String) httpSession.getAttribute("AdminName");
+
+        if (adminUsername != null)
+        {
+            // Adding attributes to the model to display on the profile page
+            model.addAttribute("AdminProfilePageMessage", "Welcome to Admin profile");
+            model.addAttribute("username", adminUsername);
+
+        }
+        else
+        {
+            // If adminDTO is not found in session, redirect to login page or handle accordingly
+            return "redirect:/adminPage";
+        }
+
         return "AdminProfilePage";
     }
+
 
     //view user details(SignUp details)
 @GetMapping("viewUserDetails")

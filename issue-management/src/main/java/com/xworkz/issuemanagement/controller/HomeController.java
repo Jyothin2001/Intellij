@@ -1,8 +1,12 @@
 package com.xworkz.issuemanagement.controller;
 
+import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -96,6 +100,20 @@ public class HomeController {
     {
         return "SubAdminChangePassword";
     }
+
+    @GetMapping("addEmployee")
+    public String addEmployee()
+    {
+        return "EmployeeRegistration";
+    }
+
+//    @GetMapping("departmentAdminComplaintViewPage")
+//    public String deptAdminView()
+//    {
+//        return "DepartmentAdminComplaintViewPage";
+//    }
+
+
 
 
 }

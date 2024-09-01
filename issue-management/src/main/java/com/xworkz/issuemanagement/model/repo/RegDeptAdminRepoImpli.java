@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Repository
 @Slf4j
@@ -16,31 +18,64 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
 
     @Override
     public boolean saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO) {
-        EntityManager entityManager=entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction=entityManager.getTransaction();
-        try
-        {
-        entityTransaction.begin();
-        entityManager.persist(regDeptAdminDTO);
-        entityTransaction.commit();
-        log.info("saveRegDeptAdmin() in RegDeptAdminRepoImpli successful:");
-        return true;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = null;
 
-        }
-        catch (PersistenceException persistenceException)
-        {
-            log.error("error while saving RegDeptAdminDTO:",persistenceException);
-            if(entityTransaction.isActive())
-            {
+        try {
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            // If regDeptAdminDTO is detached, merge it before persisting
+            if (!entityManager.contains(regDeptAdminDTO)) {
+                regDeptAdminDTO = entityManager.merge(regDeptAdminDTO);
+            }
+
+            entityManager.persist(regDeptAdminDTO);
+            entityTransaction.commit();
+            log.info("saveRegDeptAdmin() in RegDeptAdminRepoImpl successful");
+            return true;
+
+        } catch (PersistenceException persistenceException) {
+            log.error("Error while saving RegDeptAdminDTO: ", persistenceException);
+            if (entityTransaction != null && entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
-        }
-        finally {
-            entityManager.close();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
 
         return false;
     }
+
+//    @Override
+//    public boolean saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO) {
+//        EntityManager entityManager=entityManagerFactory.createEntityManager();
+//        EntityTransaction entityTransaction=entityManager.getTransaction();
+//        try
+//        {
+//        entityTransaction.begin();
+//        entityManager.persist(regDeptAdminDTO);
+//        entityTransaction.commit();
+//        log.info("saveRegDeptAdmin() in RegDeptAdminRepoImpli successful:");
+//        return true;
+//
+//        }
+//        catch (PersistenceException persistenceException)
+//        {
+//            log.error("error while saving RegDeptAdminDTO:",persistenceException);
+//            if(entityTransaction.isActive())
+//            {
+//                entityTransaction.rollback();
+//            }
+//        }
+//        finally {
+//            entityManager.close();
+//        }
+//
+//        return false;
+//    }
 
     @Override
     public RegDeptAdminDTO getEmailAndPassword(String email, String password,String departmentName) {
@@ -123,7 +158,7 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
     }
     @Override
     public DepartmentDTO findByDepartmentType(String regDepartmentName) {
-        log.info("findByDepartmentType method running AdminRepoImpl..");
+        log.info("findByDepartmentType method running regDeptRepoImpl..");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
 
@@ -138,7 +173,30 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
             persistenceException.printStackTrace();
         } finally {
             entityManager.close();
-            System.out.println("Connection closed");
+            log.info("Connection closed");
+        }
+        return null;
+    }
+
+    @Override
+    public List<ComplaintRaiseDTO> deptAdminView(String departmentName)
+    {
+        log.info("deptAdminView method running regDeptRepoImpl..");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            Query query1 = entityManager.createQuery("SELECT d FROM ComplaintRaiseDTO d where d.complaintType=:regDepartmentName");
+            query1.setParameter("regDepartmentName", departmentName);
+            List<ComplaintRaiseDTO> data =  query1.getResultList();
+            log.info("DepartmentName from regDeptAdmin {}: " , data);
+
+            return data;
+
+        } catch (PersistenceException persistenceException) {
+            persistenceException.printStackTrace();
+        } finally {
+            entityManager.close();
+            log.info("Connection Closed");
         }
         return null;
     }

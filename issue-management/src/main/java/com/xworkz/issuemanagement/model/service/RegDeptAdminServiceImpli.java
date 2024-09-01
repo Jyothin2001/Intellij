@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
@@ -9,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -51,7 +54,7 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         RegDeptAdminDTO emailData=regDeptAdminRepo.getEmail(email);
          log.info("email and password matching data:{}",emailData);
 
-         if(emailData!=null && passwordEncoder.matches(password,emailData.getPassword()))
+         if(emailData!=null && passwordEncoder.matches(password,emailData.getPassword()) && emailData.getDepartmentName().equals(departmentName))
          {log.info("findEmailAndPassword successful in  AdminServiceImpl..");
              return emailData;
          }
@@ -127,6 +130,22 @@ return null;
         {
             log.info("Not fetching RegDepartmentDetails:");
         }
+        return null;
+    }
+
+    @Override
+    public List<ComplaintRaiseDTO> deptAdminView(String departmentName) {
+        List<ComplaintRaiseDTO> complaintDetails=regDeptAdminRepo.deptAdminView(departmentName);
+        if(complaintDetails!=null)
+        {
+            log.info("fetching complaintRaiseDetails:{}",departmentName);
+            return complaintDetails;
+        }
+        else
+        {
+            log.info(" fetching complaintRaiseDetails is not successful:");
+        }
+
         return null;
     }
 

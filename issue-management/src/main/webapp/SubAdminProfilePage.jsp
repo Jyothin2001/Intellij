@@ -38,15 +38,16 @@
           </div>
 
           <div class="dropdown">
-            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${AdminName}
+            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${subAdminName}
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
 
-              <li><a class="dropdown-item" href=""><strong>ViewRaiseComplaintDetails</strong></a></li>
+              <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
 
-              <li><a class="dropdown-item" href=""><strong>AddComplaints</strong></a></li>
+              <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
+
 
             </ul>
           </div>
@@ -56,29 +57,12 @@
 
       </nav>
 
-
-      <div class="card border-dark container mt-5 mb-5 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width">
-        <!--<div class="card-header">
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
-        </div>-->
-
-        <div style="margin-top: 15px;">
-          <h1 style="color:blue; ">
-            <center></center>
-          </h1>
-        </div>
+<!--sub admin welcome page-->
 
 
-        <!--Form-->
-
-        <form action="admin" method="post">
-
-       <div style="color:green;"><h6><b>${msg}</b></h6></div>
-
-       </form>
+       <div class="text-center" style="color: green; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); width: 100%;">
+           <h5><b>${msg}</b></h5>
        </div>
-         </div>
-
 
 
        </body>

@@ -88,31 +88,21 @@
         </div>
       </div>
     </div>
-    <!-- End of View Profile Modal -->
+    <!-- End of View Profile Modal
 
 
 
-      <div class="card border-dark container mt-5 mb-5 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width">
-        <!--<div class="card-header">
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
-        </div>-->
-
-        <div style="margin-top: 15px;">
-          <h1 style="color:blue; ">
-            <center></center>
-          </h1>
-        </div>
 
 
-        <!--Form-->
+        <!--Admin welcome page-->
 
-        <form action="admin" method="post">
 
-       <div style="color:green;"><h6><b>${AdminProfilePageMessage}</b></h6></div>
-
-       </form>
+       <div class="text-center" style="color: green; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); width: 100%;">
+           <h5><b>${AdminProfilePageMessage}</b></h5>
        </div>
-         </div>
+
+
+
 
 
 

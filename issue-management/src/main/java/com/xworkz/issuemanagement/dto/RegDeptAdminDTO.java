@@ -32,6 +32,7 @@ public class RegDeptAdminDTO {
     private String departmentName;
 
 
+
     @NotEmpty(message = "Please enter valid email")
     @Pattern(regexp = "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$", message = "Enter valid email")
     @Column(name = "email")

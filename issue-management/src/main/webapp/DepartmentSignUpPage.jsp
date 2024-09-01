@@ -5,7 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Department Sign up</title>
+<title>Department Registration</title>
 
 <!--BootStrap link-->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -255,21 +255,17 @@ function contactNumberValidation() {
 
 <body>
 
-<nav class="navbar navbar navbar-light bg-primary " >
+
+<nav class="navbar navbar-light bg-primary">
   <div class="container-fluid">
-   <div class="navbar-header">
-
-      <!-- Add your logo here -->
-              <a class="navbar-brand" href="#">
-                  <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
-              </a>
-
-   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
-   <a class="navbar-brand text-light" href="DepartmentLogInPage"><b>Log In</b></a>
- </div>
-</div>
+    <a class="navbar-brand" href="#">
+      <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
+    </a>
+    <div class="d-flex ms-auto">
+      <a class="navbar-brand text-light" href="AdminProfilePage"><b>Admin Profile</b></a>
+    </div>
+  </div>
 </nav>
-
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
 
@@ -278,7 +274,7 @@ function contactNumberValidation() {
         </div>-->
 
               <div style = "margin-top: 15px;">
-                   <h1 style= "color:blue; "><center>Sign up Form</center></h1>
+                   <h1 style= "color:blue; "><center>Registration</center></h1>
               </div>
 
                <!--text/word colors-->
@@ -296,8 +292,7 @@ function contactNumberValidation() {
 
               <div class="text-primary"><b>${saveDeptAdmin}</b></div>
 
-
-              <!-- Admin Name -->
+<!-- Admin Name -->
               <div style="margin-bottom:2px;" class="form-group">
                   <span id="AdminNameError" class="error-message"></span><br>
                   <label for="AdminName" class="form-label">Admin Name:</label>
@@ -317,6 +312,7 @@ function contactNumberValidation() {
                  <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
                </c:forEach>
              </select>
+
 
 
               <!-- Email -->

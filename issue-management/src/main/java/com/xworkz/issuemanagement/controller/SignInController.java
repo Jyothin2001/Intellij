@@ -49,14 +49,6 @@ public class SignInController {
             // Reset failed attempts
             signInService.resetFailedAttempts(email);
            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
-           redirectAttributes.addFlashAttribute("msgSignIn", signUpDTO.getFirstName() + " , Successfully login with : " + signUpDTO.getEmail() );
-           redirectAttributes.addFlashAttribute("UserFirstName",signUpDTO.getFirstName());
-           redirectAttributes.addFlashAttribute("UserLastName",signUpDTO.getLastName());
-
-
-            //Sessions in a web application are used to store user-specific information across multiple requests.
-            // Set user-specific information in the session
-            //httpSession.setAttribute("signedInUserEmail", email);
 
             //user Edit details :"set"
             httpSession.setAttribute("signUpDTO", signUpDTO);//also used for saving signUp user id in complaint table
@@ -69,6 +61,7 @@ public class SignInController {
             signUpDTO.setImageName("ProfileIcon.png");
 
            // Redirect to the profile page
+            //to avoid resubmission
             return "redirect:ProfilePage"; // This will change the URL to /profilePage
 
         }
@@ -100,9 +93,19 @@ public class SignInController {
     }
 
     @GetMapping("ProfilePage")
-    public String profilePage()
+    public String profilePage(Model model)
     {
+        // Retrieve user information from the session
+        SignUpDTO signUpDTO = (SignUpDTO) httpSession.getAttribute("signUpDTO");
+        if (signUpDTO != null) {
+            model.addAttribute("msgSignIn", "Welcome to your page " + signUpDTO.getFirstName() +" "+ signUpDTO.getLastName());
+            model.addAttribute("UserFirstName",signUpDTO.getFirstName());
+            model.addAttribute("UserLastName", signUpDTO.getLastName());
+        } else {
+            return "redirect:log-in-page"; // Redirect to login if session is null
+        }
         return "Profile";
+
     }
 
     @GetMapping("log-in-page")

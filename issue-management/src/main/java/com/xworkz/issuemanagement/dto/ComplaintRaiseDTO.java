@@ -44,7 +44,7 @@ public class ComplaintRaiseDTO
 
     //its coming from department table
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    @JoinColumn(name = "department_fk", referencedColumnName = "department_id")
     private DepartmentDTO departmentDTO;
 
     @Column(name = "status")

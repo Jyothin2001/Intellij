@@ -77,7 +77,7 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-<input type="email" class="form-control" id="email" value="${sessionScope.subAdminEmail != null ? sessionScope.subAdminEmail : ''}" readonly name="email" placeholder="Enter Email">
+<input type="email" class="form-control" id="email"  name="email" placeholder="Enter Email">
 
                  </div>
                  </div>

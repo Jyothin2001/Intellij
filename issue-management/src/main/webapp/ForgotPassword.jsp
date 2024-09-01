@@ -80,13 +80,13 @@
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" value="${sessionScope.signedInUserEmail}" readonly name="email" placeholder="Enter Email">
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()"  name="email" placeholder="Enter Email">
                  </div>
                  </div>
                  </br>
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg "   value="Submit">
+                  <input type="submit" class="btn btn-primary btn-lg "  value="Submit">
               </div>
 
          </form>

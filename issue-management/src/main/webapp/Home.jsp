@@ -34,6 +34,8 @@
         <a class="navbar-brand  text-white" href="DepartmentLoginPage"><b>Department Login</b></a>
 
 
+
+
       </div>
    </div>
  </nav>

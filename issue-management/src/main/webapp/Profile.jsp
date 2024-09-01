@@ -103,28 +103,14 @@
 
 
 
-      <div class="card border-dark container mt-5 mb-5 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width">
-        <!--<div class="card-header">
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
-        </div>-->
-
-        <div style="margin-top: 15px;">
-          <h1 style="color:blue; ">
-            <center></center>
-          </h1>
-        </div>
 
 
-        <!--Form-->
+<!--user welcome page-->
 
-        <form action="signin" method="post">
 
-       <div class="text-primary"><h6><b>${msgSignIn}</b></h6></div>
-       <div class="text-red"><h6><b>${ErrorMsg}</b></h6></div>
-
-       </form>
+       <div class="text-center" style="color: green; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); width: 100%;">
+           <h5><b>${msgSignIn}</b></h5>
        </div>
-         </div>
 
 
 

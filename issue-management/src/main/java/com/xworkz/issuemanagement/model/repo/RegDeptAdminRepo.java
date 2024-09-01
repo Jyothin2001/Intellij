@@ -1,7 +1,10 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
+
+import java.util.List;
 
 public interface RegDeptAdminRepo {
 
@@ -16,5 +19,8 @@ public interface RegDeptAdminRepo {
 
     //fetch departmentName for storing departmentId
     DepartmentDTO findByDepartmentType(String regDepartmentName);
+
+    //deptViewComplaints details
+    List<ComplaintRaiseDTO> deptAdminView(String departmentName);
 
 }
