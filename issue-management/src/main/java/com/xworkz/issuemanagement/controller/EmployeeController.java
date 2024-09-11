@@ -67,7 +67,7 @@ public class EmployeeController {
             //to set departmentId in EmployeeTable
             DepartmentDTO departmentDTO=employeeService.findByDepartmentType(employeeDTO.getDepartmentName());
             employeeDTO.setDepartmentDTO(departmentDTO);//@Column name=department_id so in employeeTable the departmentId id store
-             employeeDTO.setStatus(Status.ACTIVE);
+            employeeDTO.setStatus(Status.ACTIVE);
             boolean employeeDetails = employeeService.saveEmployeeDetails(employeeDTO);
             if (employeeDetails)
             {
@@ -101,10 +101,8 @@ public class EmployeeController {
     }
 
 
+    //*******************************************************
 
-    ///*******************************************************
-    //employee login
-    // Employee Login with CAPTCHA validation
     // Employee Login with CAPTCHA and OTP generation
     @PostMapping("generateOtp")
     public String generateOtp(@RequestParam("email") String emailId,
@@ -168,13 +166,14 @@ public class EmployeeController {
 
     @PostMapping("otpVerification")
     public String otpVerification(@RequestParam("otp") String enteredOtp,
-                                      @RequestParam("email") String email,HttpSession session,
-                                      Model model) {
+                                  @RequestParam("email") String email,
+                                  HttpSession session,
+                                  Model model) {
 
         log.info("otpVerification method running in EmployeeController..");
 
-
-       String  emailId= (String) session.getAttribute("email");
+        // Retrieve email from session
+        String emailId = (String) session.getAttribute("email");
 
         // Find employee by email
         EmployeeDTO employeeDTO = employeeService.findByEmail(emailId);
@@ -185,13 +184,21 @@ public class EmployeeController {
             return "EmployeeOTPPage";
         }
 
-        // Compare the entered OTP with the stored OTP in employeeDTO
-        if (employeeDTO.getOtp().equals(Long.parseLong(enteredOtp))) {
-            // OTPs match, handle success
-            return "EmployeeProfilePage";
-        } else {
-            // OTPs don't match, handle failure
-            model.addAttribute("invalidOTP", "OTP is not matching");
+        try {
+            // Trim the OTP string before parsing and compare with stored OTP
+            long enteredOtpValue = Long.parseLong(enteredOtp.trim());
+
+            if (employeeDTO.getOtp().equals(enteredOtpValue)) {
+                // OTPs match, handle success
+                return "EmployeeProfilePage";
+            } else {
+                // OTPs don't match, handle failure
+                model.addAttribute("invalidOTP", "OTP is not matching");
+                return "EmployeeOTPPage";
+            }
+        } catch (NumberFormatException e) {
+            // Handle the exception if OTP is not a valid number
+            model.addAttribute("invalidOTP", "Invalid OTP format");
             return "EmployeeOTPPage";
         }
     }
@@ -227,7 +234,7 @@ public class EmployeeController {
             return ResponseEntity.ok("New OTP sent to your email.");
         } else {
             log.error("Failed to save the new OTP for email: {}", emailId);
-           // model.addAttribute("newOTP","Failed to generate OTP, please try again");
+            // model.addAttribute("newOTP","Failed to generate OTP, please try again");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(".Failed to generate OTP, please try again");
         }
     }

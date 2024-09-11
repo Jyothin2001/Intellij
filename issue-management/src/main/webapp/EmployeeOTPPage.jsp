@@ -67,7 +67,7 @@
 
 <script>
     // Set the countdown time in seconds (5 minutes = 300 seconds)
-    var countdownTime = 30;
+    var countdownTime = 300;
 
     function startCountdown() {
         var timerElement = document.getElementById("timer");
@@ -145,7 +145,7 @@
         <span style="color:green"><strong>${generatedOTP}</strong></span>
         <span style="color:red"><strong>${failed}</strong></span>
         <span style="color:red"><strong>${emailNotFound}</strong></span>
-
+        <span style="color:red"><strong>${invalidOTP}</strong></span>
         <form action="otpVerification" method="POST">
             <div class="mb-3">
                 <label for="otp" class="form-label">OTP:</label>
