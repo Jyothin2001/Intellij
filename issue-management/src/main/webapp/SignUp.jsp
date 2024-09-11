@@ -119,9 +119,11 @@ function emailValidation() {
     error.innerHTML = "Email is required";
     error.style.color = "red";
     fieldsChecks["email"] = false;
+
   } else if (emailRegex.test(element.value)) {
     // If the email matches the regex
     error.innerHTML = "";
+    emailAjaxValidation();
     fieldsChecks["email"] = true;
 
   } else {
@@ -441,3 +443,4 @@ function numberAjaxValidation() {
  </body>
 
 </html>
+

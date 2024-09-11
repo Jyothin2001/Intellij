@@ -5,6 +5,7 @@ import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface RegDeptAdminService {
@@ -29,6 +30,8 @@ public interface RegDeptAdminService {
     //fetch departmentName for storing departmentId
     DepartmentDTO findByDepartmentType(String regDepartmentName);
 
-   List< ComplaintRaiseDTO> deptAdminView(String departmentName);
+   List< ComplaintRaiseDTO>  deptAdminView(String departmentName);
+
+
 
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdminRepo  {
 
@@ -32,6 +33,9 @@ public interface AdminRepo  {
 
     //save department
     DepartmentDTO saveDepartment(DepartmentDTO departmentDTO);
+
+    //NonUniqueResultException for duplicate entry in DepartmentDTO  it affect findByDepartmentType() (repo=SingleResultSet)
+    Optional<DepartmentDTO> existsByDepartmentName(String departmentName);
 
 //find all departmentName for displaying in ViewComplaintRaise.jsp
 List<DepartmentDTO> findByDepartmentName();

@@ -111,25 +111,30 @@
     </div>
     <!-- End of View Profile Modal -->
 
-
-    <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
-        <!--<div class="card-header">
-
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
-           <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" alt="Profile" class="profile-img rounded-circle">
-        </div>-->
-
-              <div style = "margin-top: 5px;">
-                   <h2 style= "color:blue; "><center>User Details</center></h2>
-              </div>
-
-       <!--text/word colors-->
-         <div class="card-body text-dark">
-                <strong class="card-title">Name: ${signUpDTO.firstName} ${signUpDTO.lastName}</strong><br><br>
-                <p class="card-text"><strong>Email: ${signUpDTO.email}</strong></p>
-                <p class="card-text"><strong>Contact Number: ${signUpDTO.contactNumber}<strong></p>
-                <p class="card-text"><strong>Alternative Contact Number: ${signUpDTO.alternateContactNumber}</strong></p>
-                <p class="card-text"><strong>Address: ${signUpDTO.address}</strong></p>
+    <div class="card container mt-5 mb-3 shadow-lg p-4 bg-body rounded form-width card border-warning mb-3">
+        <div class="card-header text-center" style="background-color: #FF7F50; color: white;">
+            <h2 class="mb-0" style="font-family: 'Lucida Handwriting', cursive;">User Details</h2>
+        </div>
+        <div class="card-body text-dark">
+            <div class="d-flex align-items-center mb-4">
+                <img src="${pageContext.request.contextPath}${sessionScope.profileImage}" alt="Profile" class="profile-img rounded-circle border border-2 border-dark me-3" style="width: 80px; height: 80px;">
+                <h4 class="card-title mb-0">${signUpDTO.firstName} ${signUpDTO.lastName}</h4>
+            </div>
+            <div class="mb-3">
+                <i class="bi bi-envelope-fill me-2 text-primary"></i>
+                <strong>Email:</strong> ${signUpDTO.email}
+            </div>
+            <div class="mb-3">
+                <i class="bi bi-telephone-fill me-2 text-primary"></i>
+                <strong>Contact Number:</strong> ${signUpDTO.contactNumber}
+            </div>
+            <div class="mb-3">
+                <i class="bi bi-phone-vibrate-fill me-2 text-primary"></i>
+                <strong>Alternative Contact Number:</strong> ${signUpDTO.alternateContactNumber}
+            </div>
+            <div class="mb-3">
+                <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                <strong>Address:</strong> ${signUpDTO.address}
             </div>
         </div>
     </div>

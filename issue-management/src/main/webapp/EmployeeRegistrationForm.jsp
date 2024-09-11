@@ -29,145 +29,251 @@
 
 </style>
 <script>
-   function validateEmployeeName() {
-       const name = document.getElementById("employeeName").value;
-       const nameError = document.getElementById("employeeError");
 
-       const namePattern = /^[A-Za-z\s]+$/;
-       if (name === "") {
-           nameError.textContent = "Employee name is required.";
-           nameError.style.color = "red";
-           return false;
-       } else if (!namePattern.test(name)) {
-           nameError.textContent = "Name should only contain letters and spaces.";
-           nameError.style.color = "red";
-           return false;
-       } else {
-           nameError.textContent = "";
-           return true;
-       }
-   }
+let fieldsChecks = {
+  "employeeName": false,
+  "employeeDesignation": false,
+  "departmentName": false,
+  "email": false,
+  "contactNumber": false,
+  "address": false,
+  "agree": false
+};
 
-   function validateDesignation() {
-       const designation = document.getElementById("employeeDesignation").value;
-       const designationError = document.getElementById("employeeDesignationError");
+function validateAndEnableSubmit() {
+  let flag = Object.values(fieldsChecks).includes(false);
+  console.log("Fields checks:", fieldsChecks);
+    console.log("Form valid:", !flag);
 
-       if (designation === "") {
-           designationError.textContent = "Employee designation is required.";
-           designationError.style.color = "red";
-           return false;
-       } else {
-           designationError.textContent = "";
-           return true;
-       }
-   }
 
-   function validateDepartmentName() {
-       const departmentName = document.getElementById("departmentName").value;
-       const departmentError = document.getElementById("DepartmentNameError");
+  if (!flag) {
+    document.getElementById("submit").removeAttribute("disabled");
+  } else {
+    document.getElementById("submit").setAttribute("disabled", "");
+  }
+}
 
-       if (departmentName === "") {
-           departmentError.textContent = "Please select a department.";
-           departmentError.style.color = "red";
-           return false;
-       } else {
-           departmentError.textContent = "";
-           return true;
-       }
-   }
+function validateEmployeeName() {
+  const element = document.getElementById("employeeName");
+  const error = document.getElementById("employeeError");
+  const namePattern = /^[A-Za-z\s]+$/;
+  const value = element.value.trim();
 
-   function emailValidation() {
-       const email = document.getElementById("email").value;
-       const emailError = document.getElementById("emailError");
+  if (value === '') {
+    error.innerHTML = "Employee name is required.";
+    error.style.color = "red";
+    fieldsChecks["employeeName"] = false;
+  } else if (!namePattern.test(value)) {
+    error.innerHTML = "Name should only contain letters and spaces.";
+    error.style.color = "red";
+    fieldsChecks["employeeName"] = false;
+  } else {
+    error.innerHTML = "";
+    fieldsChecks["employeeName"] = true;
+  }
 
-       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-       if (email === "") {
-           emailError.textContent = "Email is required.";
-           emailError.style.color = "red";
-           return false;
-       } else if (!emailPattern.test(email)) {
-           emailError.textContent = "Invalid email format.";
-           emailError.style.color = "red";
-           return false;
-       } else {
-           emailError.textContent = "";
-           return true;
-       }
-   }
+  validateAndEnableSubmit();
+}
 
-   function contactNumberValidation() {
-       const contactNumber = document.getElementById("contactNumber").value;
-       const contactNumberError = document.getElementById("contactNumberError");
+function validateEmployeeDesignation() {
+  const element = document.getElementById("employeeDesignation");
+  const error = document.getElementById("employeeDesignationError");
+  const value = element.value.trim();
 
-       const phonePattern = /^[0-9]{10}$/;
-       if (contactNumber === "") {
-           contactNumberError.textContent = "Contact number is required.";
-           contactNumberError.style.color = "red";
-           return false;
-       } else if (!phonePattern.test(contactNumber)) {
-           contactNumberError.textContent = "Contact number must be 10 digits.";
-           contactNumberError.style.color = "red";
-           return false;
-       } else {
-           contactNumberError.textContent = "";
-           return true;
-       }
-   }
+  if (value === '') {
+    error.innerHTML = "Employee designation is required.";
+    error.style.color = "red";
+    fieldsChecks["employeeDesignation"] = false;
+  } else {
+    error.innerHTML = "";
+    fieldsChecks["employeeDesignation"] = true;
+  }
 
-   function addressValidation() {
-       const address = document.getElementById("address").value;
-       const addressError = document.getElementById("addressError");
+  validateAndEnableSubmit();
+}
 
-       if (address.length < 5 || address.length > 100) {
-           addressError.textContent = "Address must be between 5 and 50 characters.";
-           addressError.style.color = "red";
-           return false;
-       } else {
-           addressError.textContent = "";
-           return true;
-       }
-   }
+function validateDepartmentName() {
+  const element = document.getElementById("departmentName");
+  const error = document.getElementById("DepartmentNameError");
+  const value = element.value.trim();
 
-   function validateAgree() {
-       const agree = document.getElementById("agree").checked;
-       const agreeError = document.getElementById("agreeError");
+  if (value === '') {
+    error.innerHTML = "Please select a department.";
+    error.style.color = "red";
+    fieldsChecks["departmentName"] = false;
+  } else {
+    error.innerHTML = "";
+    fieldsChecks["departmentName"] = true;
+  }
 
-       if (!agree) {
-           agreeError.textContent = "You must agree to the terms and conditions.";
-           agreeError.style.color = "red";
-           return false;
-       } else {
-           agreeError.textContent = "";
-           return true;
-       }
-   }
+  validateAndEnableSubmit();
+}
 
-   function validateForm() {
-       const isNameValid = validateEmployeeName();
-       const isDesignationValid = validateDesignation();
-       const isDepartmentValid = validateDepartmentName();
-       const isEmailValid = emailValidation();
-       const isContactValid = contactNumberValidation();
-       const isAddressValid = addressValidation();
-       const isAgreeValid = validateAgree();
+function emailValidation() {
+  let element = document.getElementById("email");
+  let error = document.getElementById("emailError");
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-       const isFormValid = isNameValid && isDesignationValid && isDepartmentValid && isEmailValid && isContactValid && isAddressValid && isAgreeValid;
+  if (element.value.trim() === '') {
+    error.innerHTML = "Email is required.";
+    error.style.color = "red";
+    fieldsChecks["email"] = false;
+  } else if (emailRegex.test(element.value)) {
+    error.innerHTML = "";
+    fieldsChecks["email"] = true;
+    emailAjaxValidation(); // Call AJAX validation
+  } else {
+    error.innerHTML = "Invalid email address.";
+    error.style.color = "red";
+    fieldsChecks["email"] = false;
+  }
 
-       document.getElementById("submit").disabled = !isFormValid;
+  validateAndEnableSubmit();
+}
+function contactNumberValidation() {
+  const element = document.getElementById("contactNumber");
+  const error = document.getElementById("contactNumberError");
+  const mobileRegex = /^\d{10}$/;
+  const value = element.value.trim(); // Trim to remove any extra spaces
 
-       return isFormValid;
-   }
+  // Check if the input is empty
+  if (value === '') {
+    error.innerHTML = "Contact Number is required.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // Check for non-numeric characters
+  else if (/\D/.test(value)) {
+    error.innerHTML = "Contact number must contain only digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // Check if the input matches the 10-digit pattern
+  else if (!mobileRegex.test(value)) {
+    error.innerHTML = "Contact Number should be exactly 10 digits.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  else {
+    error.innerHTML = "";
+    fieldsChecks["contactNumber"] = true;
+    numberAjaxValidation(); // Assuming this is for additional server-side validation
+  }
 
-   // Attach blur event listeners for real-time validation
-   document.getElementById("employeeName").addEventListener("blur", validateForm);
-   document.getElementById("employeeDesignation").addEventListener("blur", validateForm);
-   document.getElementById("departmentName").addEventListener("blur", validateForm);
-   document.getElementById("email").addEventListener("blur", validateForm);
-   document.getElementById("contactNumber").addEventListener("blur", validateForm);
-   document.getElementById("address").addEventListener("blur", validateForm);
-   document.getElementById("agree").addEventListener("change", validateForm);
+  validateAndEnableSubmit();
+}
+
+
+function addressValidation() {
+  const element = document.getElementById("address");
+  const error = document.getElementById("addressError");
+  const value = element.value.trim();
+
+  if (value.length > 3 && value.length < 300) {
+    error.innerHTML = "";
+    fieldsChecks["address"] = true;
+  } else {
+    error.innerHTML = "Address should be between 3 and 300 characters.";
+    error.style.color = "red";
+    fieldsChecks["address"] = false;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function agreeValidation() {
+  const element = document.getElementById("agree");
+  const error = document.getElementById("agreeError");
+
+  if (element.checked) {
+    error.innerHTML = "";
+    fieldsChecks["agree"] = true;
+  } else {
+    error.innerHTML = "You must agree to the terms.";
+    error.style.color = "red";
+    fieldsChecks["agree"] = false;
+  }
+
+  validateAndEnableSubmit();
+}
+
+function emailAjaxValidation() {
+  let email = document.getElementById("email").value;
+  let error = document.getElementById("emailError");
+
+  if (email === "") {
+    error.innerHTML = "Please enter a valid email.";
+    fieldsChecks["email"] = false;
+    validateAndEnableSubmit();
+    return;
+  }
+
+  const request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:8080/issue-management/validateServerEmail/" + email);
+  request.send();
+  request.onload = function () {
+    let response = this.responseText;
+    error.innerHTML = response;
+
+    if (response === "") {
+      fieldsChecks["email"] = true;
+    } else {
+      fieldsChecks["email"] = false;
+    }
+    validateAndEnableSubmit();
+  };
+  request.onerror = function () {
+    console.error("Request failed");
+    error.innerHTML = "Validation failed. Please try again.";
+    fieldsChecks["email"] = false;
+    validateAndEnableSubmit();
+  };
+}
+
+function numberAjaxValidation() {
+  let contactNumber = document.getElementById("contactNumber").value;
+  let error = document.getElementById("contactNumberError");
+
+  if (contactNumber === "") {
+    error.innerHTML = "Please enter a valid contact number.";
+    fieldsChecks["contactNumber"] = false;
+    validateAndEnableSubmit();
+    return;
+  }
+
+  const request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:8080/issue-management/validateServerContactNumber/" + contactNumber);
+  request.send();
+  request.onload = function () {
+    let response = this.responseText;
+    error.innerHTML = response;
+
+    if (response === "") {
+      fieldsChecks["contactNumber"] = true;
+    } else {
+      fieldsChecks["contactNumber"] = false;
+    }
+    validateAndEnableSubmit();
+  };
+  request.onerror = function () {
+    console.error("Request failed");
+    error.innerHTML = "Validation failed. Please try again.";
+    fieldsChecks["contactNumber"] = false;
+    validateAndEnableSubmit();
+  };
+}
+
+// Event Listeners
+document.getElementById("employeeName").addEventListener("blur", validateEmployeeName);
+document.getElementById("employeeDesignation").addEventListener("blur", validateEmployeeDesignation);
+document.getElementById("departmentName").addEventListener("change", validateDepartmentName);
+document.getElementById("email").addEventListener("blur", emailValidation);
+document.getElementById("contactNumber").addEventListener("blur", contactNumberValidation);
+document.getElementById("address").addEventListener("blur", addressValidation);
+document.getElementById("agree").addEventListener("change", agreeValidation);
 
 </script>
+
 
 
 </head>
@@ -210,90 +316,85 @@
                 </span>
 <!--Form-->
 
-      <form action="employeeRegistration" method="post" >
+      <form action="employeeRegistration" method="post">
 
-              <div class="text-primary"><b>${saveEmployee}</b></div>
+          <div class="text-primary"><b>${saveEmployee}</b></div>
+          <div style="color:red;"><b>${saveDeptAdmin}</b></div>
 
-
-               <!-- Employee Name -->
-                            <div style="margin-bottom:2px;" class="form-group">
-                                <span id="employeeError" class="error-message"></span><br>
-                                <label for="employeeName" class="form-label">Employee Name:</label>
-                                <div class="input-icon">
-                                    <i class="fas fa-user"></i>
-                                    <input type="text" class="form-control" id="employeeName" onblur="validateEmployeeName()" name="employeeName" placeholder="Enter  Name" />
-                                </div>
-                            </div>
-
-
-                             <!-- Employee Designation -->
-                                          <div style="margin-bottom:2px;" class="form-group">
-                                              <span id="employeeDesignationError" class="error-message"></span><br>
-                                              <label for="employeeDesignation" class="form-label">Employee Designation:</label>
-                                              <div class="input-icon">
-                                                  <i class="fas fa-user"></i>
-                                                  <input type="text" class="form-control" id="employeeDesignation" onblur="validateDesignation()" name="employeeDesignation" placeholder="Enter Designation" />
-                                              </div>
-                                          </div>
-                                          <br>
-                           <!---dropdown select issue-->
-
-                          <label for="departmentName" class="form-label">Department:</label>
-                          <span id="DepartmentNameError" class="error-message"></span>
-                 <select onblur="validateDepartmentName()" class="form-select custom-select-width" id="departmentName" name="departmentName">
-                 <option value="">Select Department</option>
-               <c:forEach items="${departments}" var="departmentName">
-                 <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
-               </c:forEach>
-             </select>
-
-
-              <!-- Email -->
-              <div style="margin-bottom:2px;" class="form-group">
-                  <span id="emailError" class="error-message"></span><br>
-                  <label for="email" class="form-label">Email:</label>
-                  <div class="input-icon">
-                      <i class="fa-regular fa-envelope"></i>
-                      <input type="email" class="form-control" id="email"   onblur="emailValidation()" name="email" placeholder="Enter Email" />
-                  </div>
+          <!-- Employee Name -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="employeeError" class="error-message"></span><br>
+              <label for="employeeName" class="form-label">Employee Name:</label>
+              <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                  <input type="text" class="form-control" id="employeeName" onblur="validateEmployeeName()" name="employeeName" placeholder="Enter Name" />
               </div>
+          </div>
 
-              <!-- Contact Number -->
-              <div style="margin-bottom:2px;" class="form-group">
-                  <span id="contactNumberError" class="error-message"></span><br>
-                  <label for="contactNumber" class="form-label">Contact Number:</label>
-                  <div class="input-icon">
-                      <i class="fa-solid fa-phone"></i>
-                      <input type="tel" class="form-control" id="contactNumber"   onblur="contactNumberValidation()" name="contactNumber" placeholder="Enter Contact Number" />
-                  </div>
+          <!-- Employee Designation -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="employeeDesignationError" class="error-message"></span><br>
+              <label for="employeeDesignation" class="form-label">Employee Designation:</label>
+              <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                  <input type="text" class="form-control" id="employeeDesignation" onblur="validateEmployeeDesignation()" name="employeeDesignation" placeholder="Enter Designation" />
               </div>
+          </div>
+          <br>
+          <!-- Dropdown select issue -->
+          <label for="departmentName" class="form-label">Department:</label>
+          <span id="DepartmentNameError" class="error-message"></span>
+          <select class="form-select custom-select-width" id="departmentName" onblur="validateDepartmentName()" name="departmentName">
+              <option value="">Select Department</option>
+              <c:forEach items="${departments}" var="departmentName">
+                  <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
+              </c:forEach>
+          </select>
+
+          <!-- Email -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="emailError" class="error-message"></span><br>
+              <label for="email" class="form-label">Email:</label>
+              <div class="input-icon">
+                  <i class="fa-regular fa-envelope"></i>
+                  <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" placeholder="Enter Email" />
+              </div>
+          </div>
+
+          <!-- Contact Number -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="contactNumberError" class="error-message"></span><br>
+              <label for="contactNumber" class="form-label">Contact Number:</label>
+              <div class="input-icon">
+                  <i class="fa-solid fa-phone"></i>
+                  <input type="tel" class="form-control" id="contactNumber" onblur="contactNumberValidation()" name="contactNumber" placeholder="Enter Contact Number" />
+              </div>
+          </div>
 
 
-             <!--textarea: address-->
-              <div style="margin-bottom:2px;"  class="form-group">
-                 <span id="addressError"></span><br>
-                 <b>Address:</b>
-                 <label for="address" class="form-floating"></label>
-                 <div class="input-icon">
-                 <!--words are not visible if other css override the placeholder -->
-                 <!--<i class="fa fa-map-marker" aria-hidden="true"></i>-->
-                 <textarea class="form-control " id="address" placeholder="" name="address" style="border-radius: 15px;" onblur="addressValidation()"></textarea>
-                </div>
-                </div>
+          <!-- Textarea: Address -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="addressError" class="error-message"></span><br>
+              <b>Address:</b>
+              <label for="address" class="form-floating"></label>
+              <div class="input-icon">
+                  <textarea class="form-control" id="address" placeholder="" onblur="addressValidation()" name="address" style="border-radius: 15px;"></textarea>
+              </div>
+          </div>
 
-              <!-- Agree Terms -->
-              <div>
-                  <span id="agreeError" class="error-message"></span><br>
-                  <input class="form-check-input" id="agree" type="checkbox" onchange="validateAgree()" value="agree" />
-                  <b>I agree to </b><a href="#">Terms & Conditions</a>
-              </div><br>
+          <!-- Agree Terms -->
+          <div>
+              <span id="agreeError" class="error-message"></span><br>
+              <input class="form-check-input" id="agree" type="checkbox" onchange="agreeValidation()" value="agree" />
+              <b>I agree to </b><a href="#">Terms & Conditions</a>
+          </div><br>
 
-              <!-- Submit Button -->
-              <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Register" >
-              </div><br>
+          <!-- Submit Button -->
+          <div class="d-grid gap-2" style="margin-bottom:10px;">
+              <input type="submit" class="btn btn-primary btn-lg" id="submit" disabled value="Register">
+          </div><br>
 
-          </form>
+      </form>
 
 
      </div>

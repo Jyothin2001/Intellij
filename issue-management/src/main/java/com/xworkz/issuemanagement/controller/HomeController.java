@@ -17,6 +17,7 @@ public class HomeController {
     {
         return"Home";
     }
+
     //for return to home like logout time
     @GetMapping("HomePage")
     public String homePages() {
@@ -75,11 +76,6 @@ public class HomeController {
         return "SearchComplaintRaise";
     }
 
-    @GetMapping("ComplaintRaisePage")
-    public String complaintRaisePage()
-    {
-        return "ComplaintRaise";
-    }
 
     @GetMapping("AddDepartment")
     public String SaveDepartment()
@@ -107,11 +103,11 @@ public class HomeController {
         return "EmployeeRegistration";
     }
 
-//    @GetMapping("departmentAdminComplaintViewPage")
-//    public String deptAdminView()
-//    {
-//        return "DepartmentAdminComplaintViewPage";
-//    }
+    @GetMapping("employeeLoginPage")
+    public String employeeLoginPage()
+    {
+        return "EmployeeLoginPage";
+    }
 
 
 

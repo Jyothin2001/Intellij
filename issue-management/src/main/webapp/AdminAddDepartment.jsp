@@ -45,8 +45,41 @@
                 } else {
                     departmentError.innerHTML = "";
                     console.log("Correct department name");
+                    departmentNameAjaxValidation();
                     fieldsChecks["departmentName"] = true;
                 }
+
+function departmentNameAjaxValidation() {
+  let departmentName = document.getElementById("departmentName").value;
+  let error = document.getElementById("departmentError");
+
+  if (departmentName === "") {
+    error.innerHTML = "Please enter a valid department name.";
+    fieldsChecks["departmentName"] = false;
+
+    return;
+  }
+
+  const request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:8080/issue-management/validateServerDepartmentName/" + departmentName);
+  request.send();
+  request.onload = function () {
+    let response = this.responseText;
+    error.innerHTML = response;
+
+    if (response === "") {
+      fieldsChecks["departmentName"] = true;
+    } else {
+      fieldsChecks["departmentName"] = false;
+    }
+  };
+  request.onerror = function () {
+    console.error("Request failed");
+    error.innerHTML = "Validation failed. Please try again.";
+    fieldsChecks["departmentName"] = false;
+
+  };
+}
 
                 // Validate Address
                 const address = document.getElementById('address');
@@ -172,7 +205,7 @@
                  <div class="input-icon">
                  <!--words are not visible if other css override the placeholder
                  <i class="fa fa-map-marker" aria-hidden="true"></i>-->
-                 <input type="text" class="form-control " id="area" onblur="validateForm()" placeholder="Enter Area" name="departmentArea" style="border-radius: 15px;" >
+                 <input type="text" class="form-control " id="area" oninput="validateForm()" placeholder="Enter Area" name="departmentArea" style="border-radius: 15px;" >
                 </div>
                 </div>
 <br>

@@ -61,7 +61,6 @@
 
 <script>
 let fieldsChecks = {
-    "email": false,
     "oldPassword": false,
     "newPassword": false,
     "confirmPassword": false
@@ -192,13 +191,13 @@ function oldPass()
 if(a==1)
 {
 document.getElementById('oldPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('old-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
 a=0;
 }
 else
 {
 document.getElementById('oldPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('old-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
 a=1;
 }
 }
@@ -209,13 +208,13 @@ function newPass()
 if(a==1)
 {
 document.getElementById('newPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('new-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
 a=0;
 }
 else
 {
 document.getElementById('newPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('new-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
 a=1;
 }
 }
@@ -226,13 +225,13 @@ function confirmPass()
 if(a==1)
 {
 document.getElementById('confirmPassword').type='password';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('confirm-pass-icon').src='https://img.icons8.com/?size=100&id=121539&format=png&color=000000';
 a=0;
 }
 else
 {
 document.getElementById('confirmPassword').type='text';
-document.getElementById('pass-icon').src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s';
+document.getElementById('confirm-pass-icon').src='https://img.icons8.com/?size=100&id=986&format=png&color=000000';
 a=1;
 }
 }
@@ -273,9 +272,10 @@ a=1;
 
                           <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
                            <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
-                           <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
-                           <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
-                              <li><a class="dropdown-item" href="HomePage"><strong>Log j Out</strong></a></li><!--not working get=action(logout)-->
+                           <li><a class="dropdown-item" href="viewComplaintRaise"><strong>Complaint Details</strong></a></li>
+                            <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
+                              <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
+
 
 
                             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> View your Details</strong></a></li>
@@ -350,7 +350,7 @@ a=1;
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" value="${sessionScope.signedInUserEmail}" readonly autocomplete="email" style="border-radius: 15px;" placeholder="Enter Your Email">
+                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" value="${sessionScope.signedInUserEmail}" readonly style="border-radius: 15px;" placeholder="Enter Your Email">
                  </div>
                  </div>
 
@@ -363,7 +363,7 @@ a=1;
                     <div class="input-icon">
                     <i class="fa-solid fa-key"></i>
                     <input type="password" class="form-control"  id="oldPassword" onblur="oldPasswordValidation()" autocomplete="old-password" name="oldPassword" style="border-radius: 15px;" placeholder="Old password">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="oldPass()" class="pass-icon" id="pass-icon">
+                    <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="oldPass()" class="pass-icon" id="old-pass-icon">
                </div>
                </div>
                </div>
@@ -376,7 +376,7 @@ a=1;
                                    <div class="input-icon">
                                    <i class="fa-solid fa-key"></i>
                                    <input type="password" class="form-control"  id="newPassword" onblur="newPasswordValidation()" autocomplete="new-password" name="newPassword" style="border-radius: 15px;" placeholder="New Password">
-                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="newPass()" class="pass-icon" id="pass-icon">
+                                   <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="newPass()" class="pass-icon" id="new-pass-icon">
                               </div>
                               </div>
                               </div>
@@ -388,8 +388,8 @@ a=1;
                                                   <div class=" form-group ">
                                                   <div class="input-icon">
                                                   <i class="fa-solid fa-key"></i>
-                                                  <input type="password" class="form-control"  id="confirmPassword" autocomplete="confirm-password" onblur="confirmPasswordValidation()" name="confirmPassword" style="border-radius: 15px;" placeholder="Confirm Password">
-                                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcget2ZJS21scl6Hz7Es5tzZFqiiMSPACqWw&s" onclick="confirmPass()" class="pass-icon" id="pass-icon">
+                                                  <input type="password" class="form-control"  id="confirmPassword" autocomplete="confirm-password" oninput="confirmPasswordValidation()" name="confirmPassword" style="border-radius: 15px;" placeholder="Confirm Password">
+                                                  <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="confirmPass()" class="pass-icon" id="confirm-pass-icon">
                                              </div>
                                              </div>
                                              </div>

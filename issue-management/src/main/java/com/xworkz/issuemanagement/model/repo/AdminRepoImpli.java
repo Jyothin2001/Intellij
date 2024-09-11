@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -222,6 +223,25 @@ public class AdminRepoImpli implements AdminRepo
         return departmentDTO;
 
     }
+
+    @Override
+    public Optional<DepartmentDTO> existsByDepartmentName(String departmentName) {
+        EntityManager entityManager= entityManagerFactory.createEntityManager();
+        try {
+            Query query = entityManager.createQuery("SELECT e FROM DepartmentDTO e WHERE e.departmentName = :departmentName");
+            query.setParameter("departmentName", departmentName);
+            DepartmentDTO result = (DepartmentDTO) query.getSingleResult();
+            log.info("checking departmentName from DepartmentDTO in AjaxEmailAndNumberRepo");
+            return Optional.of(result);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+
+    }
+
 
     @Override
     public List<DepartmentDTO> findByDepartmentName() {

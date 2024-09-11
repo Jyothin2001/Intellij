@@ -126,6 +126,69 @@
 
 
 <script>
+
+<!-- Email validation function-->
+    function emailValidation() {
+        const email = document.getElementById("email").value;
+        const emailError = document.getElementById("emailError");
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (email === "") {
+            emailError.innerText = "Email is required.";
+            emailError.style.color="Red";
+            return false;
+        } else if (!emailRegex.test(email)) {
+            emailError.innerText = "Invalid email format. ex:abc@gmail.com";
+            emailError.style.color="Red";
+            return false;
+        } else {
+            emailError.innerText = "";
+            return true;
+        }
+    }
+
+    <!-- Password validation function-->
+    function passwordValidation() {
+        const password = document.getElementById("password").value;
+        const passwordError = document.getElementById("passwordError");
+        const minLength = 8;
+
+        if (password === "") {
+            passwordError.innerText = "Password is required.";
+            passwordError.style.color="Red";
+            return false;
+        } else if (password.length < minLength) {
+            passwordError.innerText = `Password must be at least 8 characters long.`;
+            passwordError.style.color="Red";
+            return false;
+        } else {
+            passwordError.innerText = "";
+            return true;
+        }
+    }
+
+    <!-- Check if both fields are valid, then enable the submit button-->
+    function validateForm() {
+        const emailValid = emailValidation();
+        const passwordValid = passwordValidation();
+        const submitButton = document.getElementById("signInSubmit");
+
+        // Enable the submit button only if both fields are valid
+        if (emailValid && passwordValid) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+    <!--Run validation when the page loads to keep the submit button disabled initially-->
+    window.onload = function() {
+        document.getElementById("signInSubmit").disabled = true;
+    }
+
+
+
+
 <!--password-->
 var a;
 function pass()
@@ -152,7 +215,7 @@ a=1;
                            function disableButton() {
                        var accountLocked = "${accountLocked}";
                        if (accountLocked === "true") {
-                           document.getElementById("signinsubmit").disabled = true;
+                           document.getElementById("signInSubmit").disabled = true;
                        }
                    }
                    window.onload = disableButton;
@@ -203,7 +266,7 @@ a=1;
 
                      <div class="text-primary"><h6><b>${forgotPasswordMsg}</b></h6></div>
 
-                     <div class="text-primary"><h6><b>${passwordResetMessage}</b></h6></div>
+                     <div class="text-success"><h6><b>${passwordResetMessage}</b></h6></div>
 
 
 <!--Form-->
@@ -216,7 +279,7 @@ a=1;
                    <label for="email" class="form-label"><b></b></label>
                    <div class="input-icon">
                    <i class="fa-regular fa-envelope"></i>
-                   <input type="email" class="form-control" id="email" onblur="emailValidation()" name="email" style="border-radius: 15px;" placeholder="Enter Email">
+                   <input type="email" class="form-control" id="email" oninput="validateForm()" name="email" style="border-radius: 15px;" placeholder="Enter Email">
                  </div>
                  </div>
 
@@ -226,7 +289,7 @@ a=1;
                              <span id="passwordError"></span><br>
                              <label for="password" class="form-label"><b></b></label>
                              <div class=" password-container ">
-                                 <input type="password" class="form-control" id="password" onblur="passwordValidation()" style="border-radius: 15px;" name="password" placeholder="Enter password">
+                                 <input type="password" class="form-control" id="password" oninput="validateForm()" style="border-radius: 15px;" name="password" placeholder="Enter password">
                                  <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="pass()" class="pass-icon" id="pass-icon">
                              </div>
                          </div>
@@ -238,7 +301,7 @@ a=1;
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
-                  <input type="submit" class="btn btn-primary btn-lg " id="signinsubmit"  value="Login">
+                  <input type="submit" class="btn btn-primary btn-lg " id="signInSubmit" disabled  value="Login">
 
               </div>
               <div>

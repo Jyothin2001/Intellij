@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.dto;
 
+import com.xworkz.issuemanagement.constants.Status;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.GeneratorType;
@@ -8,6 +9,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
@@ -40,9 +44,15 @@ public class EmployeeDTO
     private String email;
 
     @Column(name = "employee_contact_number")
-    @NotBlank(message = "Contact number is required.")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Contact number must be 10 digits.")
-    private String contactNumber;
+    @NotNull(message = "Contact number cannot be null")
+    @Min(value = 1000000000L, message = "Contact number should be at least 10 digits")
+    @Max(value = 9999999999L, message = "Contact number should be at most 10 digits")
+    private Long contactNumber;
+
+
+//    @NotBlank(message = "Contact number is required.")
+//    @Pattern(regexp = "^[0-9]{10}$", message = "Contact number must be 10 digits.")
+//    private Long contactNumber;
 
     @Column(name = "employee_address")
     @NotBlank(message = "Address is required.")
@@ -54,7 +64,11 @@ public class EmployeeDTO
     private DepartmentDTO departmentDTO;
 
     @Column(name = "employee_status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private Long otp;
+
 
 
 

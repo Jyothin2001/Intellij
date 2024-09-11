@@ -104,4 +104,32 @@ public class MailSend {
                 "X-Workz Project Team");
         javaMailSender.send(message);
     }
+
+
+    // Send OTP to email
+    public void sendOtpToEmail(String email, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("One-Time Password (OTP) Verification");
+        message.setText("Dear User,\n\n" +
+                "Your One-Time Password (OTP) for verification is: " + otp + ".\n\n" +
+                "Please use this OTP to complete the verification process. If you did not request this OTP, please disregard this message.\n\n" +
+                "Best regards,\n" +
+                "X-Workz Team");
+        javaMailSender.send(message);
+    }
+    // Resend OTP to email
+    public void resendOtpToEmail(String email, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Resend One-Time Password (OTP) Verification");
+        message.setText("Dear User,\n\n" +
+                "We have received your request to resend the One-Time Password (OTP) for verification. " +
+                "Your OTP is: " + otp + ".\n\n" +
+                "Please use this OTP to complete the verification process. If you did not request this OTP, please ignore this message.\n\n" +
+                "Best regards,\n" +
+                "X-Workz Team");
+        javaMailSender.send(message);
+    }
+
 }

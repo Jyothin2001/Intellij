@@ -4,6 +4,7 @@ import com.xworkz.issuemanagement.dto.*;
 import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdminService {
 
@@ -31,6 +32,11 @@ public interface AdminService {
 
     //save department
     DepartmentDTO saveDepartment(DepartmentDTO departmentDTO);
+
+    //NonUniqueResultException for duplicate entry in DepartmentDTO  it affect findByDepartmentType() (repo=SingleResultSet)
+    boolean existsByDepartmentName(String departmentName);
+
+
 
     //find all departmentName for displaying in ViewComplaintRaise.jsp
     List<DepartmentDTO> findByDepartmentName();

@@ -43,13 +43,15 @@
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
 
-               <li><a class="dropdown-item" href="viewUserDetails"><strong>ViewUserDetails</strong></a></li>
+               <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
 
-              <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>ViewRaiseComplaintDetails</strong></a></li>
+              <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Details</strong></a></li>
 
-              <li><a class="dropdown-item" href="AddDepartment"><strong>AddComplaints</strong></a></li>
+              <li><a class="dropdown-item" href="AddDepartment"><strong>Add Department</strong></a></li>
 
-              <li><a class="dropdown-item" href="getDepartmentName"><strong>AddDepartment Admin</strong></a></li>
+              <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+
+              <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
             </ul>
           </div>

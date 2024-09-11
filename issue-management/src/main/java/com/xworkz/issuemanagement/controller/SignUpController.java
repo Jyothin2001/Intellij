@@ -62,7 +62,7 @@ public class SignUpController
 //                this.mailService.sendSimpleEmail(email, subject, body);
 
 
-                redirectAttributes.addFlashAttribute("msg", "Signup successful " + signUpDTO.getFirstName() + " Please check your email for your password.");
+                redirectAttributes.addFlashAttribute("msg", "Signup successful " + signUpDTO.getFirstName() + " ,Please check your email for your password.");
                 //return "SignIn";
                 return "redirect:sign-up-success";
             } else {

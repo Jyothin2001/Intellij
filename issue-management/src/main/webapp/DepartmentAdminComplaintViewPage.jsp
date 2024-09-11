@@ -34,7 +34,6 @@
             </a>
 
             <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
-            <a class="navbar-brand text-light" href="AdminPage"><b>Admin</b></a>
         </div>
 
         <div class="dropdown">
@@ -44,8 +43,14 @@
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="viewUserDetails"><strong></strong></a></li>
-                <li><a class="dropdown-item" href="AddDepartment"><strong>AddComplaints</strong></a></li>
+
+
+                <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
+
+               <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
+
+
+
             </ul>
         </div>
 
@@ -81,9 +86,10 @@
                         <th>Address</th>
                         <th>Description</th>
                         <th>User Id</th>
-                        <th>Allocate Department</th>
+                        <th>Allocate Employee</th>
                         <th>Status</th>
                         <th>Submit</th>
+                        <th>Delete</th>
 
                     </tr>
                     </thead>
@@ -106,7 +112,7 @@
                                 <form action="updateDepartment" method="post">
                                     <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}">
 
-                                    <select class="form-select status-select" name="departmentId">
+                                    <select class="form-select status-select" style=" width:200px;" name="departmentId">
                                         <option value="Select">Select</option>
                                         <c:forEach var="department" items="${departments}">
                                             <!--conditions for retain name like both table id's should match-->
@@ -118,7 +124,7 @@
                                     </select>
                             </td>
                             <td>
-                                <select class="form-select status-select" name="status">
+                                <select class="form-select status-select" style=" width:150px;" name="status">
                                     <option value="Select">Select</option>
                                     <option value="Pending" ${viewRaiseComplaintUsers.status=='Pending' ? 'selected' : '' }>
                                     Pending</option>
@@ -128,9 +134,16 @@
                                     Completed</option>
                                 </select>
                             </td>
+
                             <td>
+
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </td>
+
+                             <td>
+                            <button type="button" class="btn btn-primary">Delete</button>
+                              </td>
+
                             </form>
 
 

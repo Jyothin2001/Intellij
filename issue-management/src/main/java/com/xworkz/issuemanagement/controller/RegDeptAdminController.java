@@ -181,9 +181,9 @@ public class RegDeptAdminController
             // Store AdminName in the session
             httpSession.setAttribute("SubAdminName", logIn);
 
-           HttpSession httpSession1= httpServletRequest.getSession();
-            httpSession1.setAttribute("departmentName",logIn.getDepartmentName());
 
+           HttpSession httpSession1= httpServletRequest.getSession();
+           httpSession1.setAttribute("departmentName",logIn.getDepartmentName());
             log.info("departmentAdminLoginIn successful AdminController..");
             regDeptAdminService.resetFailedAttempts(email);
 
@@ -196,7 +196,7 @@ public class RegDeptAdminController
 
             int failedAttempts=regDeptAdminService.getFailedAttempts(email);
             //redirectAttributes.addFlashAttribute("Msg", "Failed to login please check your email and password");
-            if(failedAttempts>3)
+            if(failedAttempts>=3)
             {
                 regDeptAdminService.lockAccount(email);
                 redirectAttributes.addFlashAttribute("accountError", "Your account is locked due to too many failed attempts.");
@@ -207,21 +207,6 @@ public class RegDeptAdminController
             }
             return"redirect:DepartmentLoginPage";
         }
-    }
-
-    @GetMapping("subAdminProfilePage")
-    public String subAdminProfilePage(Model model)
-    {
-        //Retrieve SubAdminName from the session
-        RegDeptAdminDTO subAdminName = (RegDeptAdminDTO) httpSession.getAttribute("SubAdminName");
-
-        if (subAdminName != null) {
-           model.addAttribute("subAdminName", subAdminName.getAdminName());
-           model.addAttribute("msg","Welcome to your page " + subAdminName.getAdminName());
-       }
-
-
-        return "SubAdminProfilePage";
     }
 
     @GetMapping("DepartmentLoginPage")
@@ -237,6 +222,23 @@ public class RegDeptAdminController
         }
         return"DepartmentLogInPage";
     }
+
+
+    @GetMapping("subAdminProfilePage")
+    public String subAdminProfilePage(Model model)
+    {
+        //Retrieve SubAdminName from the session
+        RegDeptAdminDTO subAdminName = (RegDeptAdminDTO) httpSession.getAttribute("SubAdminName");
+
+        if (subAdminName != null) {
+           model.addAttribute("subAdminNames", subAdminName.getAdminName());
+           model.addAttribute("msg","Welcome to your page " + subAdminName.getAdminName());
+       }
+
+
+        return "SubAdminProfilePage";
+    }
+
 
     //********sub Admin********
     @PostMapping("sub-admin-forgot-password")
@@ -310,7 +312,6 @@ public class RegDeptAdminController
             return "DepartmentAdminComplaintViewPage";
         }
     }
-
 
 
 

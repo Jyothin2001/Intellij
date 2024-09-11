@@ -82,15 +82,55 @@
             }
         }
 
+        function countryValidation() {
+            const country = document.getElementById('countryName');
+            const countryError = document.getElementById('countryNameError');
+            if (country.value === '0' || country.value.trim() === '') {
+                countryError.textContent = 'Please select a country.';
+                return false;
+            } else {
+                countryError.textContent = '';
+                return true;
+            }
+        }
+
+        function stateValidation() {
+            const state = document.getElementById('state');
+            const stateError = document.getElementById('stateNameError');
+            if (state.value === '0' || state.value.trim() === '') {
+                stateError.textContent = 'Please select a state.';
+                return false;
+            } else {
+                stateError.textContent = '';
+                return true;
+            }
+        }
+
+        function cityValidation() {
+            const city = document.getElementById('city');
+            const cityError = document.getElementById('cityNameError');
+            if (city.value === '0' || city.value.trim() === '') {
+                cityError.textContent = 'Please select a city.';
+                return false;
+            } else {
+                cityError.textContent = '';
+                return true;
+            }
+        }
+
         function validateForm() {
             const isValidComplaintType = complaintTypeValidation();
             const isValidDescription = descriptionValidation();
             const isValidArea = areaValidation();
             const isValidAddress = addressValidation();
             const isValidAgree = agreeValidation();
+            const isValidCountry = countryValidation();
+            const isValidState = stateValidation();
+            const isValidCity = cityValidation();
+
 
             const submitButton = document.getElementById('submit');
-            if (isValidComplaintType && isValidDescription && isValidArea && isValidAddress && isValidAgree) {
+            if (isValidComplaintType && isValidDescription && isValidArea && isValidAddress && isValidAgree && isValidCountry && isValidState && isValidCity) {
                 submitButton.disabled = false;
             } else {
                 submitButton.disabled = true;
@@ -107,6 +147,9 @@
             document.getElementById('area').addEventListener('blur', validateForm);
             document.getElementById('address').addEventListener('blur', validateForm);
             document.getElementById('agree').addEventListener('change', validateForm);
+            document.getElementById('countryName').addEventListener('blur', validateForm);
+            document.getElementById('state').addEventListener('blur', validateForm);
+            document.getElementById('city').addEventListener('blur', validateForm);
         });
 
 </script>
@@ -157,7 +200,7 @@
                                  <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
 
 
-                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal"><strong>Modal</strong></a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal"><strong>Modal user Details</strong></a></li>
             </ul>
         </div>
     </div>
@@ -221,12 +264,13 @@
 <form action="complaintRaise" method="post">
                 <span style="color:blue;">${complaintRaiseMsg}</span>
 
-                <!---dropdown select issue-->
+                <!---dropdown select issue
                 <div style="margin-bottom:2px;">
                     <span id="complaintTypeError" class="text-danger"></span>
+                     <b>Complaint Type:</b>
                     <label for="complaintType" class="form-label"></label>
-                    <b>Complaint Type:</b>
-                    <select class="form-select custom-select-width" id="complaintType" name="complaintType" onblur="validateForm()" required>
+
+                    <select class="form-select custom-select-width" id="complaintType" style="border-radius: 15px;" name="complaintType" onblur="validateForm()" required>
                         <option value="0">Select</option>
                         <option value="Electric issue">Electric issue</option>
                         <option value="Water Supply">Water Supply</option>
@@ -235,14 +279,30 @@
                         <option value="Water Problem">Water Problem</option>
                     </select>
                 </div>
+                <br>-->
+                <!---dropdown select issue-->
+                <div style="margin-bottom:2px;">
+                    <span id="complaintTypeError" class="text-danger"></span>
+                    <b>Complaint Type:</b>
+                    <label for="complaintType" class="form-label"></label>
+
+                    <select class="form-select custom-select-width" id="complaintType" style="border-radius: 15px;" name="complaintType" onblur="validateForm()" required>
+                        <option value="0">Select</option>
+                        <!-- Dynamically populate the complaint types -->
+                        <c:forEach var="department" items="${departments}">
+                            <option value="${department.departmentName}">${department.departmentName}</option>
+                        </c:forEach>
+                    </select>
+                </div>
                 <br>
+
 
                 <!---Country --->
                 <div style="margin-bottom:2px;">
                     <span id="countryNameError" class="text-danger"></span>
                     <label for="countryName" class="form-label"></label>
                     <b>Country:</b>
-                    <select class="form-select custom-select-width" id="countryName" style="border-radius: 15px;" name="country" placeholder="Enter country" required>
+                    <select class="form-select custom-select-width" id="countryName" style="border-radius: 15px;" onblur="validateForm()" name="country" placeholder="Enter country" required>
                         <!-- Countries will be loaded here by JavaScript -->
                     </select><br>
                 </div>
@@ -252,7 +312,7 @@
                     <span id="stateNameError" class="text-danger"></span>
                     <label for="state" class="form-label"></label>
                     <b>State:</b>
-                    <select class="form-select custom-select-width" id="state" name="state" style="border-radius: 15px;" required>
+                    <select class="form-select custom-select-width" id="state" onblur="validateForm()" name="state" style="border-radius: 15px;" required>
                         <!-- States will be loaded here by JavaScript -->
                     </select>
                 </div>
@@ -263,7 +323,7 @@
                     <span id="cityNameError" class="text-danger"></span>
                     <label for="city" class="form-label"></label>
                     <b>City:</b>
-                    <select class="form-select custom-select-width" id="city" style="border-radius: 15px;" name="city" placeholder="Enter city" required>
+                    <select class="form-select custom-select-width" id="city" onblur="validateForm()" style="border-radius: 15px;" name="city" placeholder="Enter city" required>
                         <!-- Cities will be loaded here by JavaScript -->
                     </select>
                 </div>

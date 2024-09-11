@@ -46,7 +46,9 @@
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
               <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
-              <li><a class="dropdown-item" href="AddDepartment"><strong>AddComplaints</strong></a></li>
+              <li><a class="dropdown-item" href="AddDepartment"><strong>Add Department</strong></a></li>
+              <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+              <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
             </ul>
           </div>
 
@@ -111,94 +113,97 @@
       </div>
 
 
-      <div
-        class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded  ">
-        <div class="card">
-          <div style="margin-top: 15px;">
-            <h3 style="color:blue; ">
-              <center>View Complaint Raise Details</center>
-            </h3>
-          </div>
+       <div class="container mt-4">
+                   <div class=" text-success text-center mb-4">
+                       <strong>${NoComplaints}</strong>
+                   </div>
+        <div
+          class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded  ">
+          <div class="card">
+            <div style="margin-top: 15px;">
+              <h3 style="color:blue; ">
+                <center>View Complaint Raise Details</center>
+              </h3>
+            </div>
 
-          <!--text/word colors-->
-          <div class="card-body text-dark">
-            <div class="table-responsive">
+            <!--text/word colors-->
+            <div class="card-body text-dark">
+              <div class="table-responsive">
 
-              <table class="table table-bordered table-striped ">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>S.NO</th>
-                    <th>ID</th>
-                    <th>Complaint Type</th>
-                    <th>Country</th>
-                    <th>State</th>
-                    <th>City</th>
-                    <th>Area</th>
-                    <th>Address</th>
-                    <th>Description</th>
-                    <th>User Id</th>
-                    <th>Allocate Department</th>
-                    <th>Status</th>
-                    <th>Submit</th>
-
-                  </tr>
-                </thead>
-
-                <tbody class="table-hover">
-                  <c:forEach var="viewRaiseComplaintUsers" items="${viewRaiseComplaint}" varStatus="status">
+                <table class="table table-bordered table-striped ">
+                  <thead class="thead-dark">
                     <tr>
-                      <td>${status.index + 1}</td>
-                      <td>${viewRaiseComplaintUsers.complaintId}</td>
-                      <td>${viewRaiseComplaintUsers.complaintType}</td>
-                      <td>${viewRaiseComplaintUsers.country}</td>
-                      <td>${viewRaiseComplaintUsers.state}</td>
-                      <td>${viewRaiseComplaintUsers.city}</td>
-                      <td>${viewRaiseComplaintUsers.area}</td>
-                      <td>${viewRaiseComplaintUsers.address}</td>
-                      <td>${viewRaiseComplaintUsers.description}</td>
-                      <td>${viewRaiseComplaintUsers.signUpDTO.id}</td>
-
-                      <td>
-                        <form action="updateDepartment" method="post">
-                          <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}">
-
-                          <select class="form-select status-select" name="departmentId">
-                            <option value="Select">Select</option>
-                            <c:forEach var="department" items="${departments}">
-                              <!--conditions for retain name like both table id's should match-->
-                              <option value="${department.id}" ${viewRaiseComplaintUsers.departmentDTO !=null &&
-                                viewRaiseComplaintUsers.departmentDTO.id==department.id ? 'selected' : '' }>
-                                ${department.departmentName}</option>
-
-                            </c:forEach>
-                          </select>
-                      </td>
-                      <td>
-                        <select class="form-select status-select" name="status">
-                          <option value="Select">Select</option>
-                          <option value="Pending" ${viewRaiseComplaintUsers.status=='Pending' ? 'selected' : '' }>
-                            Pending</option>
-                          <option value="In Process" ${viewRaiseComplaintUsers.status=='In Process' ? 'selected' : '' }>
-                            In Process</option>
-                          <option value="Completed" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
-                            Completed</option>
-                        </select>
-                      </td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </td>
-                      </form>
-
-
-
+                      <th>S.NO</th>
+                      <th>ID</th>
+                      <th>Complaint Type</th>
+                      <th>Country</th>
+                      <th>State</th>
+                      <th>City</th>
+                      <th>Area</th>
+                      <th>Address</th>
+                      <th>Description</th>
+                      <th>User Id</th>
+                      <th>Allocate Department</th>
+                      <th>Status</th>
+                      <th>Submit</th>
 
                     </tr>
-                  </c:forEach>
-                </tbody>
+                  </thead>
+
+                  <tbody class="table-hover">
+                    <c:forEach var="viewRaiseComplaintUsers" items="${viewRaiseComplaint}" varStatus="status">
+                      <tr>
+                        <td>${status.index + 1}</td>
+                        <td>${viewRaiseComplaintUsers.complaintId}</td>
+                        <td>${viewRaiseComplaintUsers.complaintType}</td>
+                        <td>${viewRaiseComplaintUsers.country}</td>
+                        <td>${viewRaiseComplaintUsers.state}</td>
+                        <td>${viewRaiseComplaintUsers.city}</td>
+                        <td>${viewRaiseComplaintUsers.area}</td>
+                        <td>${viewRaiseComplaintUsers.address}</td>
+                        <td>${viewRaiseComplaintUsers.description}</td>
+                        <td>${viewRaiseComplaintUsers.signUpDTO.id}</td>
+
+                        <td>
+                          <form action="updateDepartment" method="post">
+                            <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}">
+
+                            <select class="form-select status-select" style=" width:200px;" name="departmentId">
+                              <option value="Select">Select</option>
+                              <c:forEach var="department" items="${departments}">
+                                <!--conditions for retain name like both table id's should match-->
+                                <option value="${department.id}" ${viewRaiseComplaintUsers.departmentDTO !=null &&
+                                  viewRaiseComplaintUsers.departmentDTO.id==department.id ? 'selected' : '' }>
+                                  ${department.departmentName}</option>
+
+                              </c:forEach>
+                            </select>
+                        </td>
+                        <td>
+                          <select class="form-select status-select" style=" width:150px;" name="status">
+                            <option value="Select">Select</option>
+                            <option value="Pending" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
+                              Pending</option>
+                            <option value="In Process" ${viewRaiseComplaintUsers.status=='In Process' ? 'selected' : ''
+                              }>
+                              In Process</option>
+                            <option value="Completed" ${viewRaiseComplaintUsers.status=='Not Completed' ? 'selected' : '' }>
+                              Completed</option>
+                          </select>
+                        </td>
+                        <td>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </td>
+                        </form>
+
+
+                      </tr>
+                    </c:forEach>
+                  </tbody>
+              </div>
+              </table>
             </div>
-            </table>
           </div>
-        </div>
     </body>
     <div>
       <div>

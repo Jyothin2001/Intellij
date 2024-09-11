@@ -77,6 +77,18 @@ public class ComplaintRaiseController
 //    public String showRaiseComplaintPage(Model model) {
 //        return "ComplaintRaise";
 //    }
+@GetMapping("ComplaintRaisePage")
+public String complaintRaisePage(Model model)
+{
+    // Fetch the list of departments for departmentName
+    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+    if(!departments.isEmpty())
+    {
+        log.info("departments name:{}", departments);
+        model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+    }
+    return "ComplaintRaise";
+}
 
     @GetMapping("viewComplaintRaise")
    public String viewComplaintRaise(@ModelAttribute("signUpDTO")SignUpDTO signUpDTO,Model model,DepartmentDTO departmentDTO)

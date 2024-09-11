@@ -145,6 +145,12 @@ public class AdminServiceImpli implements AdminService
     }
 
     @Override
+    public boolean existsByDepartmentName(String departmentName) {
+        log.info("existsByDepartmentName method running in AdminServiceImpl..");
+        return  adminRepo.existsByDepartmentName(departmentName).isPresent();
+    }
+
+    @Override
     public List<DepartmentDTO> findByDepartmentName() {
         log.info("findByDepartmentName method running in AdminServiceImpl..");
         List<DepartmentDTO> data = adminRepo.findByDepartmentName();

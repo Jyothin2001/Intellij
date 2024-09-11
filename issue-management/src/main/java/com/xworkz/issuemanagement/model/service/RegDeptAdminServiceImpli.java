@@ -8,6 +8,7 @@ import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 import com.xworkz.issuemanagement.util.PasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,10 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
 
     @Autowired
     private MailSend mailSend;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
 
     @Override
     public boolean saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO) {
@@ -46,24 +51,45 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         }
         return false;
     }
-
     @Override
-    public RegDeptAdminDTO getEmailAndPassword(String email, String password,String departmentName)
-    {
-         //RegDeptAdminDTO emailData=regDeptAdminRepo.getEmailAndPassword(email,password); //generated password is not there/match the query because in db encrypt password is there so no match get via email only (no query found exception)
-        RegDeptAdminDTO emailData=regDeptAdminRepo.getEmail(email);
-         log.info("email and password matching data:{}",emailData);
+    public RegDeptAdminDTO getEmailAndPassword(String email, String password, String departmentName) {
+        RegDeptAdminDTO emailData = regDeptAdminRepo.getEmail(email);
+        log.info("email and password matching data:{}", emailData);
 
-         if(emailData!=null && passwordEncoder.matches(password,emailData.getPassword()) && emailData.getDepartmentName().equals(departmentName))
-         {log.info("findEmailAndPassword successful in  AdminServiceImpl..");
-             return emailData;
-         }
-         else
-         {
-             log.info("findEmailAndPassword not successful in AdminServiceImpl..");
-         }
-return null;
-}
+        if (emailData != null) {
+            if (emailData.isAccountLocked()) {
+                log.info("Account is locked for email: {}", email);
+                return null; // Don't allow login if account is locked
+            }
+
+            // Check password and department name
+            if (passwordEncoder.matches(password, emailData.getPassword()) && emailData.getDepartmentName().equals(departmentName)) {
+                log.info("findEmailAndPassword successful in AdminServiceImpl..");
+                return emailData;
+            }
+        }
+
+        log.info("findEmailAndPassword not successful in AdminServiceImpl..");
+        return null;
+    }
+
+//    @Override
+//    public RegDeptAdminDTO getEmailAndPassword(String email, String password,String departmentName)
+//    {
+//         //RegDeptAdminDTO emailData=regDeptAdminRepo.getEmailAndPassword(email,password); //generated password is not there/match the query because in db encrypt password is there so no match get via email only (no query found exception)
+//        RegDeptAdminDTO emailData=regDeptAdminRepo.getEmail(email);
+//         log.info("email and password matching data:{}",emailData);
+//
+//         if(emailData!=null && passwordEncoder.matches(password,emailData.getPassword()) && emailData.getDepartmentName().equals(departmentName))
+//         {log.info("findEmailAndPassword successful in  AdminServiceImpl..");
+//             return emailData;
+//         }
+//         else
+//         {
+//             log.info("findEmailAndPassword not successful in AdminServiceImpl..");
+//         }
+//return null;
+//}
 
     @Override
     public void incrementFailedAttempts(String email) {
@@ -148,5 +174,9 @@ return null;
 
         return null;
     }
+
+
+
+
 
 }

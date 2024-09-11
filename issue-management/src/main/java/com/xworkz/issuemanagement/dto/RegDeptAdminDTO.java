@@ -60,7 +60,7 @@ public class RegDeptAdminDTO {
     public static final int MAX_LOGIN_ATTEMPTS=3;
 
    @Column(name="account_Locked")
-   private Boolean accountLocked=false;
+   private boolean accountLocked=false;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name="department_id", referencedColumnName="department_id")

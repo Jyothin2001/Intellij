@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Controller
 @Slf4j
 @RequestMapping("/")
@@ -145,40 +146,54 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
 //        return "AdminViewComplaintRaiseDetails";
 //    }
 
-    // Combined search endpoint for both OR and AND conditions
-@PostMapping("searchComplaintTypeAndCity")
-    public String searchByComplaintTypeAndCity(ComplaintRaiseDTO complaintRaiseDTO,DepartmentDTO departmentDTO,Model model)
-{
+    @PostMapping("searchComplaintTypeAndCity")
+    public String searchByComplaintTypeAndCity(ComplaintRaiseDTO complaintRaiseDTO, DepartmentDTO departmentDTO, Model model) {
 
-    log.info("searchByComplaintType method running in AdminController..!!");
-    List<ComplaintRaiseDTO> listOfTypeAndCity=adminService.searchByComplaintTypeAndCity(complaintRaiseDTO.getComplaintType(),complaintRaiseDTO.getCity());
-    if(!listOfTypeAndCity.isEmpty())
-    {
+        log.info("searchByComplaintType method running in AdminController..!!");
+
+        // Always fetch the list of departments and cities
         List<DepartmentDTO> departments = adminService.findByDepartmentName();
-        model.addAttribute("departments", departments);// Fetch the list of departmentName
+        List<ComplaintRaiseDTO> listOfCities=adminService.findAllCities();
+        model.addAttribute("cities",listOfCities);
+        model.addAttribute("departments", departments); // Add department list to the model
 
-        model.addAttribute("viewRaiseComplaint",listOfTypeAndCity);
+
+        // Search by complaint type and city
+        List<ComplaintRaiseDTO> listOfTypeAndCity = adminService.searchByComplaintTypeAndCity(complaintRaiseDTO.getComplaintType(), complaintRaiseDTO.getCity());
+
+        if (!listOfTypeAndCity.isEmpty())
+        {
+            model.addAttribute("viewRaiseComplaint", listOfTypeAndCity);
+            return "AdminViewComplaintRaiseDetails";
+        }
+        else
+        {
+            // If no results found, search by complaint type OR city
+            List<ComplaintRaiseDTO> listOfTypeOrCity = adminService.searchByComplaintTypeOrCity(complaintRaiseDTO.getComplaintType(), complaintRaiseDTO.getCity());
+            if (!listOfTypeOrCity.isEmpty())
+            {
+                model.addAttribute("viewRaiseComplaint", listOfTypeOrCity);
+                return "AdminViewComplaintRaiseDetails";
+            }
+            else
+            {
+                // If no records found, add a message to the model
+                model.addAttribute("NoComplaints", "No Records Found");
+            }
+        }
+
+
         return "AdminViewComplaintRaiseDetails";
     }
-    else
+
+    @GetMapping("adminViewComplaintRaiseDetails")
+    public String adminViewComplaintRaiseDetails()
     {
-      List<ComplaintRaiseDTO> listOfTypeOrCity = adminService.searchByComplaintTypeOrCity(complaintRaiseDTO.getComplaintType(),complaintRaiseDTO.getCity());
-
-           if(!listOfTypeOrCity.isEmpty())
-           {
-               List<DepartmentDTO> departments = adminService.findByDepartmentName();
-               model.addAttribute("departments", departments);// Fetch the list of complaints and departments
-
-               model.addAttribute("viewRaiseComplaint",listOfTypeOrCity);
-               return "AdminViewComplaintRaiseDetails";
-           }
+        return "AdminViewComplaintRaiseDetails";
     }
 
 
-    return "AdminViewComplaintRaiseDetails";
-}
-
-@PostMapping("saveDepartment")
+    @PostMapping("saveDepartment")
     public String saveDepartment(DepartmentDTO departmentDTO, RedirectAttributes redirectAttributes, RegDeptAdminDTO regDeptAdminDTO)
 {
    DepartmentDTO data= adminService.saveDepartment(departmentDTO);
@@ -206,6 +221,9 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
 {
     return "AdminAddDepartment";
 }
+
+
+
 
 @PostMapping("updateDepartment")
     public String updateComplaint(@RequestParam("complaintId") int complaintId,@RequestParam("departmentId") int departmentId,ComplaintRaiseDTO complaintRaiseDTO,RedirectAttributes redirectAttributes)

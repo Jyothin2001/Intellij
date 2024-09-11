@@ -1,10 +1,7 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
-import com.xworkz.issuemanagement.model.service.ForgotPasswordService;
-import com.xworkz.issuemanagement.model.service.MailService;
-import com.xworkz.issuemanagement.model.service.SignInService;
-import com.xworkz.issuemanagement.model.service.SignUpService;
+import com.xworkz.issuemanagement.model.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.DelegatingServerHttpResponse;
@@ -28,6 +25,10 @@ public class SignInController {
     private ForgotPasswordService forgotPasswordService;
 
     @Autowired
+    private ChangePasswordService changePasswordService;
+
+
+    @Autowired
     private HttpSession httpSession;
 
 
@@ -40,15 +41,15 @@ public class SignInController {
         log.info("Running signIn method:");
 
         log.info("Email: {} ", email);
-        log.info("password: {}" ,password);
+        log.info("password: {}", password);
 
         httpSession.setAttribute("signedInUserEmail", email);
+
         SignUpDTO signUpDTO = signInService.findByEmailAndPassword(email, password);
-        if (signUpDTO != null)
-        {
+        if (signUpDTO != null) {
             // Reset failed attempts
             signInService.resetFailedAttempts(email);
-           log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
+            log.info("service password in controller successfully login with:{} ", signUpDTO.getEmail());
 
             //user Edit details :"set"
             httpSession.setAttribute("signUpDTO", signUpDTO);//also used for saving signUp user id in complaint table
@@ -60,27 +61,22 @@ public class SignInController {
             // Set the default profile image before storing signUpDTO in the session
             signUpDTO.setImageName("ProfileIcon.png");
 
-           // Redirect to the profile page
+            // Redirect to the profile page
             //to avoid resubmission
             return "redirect:ProfilePage"; // This will change the URL to /profilePage
 
-        }
-        else
-        {
+        } else {
             // model.addAttribute("ErrorMsg","Invalid Email and password:");
             signInService.incrementFailedAttempts(email);
             int failedAttempts = signInService.getFailedAttempts(email);
-            log.info("Failed attempts for{} " , email +": " + failedAttempts);
+            log.info("Failed attempts for{} ", email + ": " + failedAttempts);
 
 
-            if (failedAttempts >= 3)
-            {
+            if (failedAttempts >= 3) {
                 signInService.lockAccount(email); // Lock account after 3 failed attempts
                 redirectAttributes.addFlashAttribute("error", "Your account is locked due to too many failed attempts.");
                 redirectAttributes.addFlashAttribute("accountLocked", true);
-            }
-            else
-            {
+            } else {
 
                 redirectAttributes.addFlashAttribute("error", "Invalid email id and password. Attempts: " + failedAttempts);
                 redirectAttributes.addFlashAttribute("accountLocked", false);
@@ -93,13 +89,12 @@ public class SignInController {
     }
 
     @GetMapping("ProfilePage")
-    public String profilePage(Model model)
-    {
+    public String profilePage(Model model) {
         // Retrieve user information from the session
         SignUpDTO signUpDTO = (SignUpDTO) httpSession.getAttribute("signUpDTO");
         if (signUpDTO != null) {
-            model.addAttribute("msgSignIn", "Welcome to your page " + signUpDTO.getFirstName() +" "+ signUpDTO.getLastName());
-            model.addAttribute("UserFirstName",signUpDTO.getFirstName());
+            model.addAttribute("msgSignIn", "Welcome to your page " + signUpDTO.getFirstName() + " " + signUpDTO.getLastName());
+            model.addAttribute("UserFirstName", signUpDTO.getFirstName());
             model.addAttribute("UserLastName", signUpDTO.getLastName());
         } else {
             return "redirect:log-in-page"; // Redirect to login if session is null
@@ -109,16 +104,28 @@ public class SignInController {
     }
 
     @GetMapping("log-in-page")
-    public String logInPage()
-    {
+    public String logInPage() {
         return "SignIn";
     }
 
 
     @GetMapping("logout")
-    public  String logout()
-    {
+    public String logout() {
         return "index";
+    }
+
+    @PostMapping("resetPassword")
+    public String resetPassword(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword, Model model) {
+        boolean password = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
+        if (password) {
+            model.addAttribute("passwordResetMessage", "Password Reset Successful");
+            return "SignIn";
+        } else {
+            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
+            return "SignIn";
+        }
+
+
     }
 
 }

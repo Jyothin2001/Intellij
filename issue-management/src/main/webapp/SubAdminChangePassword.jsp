@@ -266,7 +266,7 @@ console.log('New state of b:', b); // Debugging line
  </div>
 
  <div class="dropdown">
-                         <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                         <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${SubAdminName.adminName}
 
 
                            <!--image display in right side icon--- for when i new user signIn based user signIn it will display image of user
@@ -280,14 +280,11 @@ console.log('New state of b:', b); // Debugging line
                            <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
                           <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
 
-                          <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
-                           <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
-                           <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
-                           <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
-                              <li><a class="dropdown-item" href="HomePage"><strong>Log j Out</strong></a></li><!--not working get=action(logout)-->
 
+                                        <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
 
-                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> View your Details</strong></a></li>
+                                        <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
+
                          </ul>
                        </div>
 

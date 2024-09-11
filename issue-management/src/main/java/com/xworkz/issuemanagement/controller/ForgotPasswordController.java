@@ -39,6 +39,7 @@ public class ForgotPasswordController
         boolean password=forgotPasswordService.forgotPassword(email);
         if(password) {
             model.addAttribute("forgotPasswordMsg", "A new password has been sent to your email.");
+
             return "SignIn";
         }
         else
