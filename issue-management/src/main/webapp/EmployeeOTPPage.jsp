@@ -23,14 +23,19 @@
         font-weight: bold;
     }
 
+:root {
+        --gray-100: #adb5bd; /* Define your CSS variable */
+    }
+
     body {
-        background-image: url("https://pics.craiyon.com/2023-09-12/789e617172884be1b6955a4f15b7eac5.webp"); /* Replace with your image URL */
+
+         background-color: var(--gray-100); /* Use the variable */
         background-size: cover;
       background-size: 100%; /* Adjust the percentage to make the image smaller */
 
         background-position: center;
         background-repeat: no-repeat;
-        background-color: #f8f9fa; /* Fallback background color */
+        /*background-color: #f8f9fa;  Fallback background color */
     }
 
     .card {
@@ -62,12 +67,18 @@
         font-weight: bold;
         color: red;
     }
+    .form-width {
+                     width: 500px;
+                     margin-left: 550px;
+                     background-color:;
+                     border-radius:5;
+                 }
 
 </style>
 
 <script>
     // Set the countdown time in seconds (5 minutes = 300 seconds)
-    var countdownTime = 300;
+    var countdownTime = 10;
 
     function startCountdown() {
         var timerElement = document.getElementById("timer");
@@ -108,7 +119,7 @@
            $.post("resendOtp", { email: email }, function(response) {
                alert(response); // Show response message
 
-               countdownTime = 300; // Reset countdown time to 5 minutes (300 seconds)
+               countdownTime = 30; // Reset countdown time to 5 minutes (300 seconds)
                otpField.disabled = false; // Re-enable OTP field
                submitButton.disabled = false; // Re-enable submit button
                resendButton.disabled = true; // Disable Resend Code button again
@@ -124,7 +135,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-secondary">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
@@ -135,9 +146,10 @@
     </div>
 </nav>
 
-<div class="card border-dark container mt-5 mb-5 justify-content-center">
+
+<div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded form-width">
     <div class="card-header text-center">
-        <h3>Log In</h3>
+        <h5>Please enter the OTP sent to your email address below.</h5>
     </div>
 
     <div class="card-body text-dark">
@@ -146,6 +158,7 @@
         <span style="color:red"><strong>${failed}</strong></span>
         <span style="color:red"><strong>${emailNotFound}</strong></span>
         <span style="color:red"><strong>${invalidOTP}</strong></span>
+
         <form action="otpVerification" method="POST">
             <div class="mb-3">
                 <label for="otp" class="form-label">OTP:</label>
@@ -165,8 +178,9 @@
             </div><br>
                         <!-- Resend Code Button -->
                         <div class="mb-3 text-center">
-                            <button type="button" id="resendButton" class="btn btn-secondary" disabled onclick="resendOTP()">Resend Code</button>
+                   <span>Did't receive OTP?</span>  <button type="button" id="resendButton" class="btn btn-secondary" disabled onclick="resendOTP()">Resend Code</button>
                         </div>
+
 
         </form>
 

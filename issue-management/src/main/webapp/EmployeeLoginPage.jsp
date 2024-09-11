@@ -22,9 +22,12 @@
     .bold-text {
         font-weight: bold;
     }
+:root {
+        --gray-100: #adb5bd; /* Define your CSS variable */
+    }
 
     body {
-        background-color: #f8f9fa; /* Light background color */
+        background-color: var(--gray-100);; /* Light background color */
     }
 
     .card {
@@ -78,6 +81,13 @@
     .navbar-brand img {
         border-radius: 10px;
     }
+
+    .form-width {
+                     width: 500px;
+                     margin-left: 550px;
+                     background-color:;
+                     border-radius:5;
+                 }
 
 </style>
 
@@ -167,7 +177,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-secondary">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
@@ -178,7 +188,8 @@
     </div>
 </nav>
 
-<div class="card border-dark container mt-5 mb-5 justify-content-center">
+
+<div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded form-width">
     <div class="card-header text-center">
         <h3>Log In</h3>
     </div>
