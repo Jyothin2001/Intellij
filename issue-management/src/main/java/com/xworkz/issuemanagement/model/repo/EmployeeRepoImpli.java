@@ -78,7 +78,7 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         try {
             //System.out.println("Existing email:" +emailId);
             log.info("Existing email : {}", emailId);
-            entityTransaction.begin();
+
             String query = "SELECT e FROM EmployeeDTO e WHERE e.email =:emailId";
 
             Query query1 = entityManager.createQuery(query);
@@ -86,7 +86,7 @@ public class EmployeeRepoImpli implements EmployeeRepo{
             EmployeeDTO employeeDTO = (EmployeeDTO) query1.getSingleResult();
 
             log.info("EmployeeDTO data :{}", employeeDTO);
-            entityTransaction.commit();
+
 
             return employeeDTO;
 

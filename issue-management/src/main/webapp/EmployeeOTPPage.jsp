@@ -144,15 +144,15 @@
 
         <span style="color:green"><strong>${generatedOTP}</strong></span>
         <span style="color:red"><strong>${failed}</strong></span>
+        <span style="color:red"><strong>${emailNotFound}</strong></span>
 
-
-        <form action="otpVerification" method="post">
+        <form action="otpVerification" method="POST">
             <div class="mb-3">
                 <label for="otp" class="form-label">OTP:</label>
                 <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required>
             </div>
 
-<input type="hidden" name="email" value="${email}">
+      <input type="hidden" name="email" value="${email}">
 
 
             <!-- Timer Display -->

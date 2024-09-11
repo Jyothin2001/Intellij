@@ -114,6 +114,7 @@ public class EmployeeController {
                               RedirectAttributes redirectAttributes) {
         log.info("generateOtp method running in EmployeeController..");
 
+        session.setAttribute("email",emailId);
         // Check if the email exists in the database
         EmployeeDTO employeeDTO = employeeService.findByEmail(emailId);
         if (employeeDTO == null) {
@@ -166,11 +167,17 @@ public class EmployeeController {
 
 
     @PostMapping("otpVerification")
-    public String employeeProfilePage(@RequestParam("otp") String enteredOtp,
-                                      @RequestParam("email") String email,
+    public String otpVerification(@RequestParam("otp") String enteredOtp,
+                                      @RequestParam("email") String email,HttpSession session,
                                       Model model) {
+
+        log.info("otpVerification method running in EmployeeController..");
+
+
+       String  emailId= (String) session.getAttribute("email");
+
         // Find employee by email
-        EmployeeDTO employeeDTO = employeeService.findByEmail(email);
+        EmployeeDTO employeeDTO = employeeService.findByEmail(emailId);
 
         if (employeeDTO == null) {
             // If the employee doesn't exist, return an error
@@ -179,7 +186,7 @@ public class EmployeeController {
         }
 
         // Compare the entered OTP with the stored OTP in employeeDTO
-        if (String.valueOf(employeeDTO.getOtp()).equals(enteredOtp)) {
+        if (employeeDTO.getOtp().equals(Long.parseLong(enteredOtp))) {
             // OTPs match, handle success
             return "EmployeeProfilePage";
         } else {
