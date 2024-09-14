@@ -344,6 +344,9 @@ function numberAjaxValidation() {
       <form action="signUp" method="post">
 
 <div class="text-primary"><b>${msg}</b></div>
+<div class="text-success"><b>${emailMsg}</b></div>
+<div class="text-success"><b>${emailErrorMsg}</b></div>
+
 
            <!--Text: First Name-->
               <div style="margin-bottom:2px;" class="form-group">

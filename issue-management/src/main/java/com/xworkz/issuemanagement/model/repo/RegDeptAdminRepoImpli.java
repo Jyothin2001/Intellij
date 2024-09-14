@@ -1,7 +1,9 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
+import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,6 +201,93 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
             log.info("Connection Closed");
         }
         return null;
+    }
+
+    @Override
+    public void deactivateStatus(int employee_id, Status status)
+    {
+       EntityManager entityManager= entityManagerFactory.createEntityManager();
+       EntityTransaction entityTransaction=entityManager.getTransaction();
+       try
+       {
+           entityTransaction.begin();
+           Query query=entityManager.createQuery("update EmployeeDTO e SET e.status=:status where e.employee_id=:employee_id");
+           query.setParameter("status",status);
+           query.setParameter("employee_id",employee_id);
+           int a=query.executeUpdate();
+           log.info("update deactivate status of employee in RegDeptAdminRepoImply{}: " , a);
+           entityTransaction.commit();
+
+       }catch (Exception e)
+       {
+           if (entityTransaction.isActive()) {
+               entityTransaction.rollback();  // Rollback in case of an error
+           }
+           e.printStackTrace();  // Optionally log the exception
+       }
+       finally
+       {
+           if (entityManager != null)
+           {
+               entityManager.close();  // Always close the EntityManager
+           }
+       }
+
+    }
+
+    @Override
+    public List<EmployeeDTO> getAllEmployeeNames(String regDepartmentName)
+    {
+        log.info("getAllEmployeeNames method running regDeptRepoImpl..");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            Query query1 = entityManager.createQuery("SELECT e FROM EmployeeDTO e where e.departmentName=:regDepartmentName AND e.status = 'ACTIVE'");
+            query1.setParameter("regDepartmentName", regDepartmentName);
+            List<EmployeeDTO> data = query1.getResultList();
+            log.info("getAllEmployeeNames in regDeptAdminRepoImply : " + data);
+
+            return data;
+
+        } catch (PersistenceException persistenceException) {
+            persistenceException.printStackTrace();
+        } finally {
+            entityManager.close();
+            log.info("Connection closed");
+        }
+        return null;
+    }
+    @Override
+    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status) {
+        log.info("updateStatusAndEmployeeId method running in RaiseComplaintRepoImpl..");
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            String updateQuery = "UPDATE ComplaintRaiseDTO r SET r.employeeDTO.id =:employeeId , r.status = :status WHERE r.complaintId = :complaintId";
+            Query query = entityManager.createQuery(updateQuery);
+            query.setParameter("employeeId", employeeId);
+            query.setParameter("status", status);
+            query.setParameter("complaintId", complaintId);
+
+            int data = query.executeUpdate();
+            log.info("data :{}",data);
+            transaction.commit();
+
+        } catch (Exception e)
+        {
+            if (transaction.isActive())
+            {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return true;
+
     }
 
 }

@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -88,7 +90,7 @@ public class EditUserDetailsController {
     }
 
     @PostMapping("updateUserProfile")
-    public String updateUserProfile(SignUpDTO signUpDTO, Model model,@RequestParam("file") MultipartFile file, HttpSession httpSession) {
+    public String updateUserProfile(SignUpDTO signUpDTO, Model model, @RequestParam("file") MultipartFile file, HttpSession httpSession, RedirectAttributes redirectAttributes) {
             try {
                 String newFileName = null;
 
@@ -101,11 +103,30 @@ public class EditUserDetailsController {
                         newFileName = signUpDTO.getEmail() + "_" + originalFileName;
                         log.info("Email and Original file Name: {}", newFileName);
 
+
+//                        // Check file type
+//                        String contentType = file.getContentType();
+//                        if  (!isValidImageType(contentType)) {
+//                            // Retain the previous profile image if invalid file type
+//                            redirectAttributes.addFlashAttribute("errorMessageProfile", "Invalid file type: " + contentType + ". Please upload a valid image file (png, jpeg).");
+//                            newFileName = (String) httpSession.getAttribute("profileImage"); // Keep the old image
+//                        } else {
+//                            Path path = Paths.get(UPLOAD_DIR, newFileName);
+//                            Files.write(path, file.getBytes());
+//                            signUpDTO.setImageName(newFileName);
+//                        }
                         // Check file type
                         String contentType = file.getContentType();
                         if (!isValidImageType(contentType)) {
-                            model.addAttribute("errorMessageProfile", "Invalid file type: " + contentType + ". Please upload a valid image file.");
-                           // return "UpdateUserProfile";
+                            // Display error message for invalid file type
+                            redirectAttributes.addFlashAttribute("errorMessageProfile",
+                                    "The file type is not supported.<br>" + " Please upload a valid image file (PNG or JPEG).");
+
+                            // Keep the previous profile image (do not upload new invalid file)
+                            //newFileName = (String) httpSession.getAttribute("profileImage");
+
+                            // Redirect to the edit profile page without processing further
+                            return "redirect:/edit?email=" + signUpDTO.getEmail();
                         }
 
                         Path path = Paths.get(UPLOAD_DIR, newFileName);
@@ -149,7 +170,7 @@ public class EditUserDetailsController {
                 if (userData != null) {
                     log.info("updated User Data: {}", signUpDTO);
                     model.addAttribute("signUpDTO", userData);
-                    model.addAttribute("msg", "Profile updated Successfully!..");
+                    redirectAttributes.addFlashAttribute("updateMsg", "Profile updated Successfully!..");
                     httpSession.setAttribute("email", userData.getEmail());
                     httpSession.setAttribute("firstName", userData.getFirstName());
                     httpSession.setAttribute("lastName", userData.getLastName());
@@ -176,16 +197,20 @@ public class EditUserDetailsController {
                 }
                 else
                 {
-                    model.addAttribute("errorMessageProfile", "Error while Updating profile.");
+                    redirectAttributes.addFlashAttribute("errorMessageProfile", "Error while Updating profile.");
                     log.info("Error while Updating profile.");
                 }
             }
+            catch (NoSuchFileException e) {
+                redirectAttributes.addFlashAttribute("errorMessageProfile", "File not found: " + e.getMessage());
+                log.error("File not found",e);
+            }
             catch (IOException io) {
-                model.addAttribute("errorMessageProfile", "Error uploading file: " + io.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessageProfile", "Error uploading file: " + io.getMessage());
                 log.error("Error uploading file", io);
 
             } catch (Exception e) {
-                model.addAttribute("errorMessageProfile", "Unexpected error occurred: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessageProfile", "Unexpected error occurred: " + e.getMessage());
                 log.error("Unexpected error occurred", e);
             }
 

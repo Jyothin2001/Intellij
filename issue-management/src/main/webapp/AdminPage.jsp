@@ -278,19 +278,13 @@ a=1;
                          </div>
 
 
-                   <div style="text-align:center;">
-                   <a href="ForgotPasswordPage">Forgot Password?</a>
-                   </div><br>
 
 
               <div class="d-grid gap-2" style="margin-bottom:10px;">
                   <input type="submit" class="btn btn-primary btn-lg " id="submitBtn"  value="Submit" disabled>
 
               </div>
-              <div>
-             <center>Do not have an account?<a href="SignUp.jsp" class="link-primary"> &nbsp;SignUp </a><center>
-               </div>
-         </form>
+                      </form>
 
  </div>
   </div>

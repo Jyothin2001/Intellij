@@ -1,7 +1,9 @@
 package com.xworkz.issuemanagement.controller;
 
+import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
+import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.model.service.AdminService;
 import com.xworkz.issuemanagement.model.service.ChangePasswordService;
@@ -42,6 +44,8 @@ public class RegDeptAdminController
 
     @Autowired
     private ChangePasswordService changePasswordService;
+
+
 
 
 
@@ -182,8 +186,17 @@ public class RegDeptAdminController
             httpSession.setAttribute("SubAdminName", logIn);
 
 
-           HttpSession httpSession1= httpServletRequest.getSession();
+              log.info("department name going:"+departmentName);
+           List<EmployeeDTO> employeeDTO= regDeptAdminService.getAllEmployeeNames(departmentName);
+
+            log.info("Retrieved employeeNames: " + employeeDTO);
+            if (employeeDTO != null && !employeeDTO.isEmpty()) {
+                model.addAttribute("employees", employeeDTO);
+            }
+
+            HttpSession httpSession1= httpServletRequest.getSession();
            httpSession1.setAttribute("departmentName",logIn.getDepartmentName());
+
             log.info("departmentAdminLoginIn successful AdminController..");
             regDeptAdminService.resetFailedAttempts(email);
 
@@ -280,7 +293,7 @@ public class RegDeptAdminController
         boolean password=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
         if(password) {
             model.addAttribute("passwordResetMessage", "Password reset successful");
-            return "DepartmentLogInPage";
+            return "SubAdminChangePassword";
         }
         else {
             model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
@@ -297,8 +310,17 @@ public class RegDeptAdminController
        HttpSession httpSession1= httpServletRequest.getSession();
        String departmentName1= (String) httpSession1.getAttribute("departmentName");
 
+
+       List<EmployeeDTO> employeeNames=regDeptAdminService.getAllEmployeeNames(departmentName1);
+        if(!employeeNames.isEmpty())
+        {
+            log.info("employee names:{}", employeeNames);
+            model.addAttribute("employeeNames", employeeNames);// Fetch the list of departments for departmentNames
+        }
+
+
         List<ComplaintRaiseDTO> complaintRaiseDetails = regDeptAdminService.deptAdminView(departmentName1);
-        log.info("dept name{}:", departmentName1);
+        log.info("dept name: {}", departmentName1);
 
         if (complaintRaiseDetails != null && !complaintRaiseDetails.isEmpty()) {
             log.info("departments name in RegDeptController is successful:");
@@ -313,8 +335,60 @@ public class RegDeptAdminController
         }
     }
 
+@PostMapping("updateEmployee")
+public String updateEmployee(@RequestParam("complaintId") int complaintId,@RequestParam("employee_id") Integer employeeId,ComplaintRaiseDTO complaintRaiseDTO,RedirectAttributes redirectAttributes,Model model)
+{
+    if (employeeId == null) {
+        // Handle the case where no employee is selected
+        redirectAttributes.addFlashAttribute("error", "Please select an employee.");
+        return "redirect:/viewComplaintRaiseDetails";
+    }
+    boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId,complaintRaiseDTO.getStatus());
+    if(data)
+    {
+        log.info("update:"+data);
+    }
+    else
+    {
+        log.info("No update:" + data);
+    }
+    redirectAttributes.addFlashAttribute("msg","Updated Successfully");
+    return "redirect:/department-admin-complaintViewPage";
+}
+
+//    @GetMapping("UpdateDepartment")
+//    public String updateDepartment()
+//    {
+//        return "AdminViewComplaintRaiseDetails";
+//    }
 
 
+
+
+    @PostMapping("deactivateEmployeeStatus/{employee_id}")
+    public String deactivateEmployeeStatus(@PathVariable("employee_id") int employee_id ,RedirectAttributes redirectAttributes)
+    {
+        log.info("update deactivate status of employee in RegDeptAdminController ");
+
+        try
+        {
+            regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
+            redirectAttributes.addFlashAttribute("message", "Employee Deleted updated successfully.");
+        }
+        catch (Exception e)
+        {
+        redirectAttributes.addFlashAttribute("message", "Failed to Delete employee status.");
+         }
+
+        return "redirect:/department-admin-complaintViewPage";
+    }
+
+ @GetMapping("deactivate-EmployeeStatus")
+    public String inactivateEmployeeStatus()
+ {
+     return "DepartmentAdminComplaintViewPage";
+
+ }
 
 
 

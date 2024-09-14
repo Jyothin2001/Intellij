@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -52,7 +53,7 @@ public class EmployeeController {
     }
 
     @PostMapping("employeeRegistration")
-    private String saveEmployeeDetails(@Valid @ModelAttribute("employeeDTO")EmployeeDTO employeeDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    private String saveEmployeeDetails(@Valid @ModelAttribute("employeeDTO")EmployeeDTO employeeDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors())
         {
             log.info("EmployeeDTO has invalid data");
@@ -72,7 +73,7 @@ public class EmployeeController {
             if (employeeDetails)
             {
                 log.info("saveEmployeeDetails() is successful in EmployeeController:{}", employeeDetails);
-                redirectAttributes.addFlashAttribute("saveEmployee", "Sign Up successful: " + employeeDTO.getEmployeeName() + "\n\n, Please check your email for your password.");
+                redirectAttributes.addFlashAttribute("saveEmployee",  employeeDTO.getEmployeeName()+ ", Saved                                                                                                                                            successful: " );
                 return "redirect:/get-Department-Names";
 
             }

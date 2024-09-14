@@ -47,6 +47,8 @@
 
               <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Details</strong></a></li>
 
+              <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
+
               <li><a class="dropdown-item" href="AddDepartment"><strong>Add Department</strong></a></li>
 
               <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>

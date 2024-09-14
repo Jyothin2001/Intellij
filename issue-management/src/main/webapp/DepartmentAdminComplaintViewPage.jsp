@@ -48,6 +48,7 @@
                 <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
 
                <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
+               <li><a class="dropdown-item" href="subAdminProfilePage"><strong> Profile Page</strong></a></li>
 
 
 
@@ -59,13 +60,26 @@
 
 </nav>
 
+<div class="container mt-4">
+                   <div class=" text-success text-center mb-4">
+                       <strong>${message}</strong>
+                   </div>
+
+<div class=" text-success text-center mb-4">
+                       <strong>${msg}</strong>
+                   </div>
+
+<div class=" text-danger text-center mb-4">
+                       <strong>${error}</strong>
+                   </div>
 
 <div
         class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded  ">
     <div class="card">
         <div style="margin-top: 15px;">
             <h3 style="color:blue; ">
-                <center>View Complaint Raise Details</center>
+                <center>View Complaint Raise Details </center>
+
             </h3>
         </div>
 
@@ -108,22 +122,26 @@
                             <td>${viewRaiseComplaintUsers.description}</td>
                             <td>${viewRaiseComplaintUsers.signUpDTO.id}</td>
 
+
+
                             <td>
-                                <form action="updateDepartment" method="post">
+                                <form action="updateEmployee" method="post">
+
                                     <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}">
 
-                                    <select class="form-select status-select" style=" width:200px;" name="departmentId">
+                                    <select class="form-select status-select" style=" width:200px;" name="employee_id">
                                         <option value="Select">Select</option>
-                                        <c:forEach var="department" items="${departments}">
+                                        <c:forEach var="employee" items="${employeeNames}">
                                             <!--conditions for retain name like both table id's should match-->
-                                            <option value="${department.id}" ${viewRaiseComplaintUsers.departmentDTO !=null &&
-                                                    viewRaiseComplaintUsers.departmentDTO.id==department.id ? 'selected' : '' }>
-                                            ${department.departmentName}</option>
+                                            <option value="${employee.employee_id}" ${viewRaiseComplaintUsers.employeeDTO !=null &&
+                                                    viewRaiseComplaintUsers.employeeDTO.employee_id==employee.employee_id ? 'selected' : '' }>
+                                            ${employee.employeeName}
+                                            </option>
 
                                         </c:forEach>
                                     </select>
-                            </td>
-                            <td>
+                      </td>
+                      <td>
                                 <select class="form-select status-select" style=" width:150px;" name="status">
                                     <option value="Select">Select</option>
                                     <option value="Pending" ${viewRaiseComplaintUsers.status=='Pending' ? 'selected' : '' }>
@@ -131,23 +149,36 @@
                                     <option value="In Process" ${viewRaiseComplaintUsers.status=='In Process' ? 'selected' : '' }>
                                     In Process</option>
                                     <option value="Completed" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
-                                    Completed</option>
+                                    Completed
+                                    </option>
                                 </select>
-                            </td>
+                       </td>
 
-                            <td>
+                       <td>
+                       <button type="submit" class="btn btn-primary">Submit</button>
+                       </td>
+                      </form>
 
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </td>
+
 
                              <td>
-                            <button type="button" class="btn btn-primary">Delete</button>
+
+                                        <form action="deactivateEmployeeStatus/${viewRaiseComplaintUsers.employeeDTO.employee_id}" method="post">
+                                         <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
+                                             <button type="submit" class="btn btn-danger">Delete${viewRaiseComplaintUsers.employeeDTO.employee_id}</button>
+                                         </form>
+
+                                         <!--<c:if test="${viewRaiseComplaintUsers.employeeDTO != null}">
+                                             <form action="deactivateEmployeeStatus/${viewRaiseComplaintUsers.employeeDTO.employee_id}" method="post">
+                                                 <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
+                                                 <button type="submit" class="btn btn-danger">Delete ${viewRaiseComplaintUsers.employeeDTO.employee_id}</button>
+                                             </form>
+                                         </c:if>-->
+
+
+
+
                               </td>
-
-                            </form>
-
-
-
 
                         </tr>
                     </c:forEach>
@@ -156,6 +187,7 @@
             </table>
         </div>
     </div>
+
 </body>
 <div>
     <div>
@@ -167,3 +199,15 @@
                 crossorigin="anonymous"></script>
 
 </html>
+<!--<c:forEach var="employee" items="${employeeList}">
+        <tr>
+            <td>${employee.name}</td>
+            <td>${employee.email}</td>
+            <td>
+                <form action="${pageContext.request.contextPath}/employee/deactivate/${employee.employee_id}" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
+-->

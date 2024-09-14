@@ -291,6 +291,24 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
 
    <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
  </div>
+
+          <div class="dropdown">
+            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${SubAdminName.adminName}
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+               <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
+
+              <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
+
+              <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
+              <li><a class="dropdown-item" href="subAdminProfilePage"><strong>SunAdminProfilePage</strong></a></li>
+
+
+
+            </ul>
+          </div>
+
 </div>
 </nav>
 
@@ -318,7 +336,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
 
       <form action="employeeRegistration" method="post">
 
-          <div class="text-primary"><b>${saveEmployee}</b></div>
+          <div class="text-success"><b>${saveEmployee}</b></div>
           <div style="color:red;"><b>${saveDeptAdmin}</b></div>
 
           <!-- Employee Name -->
@@ -400,5 +418,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
      </div>
   </div>
  </body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 </html>

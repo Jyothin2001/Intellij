@@ -43,6 +43,9 @@ List<DepartmentDTO> findByDepartmentName();
 //update status and department id
  boolean updateStatusAndDepartmentId(int complaintId, int departmentId, String status);
 
+    //fetch sub admin department details
+    List<RegDeptAdminDTO> getAllSubAdminDetails();
+
 
 
 }

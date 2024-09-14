@@ -137,7 +137,9 @@ function departmentNameAjaxValidation() {
                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                    <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
                   <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
-                   <li><a class="dropdown-item" href="getDepartmentName"><strong>AddDepartment Admin</strong></a></li>
+                  <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
+                    <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+
 
                    </ul>
                  </div>
@@ -169,7 +171,7 @@ function departmentNameAjaxValidation() {
 
       <form action="saveDepartment" method="post">
 
-<div class="text-primary"><b>${msgDepartment}</b></div>
+<div class="text-success"><b>${msgDepartment}</b></div>
 <div class="text-danger"><b>${errorDepartment}</b></div>
 
            <!--Text: First Name-->

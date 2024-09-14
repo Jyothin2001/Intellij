@@ -72,7 +72,7 @@ public class SignInController {
             log.info("Failed attempts for{} ", email + ": " + failedAttempts);
 
 
-            if (failedAttempts >= 3) {
+            if (failedAttempts > 3) {
                 signInService.lockAccount(email); // Lock account after 3 failed attempts
                 redirectAttributes.addFlashAttribute("error", "Your account is locked due to too many failed attempts.");
                 redirectAttributes.addFlashAttribute("accountLocked", true);
@@ -119,10 +119,10 @@ public class SignInController {
         boolean password = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
         if (password) {
             model.addAttribute("passwordResetMessage", "Password Reset Successful");
-            return "SignIn";
+            return "ChangePassword";
         } else {
             model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
-            return "SignIn";
+            return "ChangePassword";
         }
 
 

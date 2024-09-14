@@ -1,7 +1,9 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
+import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
@@ -175,8 +177,39 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         return null;
     }
 
+    @Override
+    public void deactivateStatus(int employee_id, Status status) {
+        log.info("update deactivate status of employee in RegDeptAdminServiceImply:" );
+        regDeptAdminRepo.deactivateStatus(employee_id,status);
+
+    }
+
+    @Override
+    public List<EmployeeDTO> getAllEmployeeNames(String regDepartmentName)
+    {
+        log.info(" employeeNames in RegDeptAdminServiceImply:" );
+
+        List<EmployeeDTO> employeeNames=  regDeptAdminRepo.getAllEmployeeNames(regDepartmentName);
+        if(!employeeNames.isEmpty())
+        {
+            log.info("fetching employeeNames in regDeptAdminServiceImply: {}",employeeNames);
+        return employeeNames;
+    }
+        else
+    {
+        log.info(" employeeNames in regDeptAdminServiceImply is not successful:");
+    }
 
 
+        return null;
+    }
+
+    @Override
+    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status) {
+        log.info("updateStatusAndEmployeeId method running in RaiseComplaintService");
+        return regDeptAdminRepo.updateStatusAndEmployeeId(complaintId, employeeId, status);
+
+    }
 
 
 }

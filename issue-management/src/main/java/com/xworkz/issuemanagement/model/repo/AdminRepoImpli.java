@@ -270,7 +270,7 @@ public class AdminRepoImpli implements AdminRepo
     @Override
     public boolean updateStatusAndDepartmentId(int complaintId, int departmentId, String status)
     {
-        System.out.println("updateStatusAndDepartmentId method running in RaiseComplaintRepoImpl..");
+        log.info("updateStatusAndDepartmentId method running in RaiseComplaintRepoImpl..");
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -301,6 +301,28 @@ return true;
 
     }
 
+    @Override
+    public List<RegDeptAdminDTO> getAllSubAdminDetails() {
+        log.info("getAllSubAdminDetails method running AdminRepoImpl..");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            Query query1 = entityManager.createQuery("SELECT d FROM RegDeptAdminDTO d");
+            //query1.setParameter("departmentName", departmentName);
+            List<RegDeptAdminDTO> data = query1.getResultList();
+            log.info("All SubAdminDetails : " + data);
+
+            return data;
+
+        } catch (PersistenceException persistenceException) {
+            persistenceException.printStackTrace();
+        } finally {
+            entityManager.close();
+            System.out.println("Connection closed");
+        }
+
+        return Collections.emptyList();
+    }
 
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -69,6 +70,47 @@ public class SignUpServiceImpli implements SignUpService
         return true;
     }
 
+//    @Override
+//    public boolean saveAndValidate(SignUpDTO signUpDTO) {
+//        // Set audit-related data
+//        String createdBy = signUpDTO.getFirstName(); // Get current user or use first name
+//        LocalDateTime createdOn = LocalDateTime.now();
+//        String updatedBy = signUpDTO.getFirstName(); // Get current user or use first name
+//        LocalDateTime updatedOn = LocalDateTime.now();
+//        boolean isActive = true;
+//
+//        // Call audit method
+//        setAudit(signUpDTO, createdBy, createdOn, updatedBy, updatedOn, isActive);
+//
+//        // Generate random password and encode it
+//        String generatedPassword = PasswordGenerator.generatePassword();
+//        signUpDTO.setPassword(passwordEncoder.encode(generatedPassword));
+//
+//        // Set default profile image
+//        signUpDTO.setImageName("ProfileIcon.png");
+//
+//        // Save the user data
+//        boolean isSaved = this.signUpRepo.saveAndValidate(signUpDTO);
+//        if (isSaved) {
+//            log.info("User data saved successfully: {}", isSaved);
+//            signUpDTO.setPassword(generatedPassword); // Keep raw password for sending email
+//
+//            // Send confirmation email and handle any email sending issues
+//            String emailStatusMessage = mailSend.sendPassword(signUpDTO);
+//
+//            // Log the email status and return it accordingly
+//            if (emailStatusMessage.equals("Email sent successfully.")) {
+//                log.info("Confirmation email sent successfully to: {}", signUpDTO.getEmail());
+//            } else {
+//                log.error("Failed to send confirmation email: {}", emailStatusMessage);
+//            }
+//
+//            return isSaved;
+//        } else {
+//            log.error("Failed to save user data: {}", isSaved);
+//        }
+//        return false;
+//    }
 
 
     //To store the details of sign up user like when,who,isActive

@@ -284,6 +284,8 @@ console.log('New state of b:', b); // Debugging line
                                         <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
 
                                         <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
+                                        <li><a class="dropdown-item" href="subAdminProfilePage"><strong>Profile Page</strong></a></li>
+
 
                          </ul>
                        </div>

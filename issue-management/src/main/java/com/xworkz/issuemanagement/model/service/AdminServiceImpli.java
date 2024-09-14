@@ -176,6 +176,21 @@ public class AdminServiceImpli implements AdminService
 
     }
 
+    @Override
+    public List<RegDeptAdminDTO> getAllSubAdminDetails() {
+        log.info("getAllSubAdminDetails method running in AdminServiceImpl..");
+        List<RegDeptAdminDTO> data = adminRepo.getAllSubAdminDetails();
+
+        if (!data.isEmpty()) {
+            log.info("All SubAdminDetails successful in AdminServiceImpl..");
+            return data;
+        } else {
+            log.info("All SubAdminDetails not successful in AdminServiceImpl..");
+        }
+
+
+        return Collections.emptyList();
+    }
 
 
 }

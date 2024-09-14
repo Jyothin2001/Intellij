@@ -47,8 +47,16 @@ public class ComplaintRaiseDTO
     @JoinColumn(name = "department_fk", referencedColumnName = "department_id")
     private DepartmentDTO departmentDTO;
 
-    @Column(name = "status")
+    @Column(name = "department_status")
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="employee_fk",referencedColumnName = "employee_id")
+    private EmployeeDTO employeeDTO; // One employee can be assigned to many complaints
+
+//    @Column(name = "employee_status")
+//    private String employeeStatus;
+
 
     //@Data= getter,setter,toString,equals(),hashcode()
    // @RequiredArgsConstructor: Generates a constructor with required arguments (final fields and fields marked as @NonNull).

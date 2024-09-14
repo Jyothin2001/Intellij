@@ -4,6 +4,8 @@ import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,36 @@ public class MailSend {
         log.info("No parameters in MailSend Constructor:..");
     }
 
+    // Method that returns a status message based on email sending success or failure
+    private String sendEmail(SimpleMailMessage message) {
+        try {
+            javaMailSender.send(message);
+            log.info("Email sent successfully to: {}", message.getTo());
+            return "Email sent successfully.";
+        } catch (MailSendException e) {
+            log.error("Network issue while sending email to: {}, Error: {}", message.getTo(), e.getMessage());
+            return "Failed to send email due to network issues. Please try again later.";
+        } catch (MailException e) {
+            log.error("Failed to send email to: {}, Error: {}", message.getTo(), e.getMessage());
+            return "Failed to send email. Please try again.";
+        }
+    }
+
+
+//    // Exception Handling Added
+//    private void sendEmail(SimpleMailMessage message) {
+//        try {
+//            javaMailSender.send(message);
+//            log.info("Email sent successfully to: {}", message.getTo());
+//        } catch (MailException e) {
+//            log.error("Failed to send email to: {}, Error: {}", message.getTo(), e.getMessage());
+//            // Optional: Re-throw the exception if needed or provide fallback logic
+//        }
+//    }
+//
+
     // User Sign-up Confirmation Email
-    public void sendPassword(SignUpDTO signUpDTO) {
+    public String sendPassword(SignUpDTO signUpDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(signUpDTO.getEmail());
         message.setSubject("Welcome to X-Workz - Your Login Details");
@@ -31,11 +61,13 @@ public class MailSend {
                 "For your security, we recommend changing your password after your first login.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+
+
+        return sendEmail(message);
     }
 
     // User Forgot Password Email
-    public void forgotPassword(SignUpDTO signUpDTO) {
+    public String  forgotPassword(SignUpDTO signUpDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(signUpDTO.getEmail());
         message.setSubject("Password Reset Request");
@@ -45,11 +77,11 @@ public class MailSend {
                 "For your security, we recommend changing your password after logging in.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+       return sendEmail(message);
     }
 
     // User Change Password Email
-    public void sendChangePassword(SignUpDTO signUpDTO, String newPassword) {
+    public String sendChangePassword(SignUpDTO signUpDTO, String newPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(signUpDTO.getEmail());
         message.setSubject("Your Password Has Been Updated");
@@ -59,11 +91,11 @@ public class MailSend {
                 "If you did not request this change, please contact our support team immediately.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+        return sendEmail(message);
     }
 
     // Department Admin Sign-up Confirmation Email
-    public void sendDeptAdminPassword(RegDeptAdminDTO regDeptAdminDTO) {
+    public String sendDeptAdminPassword(RegDeptAdminDTO regDeptAdminDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(regDeptAdminDTO.getEmail());
         message.setSubject("Welcome to X-Workz - Department Admin Login Details");
@@ -74,11 +106,11 @@ public class MailSend {
                 "For your security, we recommend changing your password after your first login.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+       return sendEmail(message);
     }
 
     // Department Admin Forgot Password Email
-    public void subAdminForgotPassword(RegDeptAdminDTO regDeptAdminDTO) {
+    public String subAdminForgotPassword(RegDeptAdminDTO regDeptAdminDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(regDeptAdminDTO.getEmail());
         message.setSubject("Password Reset Notification");
@@ -88,11 +120,11 @@ public class MailSend {
                 "For your security, we recommend changing your password after logging in.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+       return sendEmail(message);
     }
 
     // Department Admin Change Password Email
-    public void sendChangePasswordSubAdmin(RegDeptAdminDTO regDeptAdminDTO, String newPassword) {
+    public String sendChangePasswordSubAdmin(RegDeptAdminDTO regDeptAdminDTO, String newPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(regDeptAdminDTO.getEmail());
         message.setSubject("Your Department Admin Password Has Been Updated");
@@ -102,12 +134,12 @@ public class MailSend {
                 "If you did not request this change, please contact our support team immediately.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");
-        javaMailSender.send(message);
+       return sendEmail(message);
     }
 
 
     // Send OTP to email
-    public void sendOtpToEmail(String email, String otp) {
+    public String sendOtpToEmail(String email, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("One-Time Password (OTP) Verification");
@@ -116,10 +148,10 @@ public class MailSend {
                 "Please use this OTP to complete the verification process. If you did not request this OTP, please disregard this message.\n\n" +
                 "Best regards,\n" +
                 "X-Workz Team");
-        javaMailSender.send(message);
+         return sendEmail(message);
     }
     // Resend OTP to email
-    public void resendOtpToEmail(String email, String otp) {
+    public String resendOtpToEmail(String email, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Resend One-Time Password (OTP) Verification");
@@ -129,7 +161,7 @@ public class MailSend {
                 "Please use this OTP to complete the verification process. If you did not request this OTP, please ignore this message.\n\n" +
                 "Best regards,\n" +
                 "X-Workz Team");
-        javaMailSender.send(message);
+        return sendEmail(message);
     }
 
 }

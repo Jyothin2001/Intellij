@@ -6,7 +6,7 @@
     <head>
       <meta charset="ISO-8859-1">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>View User Details</title>
+      <title>View Department Admin Details</title>
 
       <!--BootStrap link-->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
                   </a>
 
                   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
-                  <a class="navbar-brand text-light" href="AdminPage"><b>Admin</b></a>
+
                 </div>
 
                 <div class="dropdown">
@@ -47,7 +47,6 @@
 
                                 <li><a class="dropdown-item" href="AddDepartment"><strong>Add Departments</strong></a></li>
                  <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
-                 <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
                   <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
 
                   </ul>
@@ -63,7 +62,7 @@
 <div class="card">
         <div style="margin-top: 15px;">
           <h3 style="color:blue; ">
-            <center>View User Details</center>
+            <center>View Sub Admin department Details</center>
           </h3>
         </div>
 
@@ -77,24 +76,26 @@
                 <th>S.NO</th>
                                         <th>ID</th>
                                         <th>Name</th>
+                                        <th>Department Name</th>
                                         <th>Email</th>
                                         <th>Contact Number</th>
                                         <th>AltContact Number</th>
-                                        <th>Address</th>
+
 
               </tr>
             </thead>
 
             <tbody class="table-hover">
-              <c:forEach var="viewUsers" items="${ViewUserDetails}" varStatus="status">
+              <c:forEach var="subDepartmentDetails" items="${subDepartmentDetails}" varStatus="status">
                 <tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${viewUsers.id}</td>
-                                          <td>${viewUsers.firstName} ${viewUsers.lastName}</td>
-                                            <td>${viewUsers.email}</td>
-                                            <td>${viewUsers.contactNumber}</td>
-                                            <td>${viewUsers.alternateContactNumber}</td>
-                                            <td>${viewUsers.address}</td>
+                                            <td>${subDepartmentDetails.id}</td>
+                                           <td>${subDepartmentDetails.adminName}</td>
+                                           <td>${subDepartmentDetails.departmentName}</td>
+                                            <td>${subDepartmentDetails.email}</td>
+                                            <td>${subDepartmentDetails.contactNumber}</td>
+                                            <td>${subDepartmentDetails.alternateContactNumber}</td>
+
 
                  <!--return page path http://localhost:8080/myapp, then ${pageContext.request.contextPath} would return /myapp.-->
 

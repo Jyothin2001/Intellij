@@ -46,8 +46,10 @@
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
               <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
+              <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
               <li><a class="dropdown-item" href="AddDepartment"><strong>Add Department</strong></a></li>
               <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+
               <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
             </ul>
           </div>
@@ -117,6 +119,9 @@
                    <div class=" text-success text-center mb-4">
                        <strong>${NoComplaints}</strong>
                    </div>
+                   <div class=" text-success text-center mb-4">
+                                          <strong>${msg}</strong>
+                                      </div>
         <div
           class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded  ">
           <div class="card">
@@ -182,13 +187,13 @@
                         <td>
                           <select class="form-select status-select" style=" width:150px;" name="status">
                             <option value="Select">Select</option>
-                            <option value="Pending" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
-                              Pending</option>
+                            <option value="Completed" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
+                              Completed</option>
                             <option value="In Process" ${viewRaiseComplaintUsers.status=='In Process' ? 'selected' : ''
                               }>
                               In Process</option>
-                            <option value="Completed" ${viewRaiseComplaintUsers.status=='Not Completed' ? 'selected' : '' }>
-                              Completed</option>
+                            <option value="Not Completed" ${viewRaiseComplaintUsers.status=='Not Completed' ? 'selected' : '' }>
+                              Not Completed</option>
                           </select>
                         </td>
                         <td>

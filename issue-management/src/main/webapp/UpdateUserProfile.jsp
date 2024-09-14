@@ -160,6 +160,7 @@ function numberAjaxValidation() {
   document.getElementById("address").addEventListener("input", addressValidation);
 
 
+
 function validateAndEnableSubmit() {
     let isValid = true;
 
@@ -316,7 +317,7 @@ function validateAndEnableSubmit() {
 
       <form action="updateUserProfile" method="post" enctype="multipart/form-data">
 
-       <div class="text-primary"><b>${msg}</b></div>
+       <div class="text-success"><b>${updateMsg}</b></div>
        <span style="color:green"><strong>${profileUploadMsg}</strong></span>
         <span style="color:red"><strong>${errorMessageFetchingUserDetails}</strong></span>
         <span style="color:red"><strong>${errorUploadMsg}</strong></span>

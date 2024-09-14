@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.service;
 
+import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
@@ -31,6 +32,17 @@ public interface RegDeptAdminService {
     DepartmentDTO findByDepartmentType(String regDepartmentName);
 
    List< ComplaintRaiseDTO>  deptAdminView(String departmentName);
+
+    //de-active employee status
+    void deactivateStatus(int employee_id, Status status);
+
+
+    List<EmployeeDTO> getAllEmployeeNames(String regDepartmentName);
+
+    //update status and employee id
+    boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status);
+
+
 
 
 

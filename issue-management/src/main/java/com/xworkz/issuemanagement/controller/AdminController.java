@@ -93,7 +93,7 @@ public String admin()
 @GetMapping("viewUserDetails")
 public String viewUserDetails(SignUpDTO signUpDTO,Model model)
 {
-    System.out.println("viewUserDetails method in AdminController..");
+    log.info("viewUserDetails method in AdminController..");
     List<SignUpDTO> signUpDTOData = adminService.findByUserId(signUpDTO);
 
     if (signUpDTOData != null) {
@@ -106,6 +106,22 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
     return"AdminViewUserDetails";
 }
 
+@GetMapping("viewSubAdminDepartmentDetails")
+public String viewSubAdminDepartmentDetails(Model model)
+{
+    log.info("viewSubAdminDepartmentDetails method in AdminController..");
+    List<RegDeptAdminDTO> regDeptAdminDTOS = adminService.getAllSubAdminDetails();
+
+    if (regDeptAdminDTOS != null) {
+        log.info("viewSubAdminDepartmentDetails successful in AdminController..");
+        model.addAttribute("subDepartmentDetails", regDeptAdminDTOS);
+        return "AdminViewSubAdminDepartmentDetails";
+    } else {
+        log.info("viewSubAdminDepartmentDetails not  successful in AdminController..");
+    }
+
+    return "AdminViewSubAdminDepartmentDetails";
+}
 
 
     //view Raise complaint details
@@ -232,13 +248,13 @@ public String viewUserDetails(SignUpDTO signUpDTO,Model model)
    boolean data= adminService.updateStatusAndDepartmentId(complaintId,departmentId,complaintRaiseDTO.getStatus());
    if(data)
    {
-       System.out.println("update:"+data);
+       log.info("update:"+data);
    }
    else {
-       System.out.println("No update:"+data);
+       log.info("No update:" + data);
    }
     redirectAttributes.addFlashAttribute("msg","Updated Successfully");
-    return "redirect:UpdateDepartment";
+    return "redirect:/viewComplaintRaiseDetails";
 }
 
     @GetMapping("UpdateDepartment")

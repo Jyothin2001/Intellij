@@ -261,8 +261,23 @@ function contactNumberValidation() {
     <a class="navbar-brand" href="#">
       <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
     </a>
-    <div class="d-flex ms-auto">
-      <a class="navbar-brand text-light" href="AdminProfilePage"><b>Admin Profile</b></a>
+
+    <div class="dropdown">
+                      <button class="dropdown-toggle dropdown-toggle-custom" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Admin
+                                  </button>
+
+                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                       <li><a class="dropdown-item" href="viewUserDetails"><strong>View User Details</strong></a></li>
+                      <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
+                      <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
+                       <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+
+
+
+                       </ul>
+                     </div>
+
     </div>
   </div>
 </nav>
@@ -290,7 +305,7 @@ function contactNumberValidation() {
 
       <form action="DepartmentSignUp" method="post" onsubmit="return validateForm()">
 
-              <div class="text-primary"><b>${saveDeptAdmin}</b></div>
+              <div class="text-success"><b>${saveDeptAdmin}</b></div>
 
 <!-- Admin Name -->
               <div style="margin-bottom:2px;" class="form-group">
@@ -363,5 +378,7 @@ function contactNumberValidation() {
      </div>
   </div>
  </body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 </html>
