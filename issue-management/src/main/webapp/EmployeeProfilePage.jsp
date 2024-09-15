@@ -20,15 +20,7 @@
       border-radius: 5;
     }
 
-    .dropdown-item {
-        color: black; /* Default color */
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
 
-    .dropdown-item:hover {
-        background-color: #f8f9fa; /* Light grey background on hover */
-        color: grey; /* Change text color to grey on hover */
-    }
 
   </style>
 </head>

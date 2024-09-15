@@ -82,7 +82,9 @@ public class EmployeeServiceImply implements EmployeeService
 
         log.info("updateEmployeeDetails method running in employeeServiceImply..");
 
-        return employeeRepo.updateEmployeeDetails(employeeDTO);
+         employeeRepo.updateEmployeeDetails(employeeDTO);
+
+        return employeeDTO;
 
 
 

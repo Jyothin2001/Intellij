@@ -16,7 +16,7 @@ public interface EmployeeRepo  {
 
 
 
-    public EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO);
+    void updateEmployeeDetails(EmployeeDTO employeeDTO);
 
 
 

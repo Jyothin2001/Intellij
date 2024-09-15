@@ -393,11 +393,14 @@ public String SubAdminChangePassword()
 }
 
     @GetMapping("department-admin-complaintViewPage")
-    public String deptAdminViewComplaint( Model model,HttpServletRequest httpServletRequest) {
+    public String deptAdminViewComplaint( Model model,HttpServletRequest httpServletRequest,HttpSession session) {
         log.info("departments name in RegDeptController:");
 
        HttpSession httpSession1= httpServletRequest.getSession();
        String departmentName1= (String) httpSession1.getAttribute("departmentName");
+
+       RegDeptAdminDTO departmentAdminName= (RegDeptAdminDTO) session.getAttribute("SubAdminName");
+       model.addAttribute("departmentName",departmentAdminName.getAdminName());
 
 
        List<EmployeeDTO> employeeNames=regDeptAdminService.getAllEmployeeNames(departmentName1);

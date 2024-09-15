@@ -140,18 +140,26 @@ public class AjaxEmailAndNumberRepoImpli implements AjaxEmailAndNumberRepo
 
     @Override
     public Optional<EmployeeDTO> findByContactNumber(Long contactNumber) {
-        EntityManager entityManager= entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.contactNumber = :contactNumber");
             query.setParameter("contactNumber", contactNumber);
             EmployeeDTO result = (EmployeeDTO) query.getSingleResult();
-            log.info("checking number from EmployeeDTO in AjaxEmailAndNumberRepo");
+            log.info("Checking number from EmployeeDTO in AjaxEmailAndNumberRepo");
             return Optional.of(result);
         } catch (NoResultException e) {
+            log.error("No result found for contact number: " + contactNumber);
             return Optional.empty();
+        } catch (NonUniqueResultException e) {
+            log.error("Multiple results found for contact number: " + contactNumber);
+            // Handle this case according to your business logic.
+            // You may decide to return an Optional.empty(), return the first result, or throw an exception.
+            return Optional.empty();  // Or handle it differently
         } catch (PersistenceException e) {
-            e.printStackTrace();
+            log.error("Persistence error while fetching by contact number", e);
             return Optional.empty();
+        } finally {
+            entityManager.close();
         }
     }
 

@@ -1,9 +1,11 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.mysql.cj.xdevapi.ModifyStatement;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
+import com.xworkz.issuemanagement.dto.SignUpDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.service.AdminService;
 import com.xworkz.issuemanagement.model.service.EmployeeService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.management.modelmbean.ModelMBeanOperationInfo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -267,14 +270,52 @@ public class EmployeeController {
 
 
     @GetMapping("editEmployeeDetails")
-    public String updateEmployeeDetails(HttpSession session)
+    public String updateEmployeeDetails(HttpSession session, Model model)
     {
           String emailId= (String) session.getAttribute("email");
+          log.info("Employee data in controller() :{}", emailId);
 
+        if (emailId != null)
+        {
+            EmployeeDTO employeeDetailsByEmail = employeeService.findByEmail(emailId);
+            //to retain employee details in jsp after refresh
+            session.setAttribute("employeeDetails",employeeDetailsByEmail);
 
+            if(employeeDetailsByEmail!=null)
+            {
+                model.addAttribute("employeeDTO", employeeDetailsByEmail);
 
-        return"";
+                return "UpdateEmployeeDetails";
+            }
+        }
+
+        model.addAttribute("errorMessageFetchingEmployeeDetails", "Error fetching Employee details");
+        return "UpdateEmployeeDetails"; // Handle error appropriately
+
     }
+
+    @PostMapping("updateEmployeeDetails")
+    public String updateEmployeeDetails(EmployeeDTO employeeDTO,RedirectAttributes redirectAttributes)
+{
+    log.info("updateEmployeeDetails in employee Controller");
+    if(employeeDTO!=null)
+    {
+        EmployeeDTO updateEmployeeDetails = employeeService.updateEmployeeDetails(employeeDTO);
+        redirectAttributes.addFlashAttribute("UpdateEmployeeDetails", "Successfully Updated your Details , " + updateEmployeeDetails.getEmployeeName());
+    }
+    return"redirect:/updateEmployeeDetails";
+}
+
+@GetMapping("updateEmployeeDetails")
+    public String updateEmployeeDetail(HttpSession session,Model model)
+{
+    EmployeeDTO employeeDTO= (EmployeeDTO) session.getAttribute("employeeDetails");
+    model.addAttribute("employeeDTO",employeeDTO);
+
+    return "UpdateEmployeeDetails";
+}
+
+
 
 
 

@@ -98,35 +98,40 @@ function contactNumberValidation() {
   const element = document.getElementById("contactNumber");
   const error = document.getElementById("contactNumberError");
   const mobileRegex = /^\d{10}$/;
-  const value = element.value.trim(); // Trim to remove any extra spaces
+  let value = element.value.trim(); // Trim any extra spaces
 
-  // Check if the input is empty
   if (value === '') {
     error.innerHTML = "Contact Number is required.";
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
-  // Check for non-numeric characters
   else if (/\D/.test(value)) {
     error.innerHTML = "Contact number must contain only digits.";
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
-  // Check if the input matches the 10-digit pattern
   else if (!mobileRegex.test(value)) {
     error.innerHTML = "Contact Number should be exactly 10 digits.";
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
   else {
-    error.innerHTML = "";
-    fieldsChecks["contactNumber"] = true;
-    numberAjaxValidation(); // Assuming this is for additional server-side validation
+    // Trim leading zeroes if the user entered them
+    value = value.replace(/^0+/, '');
+
+    if (value.length !== 10) {
+      error.innerHTML = "Contact number must be exactly 10 digits after trimming/removing 0.Not Allowing Number Start with 0";
+      error.style.color = "red";
+      fieldsChecks["contactNumber"] = false;
+    } else {
+      error.innerHTML = "";
+      fieldsChecks["contactNumber"] = true;
+      numberAjaxValidation(); // Assuming this is for additional server-side validation
+    }
   }
 
   validateAndEnableSubmit();
 }
-
 
 function addressValidation() {
   const element = document.getElementById("address");
@@ -212,7 +217,6 @@ function numberAjaxValidation() {
   };
 }
 
-// Event Listeners
 document.getElementById("employeeName").addEventListener("blur", validateEmployeeName);
 document.getElementById("email").addEventListener("blur", emailValidation);
 document.getElementById("contactNumber").addEventListener("blur", contactNumberValidation);
@@ -240,15 +244,24 @@ document.getElementById("address").addEventListener("blur", addressValidation);
  </div>
 
           <div class="dropdown">
-            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${SubAdminName.adminName}
-            </button>
+                    <button
+                        class="btn dropdown-toggle px-4 py-2 rounded-pill"
+                        style="font-weight: bold; background-color: white; color: grey; border-color: grey;"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="bi bi-person-circle"></i> ${employeeName}
+                    </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
 
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Details</strong></a></li>
-              <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
+                  <li><a class="dropdown-item" href="editEmployeeDetails"><strong>Edit Your Details</strong></a></li>
 
-            </ul>
-          </div>
+                  <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Details</strong></a></li>
+
+                  <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
+
+                </ul>
+              </div>
 
 </div>
 </nav>
@@ -275,44 +288,48 @@ document.getElementById("address").addEventListener("blur", addressValidation);
                 </span>
 <!--Form-->
 
-      <form action="employeeRegistration" method="get">
+      <form action="updateEmployeeDetails" method="post">
+          <div style="color:red;"><b>${errorMessageFetchingEmployeeDetails}</b></div>
+          <div style="color:green;"><b>${UpdateEmployeeDetails}</b></div>
 
-          <div class="text-success"><b>${saveEmployee}</b></div>
-          <div style="color:red;"><b>${saveDeptAdmin}</b></div>
+<input type="hidden" name="employee_id" value="${employeeDTO.employee_id}"/>
+<input type="hidden" name="departmentDTO.id" value="${employeeDTO.departmentDTO.id}"/>
 
           <!-- Employee Name -->
-          <div style="margin-bottom:2px;" class="form-group">
-              <span id="employeeError" class="error-message"></span><br>
-              <label for="employeeName" class="form-label">Employee Name:</label>
-              <div class="input-icon">
-                  <i class="fas fa-user"></i>
-                  <input type="text" class="form-control" id="employeeName" onblur="validateEmployeeName()" name="employeeName" placeholder="Enter Name" />
-              </div>
-          </div>
+                    <div style="margin-bottom:2px;" class="form-group">
+                        <span id="employeeError" class="error-message"></span><br>
+                        <label for="employeeName" class="form-label">Employee Name:</label>
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="form-control" id="employeeName" onblur="validateEmployeeName()" name="employeeName" placeholder="Enter Name" />
+                        </div>
+                    </div>
+                    </br>
 
           <!-- Employee Designation -->
           <div style="margin-bottom:2px;" class="form-group">
-              <span id="employeeDesignationError" class="error-message"></span><br>
               <label for="employeeDesignation" class="form-label">Employee Designation:</label>
               <div class="input-icon">
                   <i class="fas fa-user"></i>
-                  <input type="text" class="form-control" id="employeeDesignation" onblur="validateEmployeeDesignation()" name="employeeDesignation" placeholder="Enter Designation" />
+                  <i class="fa-regular fa-building"></i>
+                  <input type="text" class="form-control" id="employeeDesignation" value="${employeeDTO.employeeDesignation}" readonly name="employeeDesignation"  />
               </div>
           </div>
           <br>
-          <!-- Dropdown select issue -->
+
+          <!-- Department Name -->
+          <div style="margin-bottom:2px;" class="form-group">
           <label for="departmentName" class="form-label">Department:</label>
-          <span id="DepartmentNameError" class="error-message"></span>
-          <select class="form-select custom-select-width" id="departmentName" onblur="validateDepartmentName()" name="departmentName">
-              <option value="">Select Department</option>
-              <c:forEach items="${departments}" var="departmentName">
-                  <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
-              </c:forEach>
-          </select>
+          <div class="input-icon">
+          <i class="fa-regular fa-building"></i>
+          <input type="text" class="form-control" id="departmentName" readonly value="${employeeDTO.departmentName}" name="departmentName"/>
+          </div>
+          </div>
+
 
           <!-- Email -->
           <div style="margin-bottom:2px;" class="form-group">
-              <span id="emailError" class="error-message"></span><br>
+           <span id="emailError" class="error-message"></span><br>
               <label for="email" class="form-label">Email:</label>
               <div class="input-icon">
                   <i class="fa-regular fa-envelope"></i>
@@ -340,18 +357,14 @@ document.getElementById("address").addEventListener("blur", addressValidation);
                   <textarea class="form-control" id="address" placeholder="" onblur="addressValidation()" name="address" style="border-radius: 15px;"></textarea>
               </div>
           </div>
+          <br>
 
-          <!-- Agree Terms -->
-          <div>
-              <span id="agreeError" class="error-message"></span><br>
-              <input class="form-check-input" id="agree" type="checkbox" onchange="agreeValidation()" value="agree" />
-              <b>I agree to </b><a href="#">Terms & Conditions</a>
-          </div><br>
 
           <!-- Submit Button -->
           <div class="d-grid gap-2" style="margin-bottom:10px;">
               <input type="submit" class="btn btn-primary btn-lg" id="submit" disabled value="Register">
-          </div><br>
+          </div>
+          <br>
 
       </form>
 
@@ -360,6 +373,6 @@ document.getElementById("address").addEventListener("blur", addressValidation);
   </div>
  </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 </html>

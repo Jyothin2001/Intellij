@@ -107,32 +107,35 @@ public class EmployeeRepoImpli implements EmployeeRepo{
     }
 
     @Override
-    public EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO) {
+    public void updateEmployeeDetails(EmployeeDTO employeeDTO) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
 
-        EntityManager entityManager= entityManagerFactory.createEntityManager();
-
-        EntityTransaction entityTransaction=entityManager.getTransaction();
-
-        try
-        {
+        try {
             entityTransaction.begin();
-            //save and update
+            // Save or update
             entityManager.merge(employeeDTO);
-            log.info("update employeeDetails in Repo: {}",employeeDTO);
+            log.info("Updating employee details in Repo: {}", employeeDTO);
             entityTransaction.commit();
-        }
-        catch (PersistenceException e)
-        {
-            e.printStackTrace();
+
+        } catch (RollbackException e) {
+            log.error("Transaction rollback error while updating employee details: {}", e.getMessage());
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
-
-        }
-        finally {
+        } catch (PersistenceException e) {
+            log.error("Persistence error while updating employee details: {}", e.getMessage());
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+        } catch (Exception e) {
+            log.error("Unexpected error while updating employee details: {}", e.getMessage());
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+        } finally {
             entityManager.close();
         }
-        return employeeDTO;
     }
 
 
@@ -140,7 +143,7 @@ public class EmployeeRepoImpli implements EmployeeRepo{
 
 
 
-    }
+}
 
 
 

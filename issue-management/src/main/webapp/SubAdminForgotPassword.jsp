@@ -25,6 +25,7 @@
      color: #6c757d;
      opacity: 1;
    }
+
  </style>
 
 </head>

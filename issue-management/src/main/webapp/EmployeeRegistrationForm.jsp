@@ -27,6 +27,27 @@
 
         }
 
+<!-- Include this style in the <head> or your CSS file -->
+<style>
+    .dropdown-toggle.custom-dropdown-button {
+        color: blue !important; /* Force text color to blue */
+        border: 1px solid blue; /* Optional: Border color */
+    }
+
+    .dropdown-toggle.custom-dropdown-button::after {
+        color: blue; /* Dropdown arrow color */
+    }
+
+    .dropdown-menu.custom-dropdown-menu .dropdown-item {
+        color: black; /* Default option text color */
+    }
+
+    .dropdown-menu.custom-dropdown-menu .dropdown-item:hover {
+        background-color: blue; /* Background color on hover */
+        color: white; /* Text color on hover */
+    }
+</style>
+
 </style>
 <script>
 
@@ -293,20 +314,16 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
  </div>
 
           <div class="dropdown">
-            <button class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">${SubAdminName.adminName}
-            </button>
+              <button class="dropdown-toggle custom-dropdown-button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                 <span class="text-primary"> ${SubAdminName.adminName}</span>
+              </button>
 
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-               <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
-
-              <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
-
-              <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
-              <li><a class="dropdown-item" href="subAdminProfilePage"><strong>SunAdminProfilePage</strong></a></li>
-
-
-
-            </ul>
+              <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="SubAdminChangePassword"><strong>Change Password</strong></a></li>
+                  <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
+                  <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
+                  <li><a class="dropdown-item" href="subAdminProfilePage"><strong>SunAdminProfilePage</strong></a></li>
+              </ul>
           </div>
 
 </div>
@@ -359,7 +376,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
               </div>
           </div>
           <br>
-          <!-- Dropdown select issue -->
+          <!-- Dropdown select issue
           <label for="departmentName" class="form-label">Department:</label>
           <span id="DepartmentNameError" class="error-message"></span>
           <select class="form-select custom-select-width" id="departmentName" onblur="validateDepartmentName()" name="departmentName">
@@ -367,8 +384,17 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
               <c:forEach items="${departments}" var="departmentName">
                   <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
               </c:forEach>
-          </select>
-
+          </select>-->
+<!-- Department -->
+          <div style="margin-bottom:2px;" class="form-group">
+              <span id="DepartmentNameError" class="error-message"></span><br>
+              <label for="departmentName" class="form-label">Department:</label>
+              <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                  <input type="text" class="form-control" id="departmentName" onblur="validateDepartmentName()" name="departmentName" placeholder="Enter Department" />
+              </div>
+          </div>
+          <br>
           <!-- Email -->
           <div style="margin-bottom:2px;" class="form-group">
               <span id="emailError" class="error-message"></span><br>

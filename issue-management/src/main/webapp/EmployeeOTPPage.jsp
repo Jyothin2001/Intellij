@@ -78,7 +78,7 @@
 
 <script>
     // Set the countdown time in seconds (5 minutes = 300 seconds)
-    var countdownTime = 10;
+    var countdownTime = 300;
 
     function startCountdown() {
         var timerElement = document.getElementById("timer");
@@ -119,7 +119,7 @@
            $.post("resendOtp", { email: email }, function(response) {
                alert(response); // Show response message
 
-               countdownTime = 30; // Reset countdown time to 5 minutes (300 seconds)
+               countdownTime = 300; // Reset countdown time to 5 minutes (300 seconds)
                otpField.disabled = false; // Re-enable OTP field
                submitButton.disabled = false; // Re-enable submit button
                resendButton.disabled = true; // Disable Resend Code button again
