@@ -14,6 +14,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -190,18 +192,8 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         log.info(" employeeNames in RegDeptAdminServiceImply:" );
 
         List<EmployeeDTO> employeeNames=  regDeptAdminRepo.getAllEmployeeNames(regDepartmentName);
-        if(!employeeNames.isEmpty())
-        {
-            log.info("fetching employeeNames in regDeptAdminServiceImply: {}",employeeNames);
-        return employeeNames;
-    }
-        else
-    {
-        log.info(" employeeNames in regDeptAdminServiceImply is not successful:");
-    }
+        return employeeNames!=null?employeeNames: Collections.emptyList();
 
-
-        return null;
     }
 
     @Override

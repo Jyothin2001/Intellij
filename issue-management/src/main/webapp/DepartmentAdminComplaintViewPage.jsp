@@ -100,6 +100,12 @@
                        <strong>${error}</strong>
                    </div>
 
+
+<div class=" text-danger text-center mb-4">
+                                          <strong>${empNames}</strong>
+                                      </div>
+
+
 <div
         class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded  ">
     <div class="card">

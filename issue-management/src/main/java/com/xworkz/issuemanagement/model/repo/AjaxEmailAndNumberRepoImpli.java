@@ -125,7 +125,7 @@ public class AjaxEmailAndNumberRepoImpli implements AjaxEmailAndNumberRepo
     public Optional<EmployeeDTO> findByEmail(String email) {
         EntityManager entityManager= entityManagerFactory.createEntityManager();
         try {
-            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.email = :email");
+            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.email = :email and e.status='ACTIVE'");
             query.setParameter("email", email);
             EmployeeDTO result = (EmployeeDTO) query.getSingleResult();
             log.info("checking email from EmployeeDTO in AjaxEmailAndNumberRepo");
@@ -142,7 +142,7 @@ public class AjaxEmailAndNumberRepoImpli implements AjaxEmailAndNumberRepo
     public Optional<EmployeeDTO> findByContactNumber(Long contactNumber) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.contactNumber = :contactNumber");
+            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.contactNumber = :contactNumber and e.status='ACTIVE'");
             query.setParameter("contactNumber", contactNumber);
             EmployeeDTO result = (EmployeeDTO) query.getSingleResult();
             log.info("Checking number from EmployeeDTO in AjaxEmailAndNumberRepo");

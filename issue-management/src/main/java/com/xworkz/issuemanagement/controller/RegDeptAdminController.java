@@ -183,6 +183,7 @@ public class RegDeptAdminController
     {
         log.info("departmentAdminLoginIn method running in RegDeptAdminController..");
          httpSession.setAttribute("subAdminEmail",email);
+        // httpSession.setAttribute("departmentName",departmentName);
 
 
         RegDeptAdminDTO logIn=regDeptAdminService.getEmailAndPassword(email,password,departmentName);
@@ -403,11 +404,23 @@ public String SubAdminChangePassword()
        model.addAttribute("departmentName",departmentAdminName.getAdminName());
 
 
-       List<EmployeeDTO> employeeNames=regDeptAdminService.getAllEmployeeNames(departmentName1);
-        if(!employeeNames.isEmpty())
-        {
-            log.info("employee names:{}", employeeNames);
-            model.addAttribute("employeeNames", employeeNames);// Fetch the list of departments for departmentNames
+//       List<EmployeeDTO> employeeNames=regDeptAdminService.getAllEmployeeNames(departmentName1);
+//        if(!employeeNames.isEmpty())
+//        {
+//            log.info("employee names:{}", employeeNames);
+//            model.addAttribute("employeeNames", employeeNames);// Fetch the list of departments for departmentNames
+//        }
+        List<EmployeeDTO> employeeNames = regDeptAdminService.getAllEmployeeNames(departmentName1);
+
+// Check if employeeNames is not null before calling isEmpty()
+        if (employeeNames != null && !employeeNames.isEmpty()) {
+            log.info("employee names: {}", employeeNames);
+            model.addAttribute("employeeNames", employeeNames); // Fetch the list of departments for departmentNames
+        } else {
+            // Optionally, log or handle the case where employeeNames is null or empty
+            log.info("No active employees found for department: {}", departmentName1);
+            // Optionally, add an empty list or a different message to the model if needed
+            model.addAttribute("empNames","No active employees found for department  "+ departmentName1 +"  Register New Employee for This Department");
         }
 
 

@@ -1,5 +1,6 @@
 package com.xworkz.issuemanagement.model.repo;
 
+import com.xworkz.issuemanagement.constants.Status;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -51,21 +52,29 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         log.info("findByDepartmentType method running AdminRepoImpl..");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-
-            Query query1 = entityManager.createQuery("SELECT d FROM DepartmentDTO d where departmentName=:employeeDeptName");
+            Query query1 = entityManager.createQuery("SELECT d FROM DepartmentDTO d WHERE d.departmentName = :employeeDeptName");
             query1.setParameter("employeeDeptName", employeeDeptName);
+
+            // Using getSingleResult() to handle the scenario where no result is found
             DepartmentDTO data = (DepartmentDTO) query1.getSingleResult();
-            log.info("DepartmentName from employeeDeptName : " + data);
+            log.info("DepartmentName from employeeDeptName: " + data);
 
             return data;
 
+        } catch (NoResultException noResultException) {
+            log.info("No result found for department name: " + employeeDeptName);
+            // Handle the case where no result is found (e.g., return null or an empty result)
+            return null;
+
         } catch (PersistenceException persistenceException) {
-            persistenceException.printStackTrace();
+            log.error("Persistence exception occurred: ", persistenceException);
+            // Handle other persistence exceptions if needed
+            return null;
+
         } finally {
             entityManager.close();
             log.info("Connection closed");
         }
-        return null;
     }
 
     @Override
@@ -77,7 +86,7 @@ public class EmployeeRepoImpli implements EmployeeRepo{
             //System.out.println("Existing email:" +emailId);
             log.info("Existing email : {}", emailId);
 
-            String query = "SELECT e FROM EmployeeDTO e WHERE e.email =:emailId";
+            String query = "SELECT e FROM EmployeeDTO e WHERE e.email =:emailId and e.status = 'ACTIVE'";
 
             Query query1 = entityManager.createQuery(query);
             query1.setParameter("emailId", emailId);
@@ -114,6 +123,7 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         try {
             entityTransaction.begin();
             // Save or update
+            employeeDTO.setStatus(Status.ACTIVE);
             entityManager.merge(employeeDTO);
             log.info("Updating employee details in Repo: {}", employeeDTO);
             entityTransaction.commit();

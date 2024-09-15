@@ -60,7 +60,7 @@ public class EmployeeDTO
     private String address;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="dept_id",referencedColumnName = "department_id")
+    @JoinColumn(name="dept_id",nullable = false,referencedColumnName = "department_id")
     private DepartmentDTO departmentDTO;
 
     @Column(name = "employee_status")

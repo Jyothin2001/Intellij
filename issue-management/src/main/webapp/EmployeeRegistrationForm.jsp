@@ -376,7 +376,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
               </div>
           </div>
           <br>
-          <!-- Dropdown select issue
+          <!-- Dropdown select issue-->
           <label for="departmentName" class="form-label">Department:</label>
           <span id="DepartmentNameError" class="error-message"></span>
           <select class="form-select custom-select-width" id="departmentName" onblur="validateDepartmentName()" name="departmentName">
@@ -384,8 +384,8 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
               <c:forEach items="${departments}" var="departmentName">
                   <option value="${departmentName.departmentName}">${departmentName.departmentName}</option>
               </c:forEach>
-          </select>-->
-<!-- Department -->
+          </select>
+<!-- Department
           <div style="margin-bottom:2px;" class="form-group">
               <span id="DepartmentNameError" class="error-message"></span><br>
               <label for="departmentName" class="form-label">Department:</label>
@@ -393,7 +393,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
                   <i class="fas fa-user"></i>
                   <input type="text" class="form-control" id="departmentName" onblur="validateDepartmentName()" name="departmentName" placeholder="Enter Department" />
               </div>
-          </div>
+          </div>-->
           <br>
           <!-- Email -->
           <div style="margin-bottom:2px;" class="form-group">
