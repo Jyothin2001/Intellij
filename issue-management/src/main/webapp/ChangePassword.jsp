@@ -336,7 +336,8 @@ a=1;
 
                <!--Displaying messages -->
 
-                     <div class="text-danger"><h6><b>${passwordResetError}</b></h6></div>
+                     <div class="text-danger"><h6><b>${passwordResetMessage}</b></h6></div>
+                     <div class="text-success"><h6><b>${msg}</b></h6></div>
 
 
 

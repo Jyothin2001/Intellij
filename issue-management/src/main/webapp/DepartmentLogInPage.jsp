@@ -79,6 +79,7 @@
      background-color:;
      }
 
+
     <!-- password styling-->
         .form-group {
             margin-bottom:24px;
@@ -203,11 +204,11 @@
 
     <div class="card-body text-dark">
         <!-- Displaying messages -->
-        <div class="text-primary"><h6><b>${msg}</b></h6></div>
-        <div class="text-primary"><h6><b>${errorMsg}</b></h6></div>
-        <div class="text-primary"><h6><b>${accountError}</b></h6></div>
-        <div class="text-primary"><h6><b>${passwordResetMessage}</b></h6></div>
-        <div class="text-primary"><b>${forgotPasswordMsg}</b></div>
+        <div class="text-success"><h6><b>${msg}</b></h6></div>
+        <div class="text-danger"><h6><b>${errorMsg}</b></h6></div>
+        <div class="text-danger"><h6><b>${accountError}</b></h6></div>
+        <div class="text-success"><h6><b>${passwordResetMessage}</b></h6></div>
+        <div class="text-danger"><b>${forgotPasswordMsg}</b></div>
 
         <!-- Form -->
         <form action="DepartmentLogInPage" method="post">
@@ -237,7 +238,7 @@
                 <span class="error-message" id="DepartmentNameError" style="color: red;"></span>
                 <label for="departmentName" class="form-label">Department:</label>
                 <select class="form-select custom-select-width" id="departmentName" name="departmentName" style="border-radius: 15px;" oninput="validateForm()" onchange="validateForm()">
-                    <option value="">Select Department</option>
+                    <option  value="">Choose..</option>
                     <c:forEach items="${departments}" var="department">
                         <option value="${department.departmentName}">${department.departmentName}</option>
                     </c:forEach>

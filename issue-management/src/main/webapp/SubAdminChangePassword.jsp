@@ -262,7 +262,7 @@ console.log('New state of b:', b); // Debugging line
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
+
  </div>
 
  <div class="dropdown">
@@ -315,6 +315,7 @@ console.log('New state of b:', b); // Debugging line
                <!--Displaying messages -->
 
                      <div class="text-danger"><h6><b>${passwordResetError}</b></h6></div>
+                     <div class="text-success"><h6><b>${msg}</b></h6></div>
 
 
 

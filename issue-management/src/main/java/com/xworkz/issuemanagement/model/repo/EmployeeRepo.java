@@ -2,9 +2,6 @@ package com.xworkz.issuemanagement.model.repo;
 
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 public interface EmployeeRepo  {
 
@@ -16,6 +13,10 @@ public interface EmployeeRepo  {
     //to check whether email exists or not in database
 
     EmployeeDTO findByEmail(String  emailId);
+
+
+
+    public EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO);
 
 
 

@@ -5,17 +5,20 @@ import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
+import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.service.AdminService;
 import com.xworkz.issuemanagement.model.service.ChangePasswordService;
 import com.xworkz.issuemanagement.model.service.ForgotPasswordService;
 import com.xworkz.issuemanagement.model.service.RegDeptAdminService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.mail.SimpleMailMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,6 +47,9 @@ public class RegDeptAdminController
 
     @Autowired
     private ChangePasswordService changePasswordService;
+
+    @Autowired
+    private MailSend mailSend;
 
 
 
@@ -253,55 +259,138 @@ public class RegDeptAdminController
     }
 
 
-    //********sub Admin********
-    @PostMapping("sub-admin-forgot-password")
-    public String subAdminForgotPassword(@RequestParam String email, Model model)
-    {
-        // Fetch the list of departments for departmentName
-        List<DepartmentDTO> departments = adminService.findByDepartmentName();
-        if(!departments.isEmpty())
-        {
-            log.info("departments name:{}", departments);
-            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
-        }
-
-        if(forgotPasswordService.forgotPasswordBySubAdmin(email))
-        {
-            model.addAttribute("forgotPasswordMsg", "A new password has been sent to your email.");
-            return "DepartmentLogInPage";
-        }
-        else
-        {
-            model.addAttribute("forgotPasswordError", "Email address not found.");
-
-        }
-        return"SubAdminForgotPassword";
+//    //********sub Admin********
+//    @PostMapping("sub-admin-forgot-password")
+//    public String subAdminForgotPassword(@RequestParam String email, Model model)
+//    {
+//        // Fetch the list of departments for departmentName
+//        List<DepartmentDTO> departments = adminService.findByDepartmentName();
+//        if(!departments.isEmpty())
+//        {
+//            log.info("departments name:{}", departments);
+//            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+//        }
+//
+//        if(forgotPasswordService.forgotPasswordBySubAdmin(email))
+//        {
+//            model.addAttribute("forgotPasswordMsg", "A new password has been sent to your email.");
+//            return "DepartmentLogInPage";
+//        }
+//        else
+//        {
+//            model.addAttribute("forgotPasswordError", "Email address not found.");
+//
+//        }
+//        return"SubAdminForgotPassword";
+//    }
+@PostMapping("sub-admin-forgot-password")
+public String subAdminForgotPassword(@RequestParam String email, Model model,RedirectAttributes redirectAttributes) {
+    // Fetch the list of departments for departmentName
+    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+    if (!departments.isEmpty()) {
+        log.info("departments name:{}", departments);
+        model.addAttribute("departments", departments);
     }
 
-    @PostMapping("subAdminChangePassword")
-    public String changePasswordSubAdmin(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword,Model model)
-    {
-        // Fetch the list of departments for departmentName
-        List<DepartmentDTO> departments = adminService.findByDepartmentName();
-        if(!departments.isEmpty())
-        {
-            log.info("departments name:{}", departments);
-            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+    if (forgotPasswordService.forgotPasswordBySubAdmin(email)) {
+        // Prepare the email message
+        SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setTo(email);
+        emailMessage.setSubject("Sub-Admin Password Reset");
+        emailMessage.setText("A new password has been generated and sent to your email.");
+
+        // Send the email and check for network issues
+        String emailStatus = mailSend.sendEmail(emailMessage);
+        if ("network_error".equals(emailStatus)) {
+            model.addAttribute("forgotPasswordError", "Network issue while sending the reset email. Please try again later.");
+            return "SubAdminForgotPassword";
+        } else if ("send_error".equals(emailStatus)) {
+            model.addAttribute("forgotPasswordError", "Password reset successful, but email sending failed. Please check your email settings.");
+            return "SubAdminForgotPassword";
         }
 
-
-        boolean password=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
-        if(password) {
-            model.addAttribute("passwordResetMessage", "Password reset successful");
-            return "SubAdminChangePassword";
-        }
-        else {
-            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
-            return "SubAdminChangePassword";
-        }
-
-
+        model.addAttribute("msg", "A new password has been sent to your email.");
+        return "DepartmentLogInPage";
+    } else {
+        redirectAttributes.addFlashAttribute("forgotPasswordError", "Email address not found.");
+        return "redirect:/subAdminForgotPassword";
     }
+}
+@GetMapping("subAdminForgotPassword")
+public String subAdminForgotPassword()
+{
+    return "SubAdminForgotPassword";
+}
+
+//    @PostMapping("subAdminChangePassword")
+//    public String changePasswordSubAdmin(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword,Model model)
+//    {
+//        // Fetch the list of departments for departmentName
+//        List<DepartmentDTO> departments = adminService.findByDepartmentName();
+//        if(!departments.isEmpty())
+//        {
+//            log.info("departments name:{}", departments);
+//            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+//        }
+//
+//
+//        boolean password=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
+//        if(password) {
+//            model.addAttribute("passwordResetMessage", "Password reset successful");
+//            return "SubAdminChangePassword";
+//        }
+//        else {
+//            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
+//            return "SubAdminChangePassword";
+//        }
+//
+//
+//    }
+@PostMapping("subAdminChangePassword")
+public String changePasswordSubAdmin(@RequestParam String email,
+                                     @RequestParam String oldPassword,
+                                     @RequestParam String newPassword,
+                                     @RequestParam String confirmPassword,
+                                     RedirectAttributes redirectAttributes,
+                                     Model model) {
+    // Fetch the list of departments for departmentName
+    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+    if (!departments.isEmpty()) {
+        log.info("departments name:{}", departments);
+        model.addAttribute("departments", departments);
+    }
+
+    boolean passwordChanged = changePasswordService.subAdminChangePassword(email, oldPassword, newPassword, confirmPassword);
+    if (passwordChanged) {
+        // Prepare the email message
+        SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setTo(email);
+        emailMessage.setSubject("Password Changed Successfully");
+        emailMessage.setText("Your password has been changed successfully.");
+
+        // Send the email and check for network issues
+        String emailStatus = mailSend.sendEmail(emailMessage);
+        if ("network_error".equals(emailStatus)) {
+            model.addAttribute("passwordResetError", "Network issue while sending the confirmation email. Please try again later.or Do Forgot Password");
+            return "SubAdminChangePassword";
+        } else if ("send_error".equals(emailStatus)) {
+            model.addAttribute("passwordResetError", "Password changed, but email sending failed. Please check your email settings.");
+            return "SubAdminChangePassword";
+        }
+
+        model.addAttribute("msg", "Password reset successful. A confirmation email has been sent.");
+        return "SubAdminChangePassword";
+    } else {
+        redirectAttributes.addFlashAttribute("passwordResetError", "Failed to reset password. Please check your old password.");
+        return "redirect:/subAdminChangePassword";
+    }
+}
+
+@GetMapping("subAdminChangePassword")
+public String SubAdminChangePassword()
+{
+    return "SubAdminChangePassword";
+}
 
     @GetMapping("department-admin-complaintViewPage")
     public String deptAdminViewComplaint( Model model,HttpServletRequest httpServletRequest) {

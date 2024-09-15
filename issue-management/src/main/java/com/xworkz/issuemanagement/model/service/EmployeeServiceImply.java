@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,8 +77,19 @@ public class EmployeeServiceImply implements EmployeeService
             return null;
         }
 
+    @Override
+    public EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO) {
+
+        log.info("updateEmployeeDetails method running in employeeServiceImply..");
+
+        return employeeRepo.updateEmployeeDetails(employeeDTO);
+
+
 
     }
+
+
+}
 
 
 

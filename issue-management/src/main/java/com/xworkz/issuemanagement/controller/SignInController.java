@@ -1,14 +1,18 @@
 package com.xworkz.issuemanagement.controller;
 
 import com.xworkz.issuemanagement.dto.SignUpDTO;
+import com.xworkz.issuemanagement.emailSending.MailSend;
 import com.xworkz.issuemanagement.model.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.DelegatingServerHttpResponse;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -30,6 +34,9 @@ public class SignInController {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private MailSend mailSend;
 
 
     public SignInController() {
@@ -115,17 +122,61 @@ public class SignInController {
     }
 
     @PostMapping("resetPassword")
-    public String resetPassword(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword, Model model) {
-        boolean password = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
-        if (password) {
-            model.addAttribute("passwordResetMessage", "Password Reset Successful");
-            return "ChangePassword";
-        } else {
-            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
-            return "ChangePassword";
+    public String resetPassword(@RequestParam String email,
+                                @RequestParam String oldPassword,
+                                @RequestParam String newPassword,
+                                @RequestParam String confirmPassword,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+
+        SignUpDTO signUpDTO = (SignUpDTO) httpSession.getAttribute("signUpDTO"); // Ensure session is not null
+        if (signUpDTO == null) {
+            return "ChangePassword"; // Redirect to login if session is null
         }
 
+        boolean passwordChanged = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
+        if (passwordChanged) {
+            SimpleMailMessage emailMessage = new SimpleMailMessage();
+            emailMessage.setTo(email);
+            emailMessage.setSubject("Password Reset Successful");
+            emailMessage.setText("Your password has been reset successfully.");
 
+            String emailStatus = mailSend.sendEmail(emailMessage);
+            if ("network_error".equals(emailStatus)) {
+                model.addAttribute("passwordResetMessage", "Network issue while sending the reset email. Please try again later.");
+                return "ChangePassword";  // Redirect to a custom error page
+            } else if ("send_error".equals(emailStatus)) {
+                model.addAttribute("passwordResetMessage", "Password reset successful, but email sending failed.");
+                return "ChangePassword";
+            } else {
+                redirectAttributes.addFlashAttribute("msg", "Password Reset Successful");
+            }
+
+            return "redirect:/changePassword";
+        } else {
+            redirectAttributes.addFlashAttribute("passwordResetMessage", "Failed to reset password. Please check your old password.");
+            return "redirect:/changePassword";
+        }
     }
+
+    @GetMapping("changePassword")
+    public String changePassword()
+    {
+       return"ChangePassword";
+    }
+
+//    @PostMapping("resetPassword")
+//    public String resetPassword(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword, Model model) {
+//        boolean password = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
+//        if (password) {
+//            model.addAttribute("passwordResetMessage", "Password Reset Successful");
+//            return "ChangePassword";
+//        } else {
+//            model.addAttribute("passwordResetError", "Failed to reset password.Please check your password");
+//            return "ChangePassword";
+//        }
+//
+//
+//    }
 
 }

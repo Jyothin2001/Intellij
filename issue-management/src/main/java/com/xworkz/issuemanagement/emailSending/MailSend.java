@@ -22,17 +22,18 @@ public class MailSend {
     }
 
     // Method that returns a status message based on email sending success or failure
-    private String sendEmail(SimpleMailMessage message) {
+    public String sendEmail(SimpleMailMessage emailMessage) {
         try {
-            javaMailSender.send(message);
-            log.info("Email sent successfully to: {}", message.getTo());
-            return "Email sent successfully.";
+            javaMailSender.send(emailMessage);
+            return "success";
         } catch (MailSendException e) {
-            log.error("Network issue while sending email to: {}, Error: {}", message.getTo(), e.getMessage());
-            return "Failed to send email due to network issues. Please try again later.";
-        } catch (MailException e) {
-            log.error("Failed to send email to: {}, Error: {}", message.getTo(), e.getMessage());
-            return "Failed to send email. Please try again.";
+            // Handle network-related issues (e.g., network down)
+            log.error("Network issue detected: {}", e.getMessage());
+            return "network_error";
+        } catch (Exception e) {
+            // Handle general email sending failure
+            log.error("Error sending email: {}", e.getMessage());
+            return "send_error";
         }
     }
 

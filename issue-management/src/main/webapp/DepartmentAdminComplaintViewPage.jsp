@@ -165,7 +165,7 @@
 
                                         <form action="deactivateEmployeeStatus/${viewRaiseComplaintUsers.employeeDTO.employee_id}" method="post">
                                          <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
-                                             <button type="submit" class="btn btn-danger">Delete${viewRaiseComplaintUsers.employeeDTO.employee_id}</button>
+                                             <button type="submit" class="btn btn-danger">Delete</button>
                                          </form>
 
                                          <!--<c:if test="${viewRaiseComplaintUsers.employeeDTO != null}">

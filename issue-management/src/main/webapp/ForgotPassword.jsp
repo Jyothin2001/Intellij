@@ -43,7 +43,7 @@
                   <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="xworkz" width="100" height="50">
               </a>
 
-   <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
+   <a class="navbar-brand text-light" href="LogInPage"><b>Login</b></a>
  </div>
 
 </div>
@@ -64,7 +64,7 @@
 
 
                <!--Displaying messages -->
-                   <div class="text-primary"><h6><b>${msg}</b></h6></div>
+                   <div class="text-success"><h6><b>${msg}</b></h6></div>
 
                    <div class="text-danger"><h6><b>${forgotPasswordError}</b></h6></div>
 

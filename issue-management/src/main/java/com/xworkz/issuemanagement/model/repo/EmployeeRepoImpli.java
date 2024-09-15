@@ -5,8 +5,6 @@ import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.*;
@@ -108,5 +106,43 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         return null;
     }
 
+    @Override
+    public EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO) {
 
-}
+        EntityManager entityManager= entityManagerFactory.createEntityManager();
+
+        EntityTransaction entityTransaction=entityManager.getTransaction();
+
+        try
+        {
+            entityTransaction.begin();
+            //save and update
+            entityManager.merge(employeeDTO);
+            log.info("update employeeDetails in Repo: {}",employeeDTO);
+            entityTransaction.commit();
+        }
+        catch (PersistenceException e)
+        {
+            e.printStackTrace();
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+
+        }
+        finally {
+            entityManager.close();
+        }
+        return employeeDTO;
+    }
+
+
+
+
+
+
+    }
+
+
+
+
+

@@ -53,7 +53,7 @@ public class EmployeeController {
     }
 
     @PostMapping("employeeRegistration")
-    private String saveEmployeeDetails(@Valid @ModelAttribute("employeeDTO")EmployeeDTO employeeDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, HttpServletRequest httpServletRequest) {
+    private String saveEmployeeDetails(@Valid @ModelAttribute("employeeDTO")EmployeeDTO employeeDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, HttpSession session) {
         if (bindingResult.hasErrors())
         {
             log.info("EmployeeDTO has invalid data");
@@ -72,6 +72,7 @@ public class EmployeeController {
             boolean employeeDetails = employeeService.saveEmployeeDetails(employeeDTO);
             if (employeeDetails)
             {
+
                 log.info("saveEmployeeDetails() is successful in EmployeeController:{}", employeeDetails);
                 redirectAttributes.addFlashAttribute("saveEmployee",  employeeDTO.getEmployeeName()+ ", Saved                                                                                                                                            successful: " );
                 return "redirect:/get-Department-Names";
@@ -108,12 +109,14 @@ public class EmployeeController {
     @PostMapping("generateOtp")
     public String generateOtp(@RequestParam("email") String emailId,
                               @RequestParam("captcha") String captchaInput,
+                              HttpServletRequest httpServletRequest,
                               HttpSession session,
                               Model model,
                               RedirectAttributes redirectAttributes) {
         log.info("generateOtp method running in EmployeeController..");
 
         session.setAttribute("email",emailId);
+
         // Check if the email exists in the database
         EmployeeDTO employeeDTO = employeeService.findByEmail(emailId);
         if (employeeDTO == null) {
@@ -131,6 +134,8 @@ public class EmployeeController {
             log.error("Invalid CAPTCHA for email: {}", emailId);
             return "redirect:/employeeLogin";
         }
+        //to display employee name in session for jsp
+        session.setAttribute("employeeName", employeeDTO.getEmployeeName());
 
         // CAPTCHA is valid, proceed with OTP generation
         String otp = emailOTPGenerator.generateOtp();
@@ -141,6 +146,11 @@ public class EmployeeController {
         boolean isSaved = employeeService.saveEmployeeDetails(employeeDTO);
 
         if (isSaved) {
+            //to display employeeName in jsp
+           model.addAttribute("employeeName",employeeDTO.getEmployeeName());
+
+           model.addAttribute("welcomeMsg","Welcome To Your Profile");
+
             // Send OTP to the user's email
             mailSend.sendOtpToEmail(employeeDTO.getEmail(), otp);
             redirectAttributes.addFlashAttribute("generatedOTP", "OTP generated and sent to email.");
@@ -169,6 +179,7 @@ public class EmployeeController {
     public String otpVerification(@RequestParam("otp") String enteredOtp,
                                   @RequestParam("email") String email,
                                   HttpSession session,
+
                                   Model model) {
 
         log.info("otpVerification method running in EmployeeController..");
@@ -184,12 +195,19 @@ public class EmployeeController {
             model.addAttribute("emailNotFound", "Email does not exist.");
             return "EmployeeOTPPage";
         }
+        String employeeName= (String) session.getAttribute("employeeName");
+        model.addAttribute("employeeName",employeeName);
+        model.addAttribute("welcomeMsg","Welcome To Your Profile");
+
+
 
         try {
             // Trim the OTP string before parsing and compare with stored OTP
             long enteredOtpValue = Long.parseLong(enteredOtp.trim());
 
             if (employeeDTO.getOtp().equals(enteredOtpValue)) {
+                //to display employee name in jsp
+
                 // OTPs match, handle success
                 return "EmployeeProfilePage";
             } else {
@@ -207,7 +225,7 @@ public class EmployeeController {
 
     @PostMapping("resendOtp")
     @ResponseBody
-    public ResponseEntity<String> resendOtp(@RequestParam("email") String emailId, Model model) {
+    public ResponseEntity<String> resendOtp(@RequestParam("email") String emailId, Model model,HttpSession session) {
         log.info("resendOtp method running in EmployeeController..");
 
         // Check if the email exists in the database
@@ -227,6 +245,13 @@ public class EmployeeController {
         boolean isSaved = employeeService.saveEmployeeDetails(employeeDTO);
 
         if (isSaved) {
+
+            //to display employee name in jsp
+            String employeeName= (String) session.getAttribute("employeeName");
+            model.addAttribute("employeeName",employeeName);
+            model.addAttribute("welcomeMsg","Welcome To Your Profile");
+
+
             // Send the new OTP to the user's email
             mailSend.resendOtpToEmail(employeeDTO.getEmail(), otp);
             log.info("New OTP sent to email: {}", emailId);
@@ -239,6 +264,18 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(".Failed to generate OTP, please try again");
         }
     }
+
+
+    @GetMapping("editEmployeeDetails")
+    public String updateEmployeeDetails(HttpSession session)
+    {
+          String emailId= (String) session.getAttribute("email");
+
+
+
+        return"";
+    }
+
 
 
 }
