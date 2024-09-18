@@ -148,9 +148,108 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         }
     }
 
+    @Override
+    public Long countNoOfActiveEmployeeByDeptId(int departmentId) {
+        log.info("countByDeptIDAndActiveEmployee in EmployeeRepoImply");
+        EntityManager entityManager = null;
+        Long count = 0L;
 
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            Query query = entityManager.createQuery("SELECT COUNT(e) FROM EmployeeDTO e WHERE e.departmentDTO.id = :departmentId AND e.status = 'ACTIVE'");
+            query.setParameter("departmentId", departmentId);
 
+            // Execute the query and retrieve the count
+            count = (Long) query.getSingleResult();
 
+        } catch (Exception e) {
+            // Log the exception and handle it appropriately
+            log.error("Error occurred while counting active employees for departmentId {}: {}", departmentId, e.getMessage());
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close(); // Ensure the EntityManager is closed to prevent resource leaks
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public DepartmentDTO findByDepartmentId(int departmentId) {
+        EntityManager entityManager = null;
+        DepartmentDTO departmentDTO = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            Query query = entityManager.createQuery("SELECT d FROM DepartmentDTO d WHERE d.id = :departmentId");
+            query.setParameter("departmentId", departmentId);
+            departmentDTO = (DepartmentDTO) query.getSingleResult();
+        } catch (NoResultException e) {
+            // Handle case where no result is found
+            log.error("No department found with ID: {}", departmentId);
+        } catch (Exception e) {
+            // Handle other exceptions
+            log.error("Error occurred while fetching department with ID: {}", departmentId, e);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+        return departmentDTO;
+    }
+
+    // Other methods as needed
+
+    @Override
+    public DepartmentDTO updateDepartmentDTO(DepartmentDTO departmentDTO) {
+        log.info("updateDepartmentDTO in EmployeeRepoImpl");
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DepartmentDTO updatedDepartment = null;
+
+        try {
+            // Initialize EntityManager and Transaction
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            // Begin transaction
+            entityTransaction.begin();
+
+            // Merge the departmentDTO entity
+            updatedDepartment = entityManager.merge(departmentDTO);
+
+            // Commit the transaction
+            entityTransaction.commit();
+
+        } catch (IllegalArgumentException e) {
+            // Handle case where the entity is not a valid entity or is detached
+            if (entityTransaction != null && entityTransaction.isActive()) {
+                entityTransaction.rollback(); // Rollback the transaction
+            }
+            log.error("IllegalArgumentException occurred while updating DepartmentDTO: {}", e.getMessage());
+
+        } catch (PersistenceException e) {
+            // Handle general persistence exceptions
+            if (entityTransaction != null && entityTransaction.isActive()) {
+                entityTransaction.rollback(); // Rollback the transaction
+            }
+            log.error("PersistenceException occurred while updating DepartmentDTO: {}", e.getMessage());
+
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions
+            if (entityTransaction != null && entityTransaction.isActive()) {
+                entityTransaction.rollback(); // Rollback the transaction
+            }
+            log.error("Exception occurred while updating DepartmentDTO: {}", e.getMessage());
+
+        } finally {
+            // Ensure EntityManager is closed
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+
+        return updatedDepartment;
+    }
 
 
 }

@@ -197,7 +197,7 @@
                              <td>
 
                                         <form action="deactivateEmployeeStatus/${viewRaiseComplaintUsers.employeeDTO.employee_id}" method="post">
-                                         <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
+                                        <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
                                              <button type="submit" class="btn btn-danger">Delete</button>
                                          </form>
 

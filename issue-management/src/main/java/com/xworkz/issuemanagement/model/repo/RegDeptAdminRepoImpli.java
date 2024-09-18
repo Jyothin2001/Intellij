@@ -204,16 +204,16 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
     }
 
     @Override
-    public void deactivateStatus(int employee_id, Status status)
+    public void deactivateStatus(int employeeId, Status status)
     {
        EntityManager entityManager= entityManagerFactory.createEntityManager();
        EntityTransaction entityTransaction=entityManager.getTransaction();
        try
        {
            entityTransaction.begin();
-           Query query=entityManager.createQuery("update EmployeeDTO e SET e.status=:status where e.employee_id=:employee_id");
+           Query query=entityManager.createQuery("update EmployeeDTO e SET e.status=:status where e.employee_id=:employeeId");
            query.setParameter("status",status);
-           query.setParameter("employee_id",employee_id);
+           query.setParameter("employeeId",employeeId);
            int a=query.executeUpdate();
            log.info("update deactivate status of employee in RegDeptAdminRepoImply{}: " , a);
            entityTransaction.commit();
@@ -289,5 +289,29 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
         return true;
 
     }
+
+
+
+
+    @Override
+    public boolean isEmployeeAllocated(int employeeId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            // Query to count the number of complaints associated with the employee
+            Query query = entityManager.createQuery("SELECT COUNT(e) FROM ComplaintRaiseDTO e WHERE e.employeeDTO.employee_id = :employee_id");
+            query.setParameter("employee_id", employeeId);
+            Long count = (Long) query.getSingleResult();
+           log.error("count:{}  ",count);
+            // Return true if count is greater than 0 (employee is allocated)
+            // Return false if count is 0 (employee is not allocated)
+            return count > 0;
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+
 
 }

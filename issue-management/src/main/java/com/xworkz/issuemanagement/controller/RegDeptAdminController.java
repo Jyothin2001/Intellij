@@ -471,29 +471,28 @@ public String updateEmployee(@RequestParam("complaintId") int complaintId,@Reque
 
 
     @PostMapping("deactivateEmployeeStatus/{employee_id}")
-    public String deactivateEmployeeStatus(@PathVariable("employee_id") int employee_id ,RedirectAttributes redirectAttributes)
-    {
-        log.info("update deactivate status of employee in RegDeptAdminController ");
+    public String deactivateEmployeeStatus(@PathVariable("employee_id") int employee_id, RedirectAttributes redirectAttributes) {
+        log.info("jjjjjjjjjj before");
+        log.info("Update deactivate status of employee in RegDeptAdminController");
 
-        try
-        {
-            regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
-            redirectAttributes.addFlashAttribute("message", "Employee Deleted updated successfully.");
+        try {
+            // Check if the employee is allocated
+            boolean isAllocated = regDeptAdminService.isEmployeeAllocated(employee_id);
+
+            if (isAllocated) {
+                regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
+                redirectAttributes.addFlashAttribute("message", "Employee deactivated successfully.");
+                log.info("hhhhhhhhhhhhhh");
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Employee must be allocated before deactivation.");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Failed to deactivate employee status.");
+            log.error("Error deactivating employee status", e);
         }
-        catch (Exception e)
-        {
-        redirectAttributes.addFlashAttribute("message", "Failed to Delete employee status.");
-         }
 
         return "redirect:/department-admin-complaintViewPage";
     }
-
- @GetMapping("deactivate-EmployeeStatus")
-    public String inactivateEmployeeStatus()
- {
-     return "DepartmentAdminComplaintViewPage";
-
- }
 
 
 

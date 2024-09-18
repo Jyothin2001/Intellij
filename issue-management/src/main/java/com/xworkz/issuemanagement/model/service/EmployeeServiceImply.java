@@ -26,18 +26,69 @@ public class EmployeeServiceImply implements EmployeeService
     private MailSend mailSend;
 
 
+//    @Override
+//    public boolean saveEmployeeDetails(EmployeeDTO employeeDTO)
+//    {
+//
+//        boolean employeeDetails=employeeRepo.saveEmployeeDetails(employeeDTO);
+//        if(employeeDetails)
+//        {
+//            Long noOfEmployee= employeeRepo.countNoOfActiveEmployeeByDeptId(employeeDTO.getDepartmentDTO().getId());
+//
+//          DepartmentDTO departmentDTO=employeeRepo.findByDepartmentId(employeeDTO.getDepartmentDTO().getId());
+//
+//          if(departmentDTO!=null)
+//          {
+//              departmentDTO.setNoOfEmployees(noOfEmployee);
+//              employeeRepo.updateDepartmentDTO(departmentDTO);
+//          }
+//
+//            log.info("saveEmployeeDetails() is successful in EmployeeServiceImply:{}",employeeDetails);
+//             return true;
+//        }
+//        else
+//        {
+//            log.info("saveEmployeeDetails() is not successful in EmployeeServiceImply");
+//        }
+//        return false;
+//    }
+
     @Override
-    public boolean saveEmployeeDetails(EmployeeDTO employeeDTO)
-    {
-        boolean employeeDetails=employeeRepo.saveEmployeeDetails(employeeDTO);
-        if(employeeDetails)
-        {
-            log.info("saveEmployeeDetails() is successful in EmployeeServiceImply:{}",employeeDetails);
-             return true;
-        }
-        else
-        {
-            log.info("saveEmployeeDetails() is not successful in EmployeeServiceImply");
+    public boolean saveEmployeeDetails(EmployeeDTO employeeDTO) {
+        boolean employeeSaved = false;
+
+        // Save the employee details
+        employeeSaved = employeeRepo.saveEmployeeDetails(employeeDTO);
+
+        if (employeeSaved) {
+            // If saving employee details was successful, update the department's employee count
+            try {
+                // Obtain the department ID from the employeeDTO
+                int departmentId = employeeDTO.getDepartmentDTO().getId();
+
+                // Fetch the updated count of active employees
+                Long noOfActiveEmployees = employeeRepo.countNoOfActiveEmployeeByDeptId(departmentId);
+
+                // Fetch the department entity
+                DepartmentDTO departmentDTO = employeeRepo.findByDepartmentId(departmentId);
+
+                if (departmentDTO != null) {
+                    // Update the number of active employees in the department
+                    departmentDTO.setNoOfEmployees(noOfActiveEmployees);
+                    employeeRepo.updateDepartmentDTO(departmentDTO); // Assuming this method updates the department in the repository
+
+                    log.info("Employee details saved and department employee count updated successfully.");
+                    return true;
+                } else {
+                    log.error("DepartmentDTO not found for ID: {}", departmentId);
+                }
+
+            } catch (Exception e) {
+                log.error("Error occurred while updating department employee count: {}", e.getMessage());
+                // Handle exception if needed
+            }
+        } else {
+            log.info("saveEmployeeDetails() is not successful in EmployeeServiceImpl");
         }
         return false;
     }

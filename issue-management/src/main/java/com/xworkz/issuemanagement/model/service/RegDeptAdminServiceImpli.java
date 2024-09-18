@@ -180,9 +180,9 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
     }
 
     @Override
-    public void deactivateStatus(int employee_id, Status status) {
+    public void deactivateStatus(int employeeId, Status status) {
         log.info("update deactivate status of employee in RegDeptAdminServiceImply:" );
-        regDeptAdminRepo.deactivateStatus(employee_id,status);
+        regDeptAdminRepo.deactivateStatus(employeeId,status);
 
     }
 
@@ -201,6 +201,12 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         log.info("updateStatusAndEmployeeId method running in RaiseComplaintService");
         return regDeptAdminRepo.updateStatusAndEmployeeId(complaintId, employeeId, status);
 
+    }
+@Override
+    public boolean isEmployeeAllocated(int employeeId) {
+        // Logic to check if the employee is allocated
+        // This is just an example; implement according to your needs
+        return regDeptAdminRepo.isEmployeeAllocated(employeeId);
     }
 
 

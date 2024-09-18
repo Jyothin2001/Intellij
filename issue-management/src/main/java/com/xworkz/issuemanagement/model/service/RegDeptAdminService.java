@@ -42,6 +42,7 @@ public interface RegDeptAdminService {
     //update status and employee id
     boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status);
 
+    boolean isEmployeeAllocated(int employeeId);
 
 
 
