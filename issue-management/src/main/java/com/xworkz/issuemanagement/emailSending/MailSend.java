@@ -103,7 +103,7 @@ public class MailSend {
         message.setText("Dear " + regDeptAdminDTO.getAdminName() + ",\n\n" +
                 "Congratulations! Your department admin account has been successfully created.\n" +
                 "Please use the following password to log in to your account:\n\n" +
-                "Password: " + regDeptAdminDTO.getPassword() + "\n\n" +
+                "Password: " + regDeptAdminDTO.getPassword() +"\n " + "Department Type: "+ regDeptAdminDTO.getDepartmentName()+ "\n\n" +
                 "For your security, we recommend changing your password after your first login.\n\n" +
                 "Best Regards,\n" +
                 "X-Workz Project Team");

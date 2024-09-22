@@ -245,8 +245,8 @@ a=1;
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
         </div>-->
 
-              <div style = "margin-top: 5px;">
-                   <h2 style= "color:blue; "><center>Login Page</center></h2>
+              <div class="card-header">
+                   <h3 style= "color:blue; "><center>Login Page</center></h3>
               </div>
 
        <!--text/word colors-->

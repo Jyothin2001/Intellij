@@ -5,7 +5,7 @@
 <head>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View User Details</title>
+    <title>View complaints Details</title>
 
     <!--BootStrap link-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -76,6 +76,7 @@
 
                <li><a class="dropdown-item" href="get-Department-Names"><strong>Add Employee</strong></a></li>
                <li><a class="dropdown-item" href="subAdminProfilePage"><strong> Profile Page</strong></a></li>
+               <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
 
 
@@ -142,7 +143,7 @@
                     </thead>
 
                     <tbody class="table-hover">
-                    <c:forEach var="viewRaiseComplaintUsers" items="${viewRaiseComplaint}" varStatus="status">
+                    <c:forEach var="viewRaiseComplaintUsers" items="${viewRaiseComplaintForSubAdmin}" varStatus="status">
                         <tr>
                             <td>${status.index + 1}</td>
                             <td>${viewRaiseComplaintUsers.complaintId}</td>
@@ -163,7 +164,7 @@
                                     <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}">
 
                                     <select class="form-select status-select" style=" width:200px;" name="employee_id">
-                                        <option value="Select">Select</option>
+                                        <option value="">Select</option>
                                         <c:forEach var="employee" items="${employeeNames}">
                                             <!--conditions for retain name like both table id's should match-->
                                             <option value="${employee.employee_id}" ${viewRaiseComplaintUsers.employeeDTO !=null &&
@@ -179,8 +180,8 @@
                                     <option value="Select">Select</option>
                                     <option value="Pending" ${viewRaiseComplaintUsers.status=='Pending' ? 'selected' : '' }>
                                     Pending</option>
-                                    <option value="In Process" ${viewRaiseComplaintUsers.status=='In Process' ? 'selected' : '' }>
-                                    In Process</option>
+                                    <option value="Processing" ${viewRaiseComplaintUsers.status=='Processing' ? 'selected' : '' }>
+                                    Processing</option>
                                     <option value="Completed" ${viewRaiseComplaintUsers.status=='Completed' ? 'selected' : '' }>
                                     Completed
                                     </option>
@@ -196,8 +197,12 @@
 
                              <td>
 
-                                        <form action="deactivateEmployeeStatus/${viewRaiseComplaintUsers.employeeDTO.employee_id}" method="post">
+
+                                        <form action="${pageContext.request.contextPath}/deactivateEmployeeStatus" method="post">
                                         <input type="hidden" name="employee_id" value="${viewRaiseComplaintUsers.employeeDTO.employee_id}" />
+                                         <!-- Pass complaintId as a hidden input -->
+                                            <input type="hidden" name="complaintId" value="${viewRaiseComplaintUsers.complaintId}" />
+
                                              <button type="submit" class="btn btn-danger">Delete</button>
                                          </form>
 

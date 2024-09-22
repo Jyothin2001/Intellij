@@ -49,6 +49,7 @@
               <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
               <li><a class="dropdown-item" href="AddDepartment"><strong>Add Department</strong></a></li>
               <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+              <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
               <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
             </ul>

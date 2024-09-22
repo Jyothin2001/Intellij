@@ -6,10 +6,7 @@ import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
-import com.xworkz.issuemanagement.model.service.AdminService;
-import com.xworkz.issuemanagement.model.service.ChangePasswordService;
-import com.xworkz.issuemanagement.model.service.ForgotPasswordService;
-import com.xworkz.issuemanagement.model.service.RegDeptAdminService;
+import com.xworkz.issuemanagement.model.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import org.springframework.mail.SimpleMailMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +48,10 @@ public class RegDeptAdminController
 
     @Autowired
     private MailSend mailSend;
+
+    @Autowired
+    private ComplaintRaiseService complaintRaiseService;
+
 
 
 
@@ -85,29 +87,46 @@ public class RegDeptAdminController
 
                 log.info("RegDeptAdminDTO data:{}", regDeptAdminDTO);
 
-                boolean saveRegDeptAdmin = regDeptAdminService.saveRegDeptAdmin(regDeptAdminDTO);
-                if (saveRegDeptAdmin) {
+                String  emailStatus = regDeptAdminService.saveRegDeptAdmin(regDeptAdminDTO);
+                if ("success".equals(emailStatus)) {
                     httpSession.setAttribute("subAdminEmail", regDeptAdminDTO.getEmail());
-                    log.info("regDeptAdminService() in RegDeptAdminController successful:{}", saveRegDeptAdmin);
+                    log.info("regDeptAdminService() in RegDeptAdminController successful:{}", emailStatus);
                     redirectAttributes.addFlashAttribute("saveDeptAdmin",
                             "Sign Up successful: " + regDeptAdminDTO.getAdminName() +
-                                    "\n\n, Please check your email for your password.");
+                                    "<br>" + "Send  email for password.");
                     return "redirect:getDepartmentName";
-                } else {
+                }
+                else if ("network_error".equals(emailStatus)) {
+                    redirectAttributes.addFlashAttribute("errorInMail", "Network issue while sending the email. Please try again later");
+                    return "redirect:getDepartmentName";
+                }
+
+                else if ("error".equals(emailStatus))
+                {
                     log.error("regDeptAdminService() in RegDeptAdminController not successful:");
-                    redirectAttributes.addFlashAttribute("saveDeptAdmin",
+                    redirectAttributes.addFlashAttribute("errorInMail",
                             "Sign Up is not successful: " + regDeptAdminDTO.getAdminName());
                     return "redirect:getDepartmentName";
                 }
-            } catch (Exception e) {
-                log.error("Exception during saveRegDeptAdmin: ", e);
-                redirectAttributes.addFlashAttribute("saveDeptAdmin", "An error occurred during Sign Up. Please try again.");
+
+            }
+            catch (NullPointerException e) {
+                log.error("NullPointerException during saveRegDeptAdmin: Possibly a missing field or null value.", e);
+                redirectAttributes.addFlashAttribute("errorInMail", "An unexpected error occurred. Please try again.");
                 return "redirect:getDepartmentName";
-            } finally {
+            }
+            catch (Exception e)
+            {
+                log.error("Exception during saveRegDeptAdmin: ", e);
+                redirectAttributes.addFlashAttribute("errorInMail", "An error occurred during Sign Up. Please try again.");
+                return "redirect:getDepartmentName";
+            }
+            finally {
                 // Clear session attributes or handle as needed
                 httpSession.removeAttribute("subAdminEmail");
             }
         }
+        return "redirect:getDepartmentName";
     }
 
     @GetMapping("getDepartmentName")
@@ -284,58 +303,134 @@ public class RegDeptAdminController
 //        }
 //        return"SubAdminForgotPassword";
 //    }
-@PostMapping("sub-admin-forgot-password")
-public String subAdminForgotPassword(@RequestParam String email, Model model,RedirectAttributes redirectAttributes) {
-    // Fetch the list of departments for departmentName
-    List<DepartmentDTO> departments = adminService.findByDepartmentName();
-    if (!departments.isEmpty()) {
-        log.info("departments name:{}", departments);
-        model.addAttribute("departments", departments);
-    }
+//@PostMapping("sub-admin-forgot-password")
+//public String subAdminForgotPassword(@RequestParam String email, Model model,RedirectAttributes redirectAttributes) {
+//    // Fetch the list of departments for departmentName
+//    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+//    if (!departments.isEmpty()) {
+//        log.info("departments name:{}", departments);
+//        model.addAttribute("departments", departments);
+//    }
+//
+//    if (forgotPasswordService.forgotPasswordBySubAdmin(email)) {
+//        // Prepare the email message
+//        SimpleMailMessage emailMessage = new SimpleMailMessage();
+//        emailMessage.setTo(email);
+//        emailMessage.setSubject("Sub-Admin Password Reset");
+//        emailMessage.setText("A new password has been generated and sent to your email.");
+//
+//        // Send the email and check for network issues
+//        String emailStatus = mailSend.sendEmail(emailMessage);
+//        if ("network_error".equals(emailStatus)) {
+//            model.addAttribute("forgotPasswordError", "Network issue while sending the reset email. Please try again later.");
+//            return "SubAdminForgotPassword";
+//        } else if ("send_error".equals(emailStatus)) {
+//            model.addAttribute("forgotPasswordError", "Password reset successful, but email sending failed. Please check your email settings.");
+//            return "SubAdminForgotPassword";
+//        }
+//
+//        model.addAttribute("msg", "A new password has been sent to your email.");
+//        return "DepartmentLogInPage";
+//    } else {
+//        redirectAttributes.addFlashAttribute("forgotPasswordError", "Email address not found.");
+//        return "redirect:/subAdminForgotPassword";
+//    }
+//}
 
-    if (forgotPasswordService.forgotPasswordBySubAdmin(email)) {
-        // Prepare the email message
-        SimpleMailMessage emailMessage = new SimpleMailMessage();
-        emailMessage.setTo(email);
-        emailMessage.setSubject("Sub-Admin Password Reset");
-        emailMessage.setText("A new password has been generated and sent to your email.");
 
-        // Send the email and check for network issues
-        String emailStatus = mailSend.sendEmail(emailMessage);
-        if ("network_error".equals(emailStatus)) {
-            model.addAttribute("forgotPasswordError", "Network issue while sending the reset email. Please try again later.");
-            return "SubAdminForgotPassword";
-        } else if ("send_error".equals(emailStatus)) {
-            model.addAttribute("forgotPasswordError", "Password reset successful, but email sending failed. Please check your email settings.");
-            return "SubAdminForgotPassword";
+    @PostMapping("sub-admin-forgot-password")
+    public String subAdminForgotPassword(@RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
+        // Fetch the list of departments for departmentName
+        List<DepartmentDTO> departments = adminService.findByDepartmentName();
+        if (!departments.isEmpty()) {
+            log.info("Departments name: {}", departments);
+            model.addAttribute("departments", departments);
         }
 
-        model.addAttribute("msg", "A new password has been sent to your email.");
-        return "DepartmentLogInPage";
-    } else {
-        redirectAttributes.addFlashAttribute("forgotPasswordError", "Email address not found.");
-        return "redirect:/subAdminForgotPassword";
+        // Call the forgotPasswordBySubAdmin service method and handle the outcome
+        String result = forgotPasswordService.forgotPasswordBySubAdmin(email);
+
+        if ("success".equals(result)) {
+            // If email was sent successfully
+            model.addAttribute("msg", "A new password has been sent to your email.");
+            return "DepartmentLogInPage"; // Redirect to login page
+        } else if ("network_error".equals(result)) {
+            // Handle network error while sending email
+            model.addAttribute("forgotPasswordError", "Network issue while sending the reset email. Please try again later.");
+            return "SubAdminForgotPassword"; // Stay on forgot password page
+        } else if ("send_error".equals(result)) {
+            // Handle email sending error
+            model.addAttribute("forgotPasswordError", "Password reset successful, but email sending failed. Please check your email settings.");
+            return "SubAdminForgotPassword"; // Stay on forgot password page
+        } else if ("user_not_found".equals(result)) {
+            // If the email is not found in the system
+            redirectAttributes.addFlashAttribute("forgotPasswordError", "Email address not found.");
+            return "redirect:/subAdminForgotPassword"; // Redirect with error message
+        }
+
+        // Default return for any unexpected outcomes
+        return "SubAdminForgotPassword";
     }
-}
-@GetMapping("subAdminForgotPassword")
+
+
+    @GetMapping("subAdminForgotPassword")
 public String subAdminForgotPassword()
 {
     return "SubAdminForgotPassword";
 }
 
-//    @PostMapping("subAdminChangePassword")
-//    public String changePasswordSubAdmin(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword,Model model)
-//    {
-//        // Fetch the list of departments for departmentName
-//        List<DepartmentDTO> departments = adminService.findByDepartmentName();
-//        if(!departments.isEmpty())
-//        {
-//            log.info("departments name:{}", departments);
-//            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
-//        }
-//
-//
-//        boolean password=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
+
+    @PostMapping("subAdminChangePassword")
+    public String changePasswordSubAdmin(@RequestParam String email, String oldPassword, String newPassword, String confirmPassword,Model model,RedirectAttributes redirectAttributes)
+    {
+        // Fetch the list of departments for departmentName
+        List<DepartmentDTO> departments = adminService.findByDepartmentName();
+        if(!departments.isEmpty())
+        {
+            log.info("departments name:{}", departments);
+            model.addAttribute("departments", departments);// Fetch the list of departments for departmentNames
+        }
+
+
+        String passwordChangeStatus=changePasswordService.subAdminChangePassword(email,oldPassword,newPassword,confirmPassword);
+        // Step 3: Handle the various return statuses
+        switch (passwordChangeStatus) {
+            case "password_mismatch":
+                redirectAttributes.addFlashAttribute("error", "New password and confirm password do not match.");
+                break;
+
+            case "user_not_found":
+                redirectAttributes.addFlashAttribute("error", "User with the provided email was not found.");
+                break;
+
+            case "old_password_incorrect":
+                redirectAttributes.addFlashAttribute("error", "The old password is incorrect.");
+                break;
+
+            case "network_error":
+                redirectAttributes.addFlashAttribute("error", "Network issue occurred while sending the email.");
+                break;
+
+            case "send_error":
+                redirectAttributes.addFlashAttribute("error", "Failed to send confirmation email.");
+                break;
+
+            case "update_failed":
+                redirectAttributes.addFlashAttribute("error", "Failed to update the password. Please try again.");
+                break;
+
+            case "success":
+                model.addAttribute("msg", "Password reset successful.<b> A confirmation email has been sent.");
+                return "SubAdminChangePassword"; // Render the password change page with a success message
+
+            default:
+                redirectAttributes.addFlashAttribute("error", "An unexpected error occurred. Please try again.");
+                break;
+        }
+
+        // Step 4: Redirect back to the password change page with error messages
+        return "redirect:/subAdminChangePassword";
+    }
 //        if(password) {
 //            model.addAttribute("passwordResetMessage", "Password reset successful");
 //            return "SubAdminChangePassword";
@@ -347,45 +442,30 @@ public String subAdminForgotPassword()
 //
 //
 //    }
-@PostMapping("subAdminChangePassword")
-public String changePasswordSubAdmin(@RequestParam String email,
-                                     @RequestParam String oldPassword,
-                                     @RequestParam String newPassword,
-                                     @RequestParam String confirmPassword,
-                                     RedirectAttributes redirectAttributes,
-                                     Model model) {
-    // Fetch the list of departments for departmentName
-    List<DepartmentDTO> departments = adminService.findByDepartmentName();
-    if (!departments.isEmpty()) {
-        log.info("departments name:{}", departments);
-        model.addAttribute("departments", departments);
-    }
-
-    boolean passwordChanged = changePasswordService.subAdminChangePassword(email, oldPassword, newPassword, confirmPassword);
-    if (passwordChanged) {
-        // Prepare the email message
-        SimpleMailMessage emailMessage = new SimpleMailMessage();
-        emailMessage.setTo(email);
-        emailMessage.setSubject("Password Changed Successfully");
-        emailMessage.setText("Your password has been changed successfully.");
-
-        // Send the email and check for network issues
-        String emailStatus = mailSend.sendEmail(emailMessage);
-        if ("network_error".equals(emailStatus)) {
-            model.addAttribute("passwordResetError", "Network issue while sending the confirmation email. Please try again later.or Do Forgot Password");
-            return "SubAdminChangePassword";
-        } else if ("send_error".equals(emailStatus)) {
-            model.addAttribute("passwordResetError", "Password changed, but email sending failed. Please check your email settings.");
-            return "SubAdminChangePassword";
-        }
-
-        model.addAttribute("msg", "Password reset successful. A confirmation email has been sent.");
-        return "SubAdminChangePassword";
-    } else {
-        redirectAttributes.addFlashAttribute("passwordResetError", "Failed to reset password. Please check your old password.");
-        return "redirect:/subAdminChangePassword";
-    }
-}
+//@PostMapping("subAdminChangePassword")
+//public String changePasswordSubAdmin(@RequestParam String email,
+//                                     @RequestParam String oldPassword,
+//                                     @RequestParam String newPassword,
+//                                     @RequestParam String confirmPassword,
+//                                     RedirectAttributes redirectAttributes,
+//                                     Model model) {
+//    // Fetch the list of departments for departmentName
+//    List<DepartmentDTO> departments = adminService.findByDepartmentName();
+//    if (!departments.isEmpty()) {
+//        log.info("departments name:{}", departments);
+//        model.addAttribute("departments", departments);
+//    }
+//
+//    boolean passwordChanged = changePasswordService.subAdminChangePassword(email, oldPassword, newPassword, confirmPassword);
+//    if(passwordChanged)
+//    {
+//        model.addAttribute("msg", "Password reset successful. A confirmation email has been sent.");
+//        return "SubAdminChangePassword";
+//    } else {
+//        redirectAttributes.addFlashAttribute("passwordResetError", "Failed to reset password. Please check your old password.");
+//        return "redirect:/subAdminChangePassword";
+//    }
+//}
 
 @GetMapping("subAdminChangePassword")
 public String SubAdminChangePassword()
@@ -403,16 +483,9 @@ public String SubAdminChangePassword()
        RegDeptAdminDTO departmentAdminName= (RegDeptAdminDTO) session.getAttribute("SubAdminName");
        model.addAttribute("departmentName",departmentAdminName.getAdminName());
 
+       List<EmployeeDTO> employeeNames = regDeptAdminService.getAllEmployeeNames(departmentName1);
 
-//       List<EmployeeDTO> employeeNames=regDeptAdminService.getAllEmployeeNames(departmentName1);
-//        if(!employeeNames.isEmpty())
-//        {
-//            log.info("employee names:{}", employeeNames);
-//            model.addAttribute("employeeNames", employeeNames);// Fetch the list of departments for departmentNames
-//        }
-        List<EmployeeDTO> employeeNames = regDeptAdminService.getAllEmployeeNames(departmentName1);
-
-// Check if employeeNames is not null before calling isEmpty()
+       // Check if employeeNames is not null before calling isEmpty()
         if (employeeNames != null && !employeeNames.isEmpty()) {
             log.info("employee names: {}", employeeNames);
             model.addAttribute("employeeNames", employeeNames); // Fetch the list of departments for departmentNames
@@ -429,26 +502,27 @@ public String SubAdminChangePassword()
 
         if (complaintRaiseDetails != null && !complaintRaiseDetails.isEmpty()) {
             log.info("departments name in RegDeptController is successful:");
-            model.addAttribute("viewRaiseComplaint", complaintRaiseDetails);
+            model.addAttribute("viewRaiseComplaintForSubAdmin", complaintRaiseDetails);
             return "DepartmentAdminComplaintViewPage";
         } else {
             log.info("No complaints found for the department or an error occurred.");
             // Optionally, you can add a message or an empty list to the model to handle this case on the UI side
-            model.addAttribute("viewRaiseComplaint", Collections.emptyList());
+            model.addAttribute("viewRaiseComplaintForSubAdmin", Collections.emptyList());
             model.addAttribute("message", "No complaints found for the department.");
             return "DepartmentAdminComplaintViewPage";
         }
     }
 
 @PostMapping("updateEmployee")
-public String updateEmployee(@RequestParam("complaintId") int complaintId,@RequestParam("employee_id") Integer employeeId,ComplaintRaiseDTO complaintRaiseDTO,RedirectAttributes redirectAttributes,Model model)
+public String updateEmployee(@RequestParam("complaintId") int complaintId,@RequestParam(value = "employee_id",required = false) Integer employeeId,ComplaintRaiseDTO complaintRaiseDTO,RedirectAttributes redirectAttributes,Model model)
 {
-    if (employeeId == null) {
+    if (employeeId == null || complaintId ==0) {
         // Handle the case where no employee is selected
         redirectAttributes.addFlashAttribute("error", "Please select an employee.");
-        return "redirect:/viewComplaintRaiseDetails";
+        return "redirect:/department-admin-complaintViewPage";
     }
-    boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId,complaintRaiseDTO.getStatus());
+    //boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId,complaintRaiseDTO.getStatus());
+    boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId);
     if(data)
     {
         log.info("update:"+data);
@@ -457,7 +531,7 @@ public String updateEmployee(@RequestParam("complaintId") int complaintId,@Reque
     {
         log.info("No update:" + data);
     }
-    redirectAttributes.addFlashAttribute("msg","Updated Successfully");
+    redirectAttributes.addFlashAttribute("msg","Employee Updated Successfully");
     return "redirect:/department-admin-complaintViewPage";
 }
 
@@ -467,34 +541,127 @@ public String updateEmployee(@RequestParam("complaintId") int complaintId,@Reque
 //        return "AdminViewComplaintRaiseDetails";
 //    }
 
+//    @PostMapping("deactivateEmployeeStatus/{employee_id}")
+//    public String deactivateEmployeeStatus(@PathVariable("employee_id") Integer employee_id, RedirectAttributes redirectAttributes) {
+//
+//        log.info("Update deactivate status of employee in RegDeptAdminController");
+//
+//        try {
+//            // Check if employee_id is valid (not null and greater than 0)
+//            if (employee_id == null || employee_id <= 0) {
+//                redirectAttributes.addFlashAttribute("message", "Please select a valid employee to deactivate.");
+//                return "redirect:/department-admin-complaintViewPage";
+//            }
+//
+//
+//
+//            // Check if the employee is allocated
+//            boolean isAllocated = regDeptAdminService.isEmployeeAllocated(employee_id);
+//            if (isAllocated) {
+//                // Deactivate the employee
+//                regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
+//                redirectAttributes.addFlashAttribute("message", "Employee deactivated/deleted successfully.");
+//                log.info("Employee deactivated successfully");
+//            } else {
+//                redirectAttributes.addFlashAttribute("message", "Employee must be allocated before deactivation.");
+//            }
+//        } catch (Exception e) {
+//            // Handle any unexpected exceptions
+//            redirectAttributes.addFlashAttribute("message", "Failed to deactivate employee status. Please try again.");
+//            log.error("Error deactivating employee status", e);
+//        }
+//
+//        return "redirect:/department-admin-complaintViewPage";
+//    }
 
 
+//    @PostMapping("deactivateEmployeeStatus/{employee_id}")
+//    public String deactivateEmployeeStatus(@PathVariable("employee_id") Integer employee_id, RedirectAttributes redirectAttributes) {
+//
+//        log.info("Update deactivate status of employee in RegDeptAdminController");
+//        if (employee_id == null || employee_id <= 0) {
+//            // Handle the case where no employee is selected
+//            redirectAttributes.addFlashAttribute("error", "Please select an employee.");
+//            return "redirect:/department-admin-complaintViewPage";
+//        }
+//        try {
+//            // Check if the employee is allocated
+//            boolean isAllocated = regDeptAdminService.isEmployeeAllocated(employee_id);
+//
+//            if (isAllocated) {
+//                regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
+////                ComplaintRaiseDTO complaintRaiseDTO=new ComplaintRaiseDTO();
+////                complaintRaiseDTO.setEmployeeDTO(null);
+////                regDeptAdminService.updateComplaintForDeactivatedEmployee(complaintRaiseDTO);
+//                redirectAttributes.addFlashAttribute("message", "Employee deactivated/Deleted successfully.");
+//            } else {
+//                redirectAttributes.addFlashAttribute("message", "Employee must be allocated before deactivation.");
+//            }
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("message", "Failed to deactivate employee status.");
+//            log.error("Error deactivating employee status", e);
+//        }
+//
+//        return "redirect:/department-admin-complaintViewPage";
+//    }
 
-    @PostMapping("deactivateEmployeeStatus/{employee_id}")
-    public String deactivateEmployeeStatus(@PathVariable("employee_id") int employee_id, RedirectAttributes redirectAttributes) {
-        log.info("jjjjjjjjjj before");
+
+    @PostMapping("deactivateEmployeeStatus")
+    public String deactivateEmployeeStatus(@RequestParam("employee_id") String employee_id,@RequestParam("complaintId") Integer complaintId, RedirectAttributes redirectAttributes) {
+
+
         log.info("Update deactivate status of employee in RegDeptAdminController");
 
-        try {
-            // Check if the employee is allocated
-            boolean isAllocated = regDeptAdminService.isEmployeeAllocated(employee_id);
+        if ( employee_id == null || employee_id.trim().isEmpty() ) {
+            // Handle the case where no employee is selected
+            redirectAttributes.addFlashAttribute("error", "Employee must be allocated before deletion.");
+            log.info( "Employee must be allocated before deletion.");
+            return "redirect:/department-admin-complaintViewPage";
+        } else if (complaintId==null) {
 
-            if (isAllocated) {
-                regDeptAdminService.deactivateStatus(employee_id, Status.INACTIVE);
-                redirectAttributes.addFlashAttribute("message", "Employee deactivated successfully.");
-                log.info("hhhhhhhhhhhhhh");
-            } else {
-                redirectAttributes.addFlashAttribute("message", "Employee must be allocated before deactivation.");
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Failed to deactivate employee status.");
-            log.error("Error deactivating employee status", e);
+            redirectAttributes.addFlashAttribute("error", " jjjEmployee must be allocated before deletion.");
+            log.info( "Employee must be allocated before deletion.jjjj");
+            return "redirect:/department-admin-complaintViewPage";
+        }
+        int empId;
+        try
+        {// Convert to Integer
+             empId = Integer.parseInt(employee_id); // Throws NumberFormatException if not a valid integer
+        }
+        catch (NumberFormatException e)
+        {
+            redirectAttributes.addFlashAttribute("error", "Invalid employee ID.");
+            return "redirect:/department-admin-complaintViewPage";
+        }
+
+        boolean isAllocated = regDeptAdminService.isEmployeeAllocated(empId);
+
+        if (isAllocated) {
+            regDeptAdminService.deactivateStatus(empId, Status.INACTIVE);
+
+            ComplaintRaiseDTO makingEmployee_fkNull= complaintRaiseService.findByComplaintId(complaintId);
+            makingEmployee_fkNull.setEmployeeDTO(null);//making null in ComplaintDTO so we can get else part
+            complaintRaiseService.saveComplaintRaiseDetails(makingEmployee_fkNull);
+
+            redirectAttributes.addFlashAttribute("message", "Employee Deactivate/Deleted successfully.");
+            log.info( "Employee Deactivate/Deleted successfully.");
+                  }
+
+       else
+       {
+
+            // If employee is allocated, show the message to allocate the employee first
+            redirectAttributes.addFlashAttribute("error", " Employee is not  allocated for any complaint for Deletion");
+            log.info( " Employee is not  allocated for any complaint for Deletion");
+
+            return "redirect:/department-admin-complaintViewPage";
+
         }
 
         return "redirect:/department-admin-complaintViewPage";
     }
 
 
-
-
 }
+
+

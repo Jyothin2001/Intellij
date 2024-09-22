@@ -2,7 +2,7 @@ package com.xworkz.issuemanagement.model.service;
 
 public interface ForgotPasswordService {
 
-    boolean forgotPassword(String email);
+    String forgotPassword(String email);
 
-    boolean forgotPasswordBySubAdmin(String email);
+    String forgotPasswordBySubAdmin(String email);
 }

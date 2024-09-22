@@ -394,7 +394,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
                   <input type="text" class="form-control" id="departmentName" onblur="validateDepartmentName()" name="departmentName" placeholder="Enter Department" />
               </div>
           </div>-->
-          <br>
+
           <!-- Email -->
           <div style="margin-bottom:2px;" class="form-group">
               <span id="emailError" class="error-message"></span><br>

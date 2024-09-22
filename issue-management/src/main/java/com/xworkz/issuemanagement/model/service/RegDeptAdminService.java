@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface RegDeptAdminService {
 
-    boolean saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO);
+    String  saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO);
 
     RegDeptAdminDTO getEmailAndPassword(String email,String password,String departmentName);
 
@@ -40,9 +40,11 @@ public interface RegDeptAdminService {
     List<EmployeeDTO> getAllEmployeeNames(String regDepartmentName);
 
     //update status and employee id
-    boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status);
+    boolean updateStatusAndEmployeeId(int complaintId, int employeeId);
 
     boolean isEmployeeAllocated(int employeeId);
+
+    boolean updateComplaintForDeactivatedEmployee(ComplaintRaiseDTO complaintRaiseDTO);
 
 
 

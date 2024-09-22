@@ -154,6 +154,12 @@ function contactNumberValidation() {
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
+  // Check if the number starts with 0
+  else if (value.startsWith('0')) {
+    error.innerHTML = "Contact Number cannot start with 0.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
   // Check if the input matches the 10-digit pattern
   else if (!mobileRegex.test(value)) {
     error.innerHTML = "Contact Number should be exactly 10 digits.";
@@ -174,22 +180,29 @@ function alternateContactNumberValidation() {
   const error = document.getElementById("altContactNbrError");
   const mobileRegex = /^\d{10}$/;
   const nonNumericPattern = /\D/; // Matches any non-numeric character
+  const value = element.value.trim(); // Trim to remove any extra spaces
 
   // Check if the input is empty
-  if (element.value.trim() === '') {
+  if (value === '') {
     error.innerHTML = "Alternate contact number is required.";
     error.style.color = "red";
     fieldsChecks["alternateContactNumber"] = false;
   }
   // Check for non-numeric characters
-  else if (nonNumericPattern.test(element.value)) {
+  else if (nonNumericPattern.test(value)) {
     error.innerHTML = "Alternate contact number must contain only digits.";
     error.style.color = "red";
     fieldsChecks["alternateContactNumber"] = false;
   }
+  // Check if the number starts with 0
+  else if (value.startsWith('0')) {
+    error.innerHTML = "Alternate contact number cannot start with 0.";
+    error.style.color = "red";
+    fieldsChecks["alternateContactNumber"] = false;
+  }
   // Check if the input matches the 10-digit pattern
-  else if (!mobileRegex.test(element.value)) {
-    error.innerHTML = " contact number should be exactly 10 digits.";
+  else if (!mobileRegex.test(value)) {
+    error.innerHTML = "Alternate contact number should be exactly 10 digits.";
     error.style.color = "red";
     fieldsChecks["alternateContactNumber"] = false;
   }
@@ -326,8 +339,8 @@ function numberAjaxValidation() {
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
         </div>-->
 
-              <div style = "margin-top: 15px;">
-                   <h1 style= "color:blue; "><center>Sign up Form</center></h1>
+              <div class="card-header">
+                   <h3 style= "color:blue; "><center>Sign up Form</center></h3>
               </div>
 
                <!--text/word colors-->
@@ -343,9 +356,10 @@ function numberAjaxValidation() {
 
       <form action="signUp" method="post">
 
-<div class="text-primary"><b>${msg}</b></div>
+<div class="text-success"><b>${msg}</b></div>
 <div class="text-success"><b>${emailMsg}</b></div>
-<div class="text-success"><b>${emailErrorMsg}</b></div>
+<div class="text-danger"><b>${emailErrorMsg}</b></div>
+<div class="text-danger"><b>${SignUpError}</b></div>
 
 
            <!--Text: First Name-->

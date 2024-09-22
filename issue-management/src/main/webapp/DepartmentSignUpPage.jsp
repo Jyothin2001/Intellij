@@ -35,7 +35,7 @@
                email: false,
                contactNumber: false,
                alternateContactNumber: true, // Optional
-               agree: false
+
            };
 
            function validateAdminName() {
@@ -99,7 +99,6 @@ function emailValidation() {
 function contactNumberValidation() {
   const element = document.getElementById("contactNumber");
   const error = document.getElementById("contactNumberError");
-  const mobileRegex = /^\d{10}$/;
   const value = element.value.trim(); // Trim to remove any extra spaces
 
   // Check if the input is empty
@@ -114,12 +113,19 @@ function contactNumberValidation() {
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
-  // Check if the input matches the 10-digit pattern
-  else if (!mobileRegex.test(value)) {
-    error.innerHTML = "Contact Number should be exactly 10 digits.";
+  // Check if the input has exactly 10 digits
+  else if (value.length !== 10) {
+    error.innerHTML = "Contact Number must be exactly 10 digits.";
     error.style.color = "red";
     fieldsChecks["contactNumber"] = false;
   }
+  // Check if the input starts with 0
+  else if (value.startsWith('0')) {
+    error.innerHTML = "Contact Number cannot start with 0.";
+    error.style.color = "red";
+    fieldsChecks["contactNumber"] = false;
+  }
+  // If all validations pass
   else {
     error.innerHTML = "";
     fieldsChecks["contactNumber"] = true;
@@ -199,13 +205,13 @@ function contactNumberValidation() {
            }
 
            function validateAlternateContactNumber() {
-             const alternateContactNumber = document.getElementById('alternateContactNumber').value;
+             const alternateContactNumber = document.getElementById('alternateContactNumber').value.trim();
              const errorSpan = document.getElementById('altContactNbrError');
              const phonePattern = /^\d{10}$/;
              const nonNumericPattern = /\D/; // Matches any non-numeric character
 
              // Check if the alternate contact number is empty
-             if (alternateContactNumber.trim() === '') {
+             if (alternateContactNumber === '') {
                errorSpan.textContent = 'Alternate contact number is required.';
                errorSpan.style.color = 'red';
                fieldsChecks["alternateContactNumber"] = false;
@@ -216,33 +222,28 @@ function contactNumberValidation() {
                errorSpan.style.color = 'red';
                fieldsChecks["alternateContactNumber"] = false;
              }
-             // Check if the input matches the 10-digit pattern
-             else if (!phonePattern.test(alternateContactNumber)) {
+             // Check if the input has exactly 10 digits
+             else if (alternateContactNumber.length !== 10) {
                errorSpan.textContent = 'Alternate number must be exactly 10 digits.';
                errorSpan.style.color = 'red';
                fieldsChecks["alternateContactNumber"] = false;
              }
+             // Check if the alternate contact number starts with 0
+             else if (alternateContactNumber.startsWith('0')) {
+               errorSpan.textContent = 'Alternate number cannot start with 0.';
+               errorSpan.style.color = 'red';
+               fieldsChecks["alternateContactNumber"] = false;
+             }
+             // If all validations pass
              else {
                errorSpan.textContent = '';
                fieldsChecks["alternateContactNumber"] = true;
              }
 
-             validateAndEnableSubmit();
+             validateAndEnableSubmit(); // Assuming this is a function that checks all fields and enables the submit button
            }
 
 
-           function validateAgree() {
-               const agree = document.getElementById('agree').checked;
-               const errorSpan = document.getElementById('agreeError');
-               if (!agree) {
-                   errorSpan.textContent = 'You must agree  to the terms and conditions.';
-                   fieldsChecks["agree"] = false;
-               } else {
-                   errorSpan.textContent = '';
-                   fieldsChecks["agree"] = true;
-               }
-               validateAndEnableSubmit();
-           }
 
            function validateAndEnableSubmit() {
                const isValidForm = Object.values(fieldsChecks).every(check => check);
@@ -272,6 +273,7 @@ function contactNumberValidation() {
                       <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
                       <li><a class="dropdown-item" href="viewSubAdminDepartmentDetails"><strong>view Department Admin Details</strong></a></li>
                        <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+                        <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
 
 
@@ -284,13 +286,13 @@ function contactNumberValidation() {
 
     <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded rounded form-width " >
 
-        <!--<div class="card-header">
-           <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
-        </div>-->
+        <div class="card-header">
+           <h3 style= "color:blue;"><b><center>Department Admin Registration</center></b></h3>
+        </div>
 
-              <div style = "margin-top: 15px;">
-                   <h1 style= "color:blue; "><center>Registration</center></h1>
-              </div>
+            <!--  <div style = "margin-top: 15px;">
+                   <h3 style= "color:blue; "><center>Department Admin Registration</center></h3>
+              </div>-->
 
                <!--text/word colors-->
          <div class="card-body text-dark">
@@ -306,6 +308,7 @@ function contactNumberValidation() {
       <form action="DepartmentSignUp" method="post" onsubmit="return validateForm()">
 
               <div class="text-success"><b>${saveDeptAdmin}</b></div>
+              <div class="text-danger"><b>${errorInMail}</b></div>
 
 <!-- Admin Name -->
               <div style="margin-bottom:2px;" class="form-group">
@@ -356,16 +359,10 @@ function contactNumberValidation() {
                   <label for="alternateContactNumber" class="form-label">Alternate Number:</label>
                   <div class="input-icon">
                       <i class="fa-solid fa-phone"></i>
-                      <input type="tel" class="form-control" id="alternateContactNumber" onblur="validateAlternateContactNumber()" name="alternateContactNumber" placeholder="Enter Alternative Number" />
+                      <input type="tel" class="form-control" id="alternateContactNumber" oninput="validateAlternateContactNumber()" name="alternateContactNumber" placeholder="Enter Alternative Number" />
                   </div>
               </div>
-
-              <!-- Agree Terms -->
-              <div>
-                  <span id="agreeError" class="error-message"></span><br>
-                  <input class="form-check-input" id="agree" type="checkbox" onchange="validateAgree()" value="agree" />
-                  <b>I agree to </b><a href="#">Terms & Conditions</a>
-              </div><br>
+<br>
 
               <!-- Submit Button -->
               <div class="d-grid gap-2" style="margin-bottom:10px;">

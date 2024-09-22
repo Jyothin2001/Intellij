@@ -31,8 +31,12 @@ public interface RegDeptAdminRepo {
     List<EmployeeDTO> getAllEmployeeNames(String regDepartmentName);
 
     //update status and employee id
-    boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status);
+    boolean updateStatusAndEmployeeId(int complaintId, int employeeId);
 
     boolean isEmployeeAllocated(int employeeId);
+
+
+
+    boolean updateComplaintForDeactivatedEmployee(ComplaintRaiseDTO complaintRaiseDTO);
 
 }

@@ -52,7 +52,7 @@
                     <!--get action = edit?email=${signUpDTO.email}-->
                    <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
                                  <li><a class="dropdown-item" href="edit?email=${signUpDTO.email}"><strong>Edit Your Details </strong></a></li>
-                                 <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
+                                 <li><a class="dropdown-item" href="ChangePassword"><strong>Change Password </strong></a></li>
                                  <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
                                  <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
                                     <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->

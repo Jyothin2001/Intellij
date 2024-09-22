@@ -51,22 +51,22 @@ public class SignUpController
             return "SignUp";
         } else
         {
-            boolean validate = this.signUpService.saveAndValidate(signUpDTO);
-            if (validate) {
-                log.info("service saveAndValidate() in controller successfully:{} ", validate);
+            String emailStatus = this.signUpService.saveAndValidate(signUpDTO);
+            if ("success".equals(emailStatus))
+            {
+                log.info("service saveAndValidate() in controller successfully:{} ", emailStatus);
                 signUpDTO.setImageName("ProfileIcon.png");
-              // httpSession.setAttribute("signedInUserEmail", email);
-
-//                String subject = "Welcome to issue management";
-//                String body = "Hi, " + signUpDTO.getFirstName() + "\n\n Your Registration is successfull.  Your Password is  " + signUpDTO.getPassword();
-//                this.mailService.sendSimpleEmail(email, subject, body);
-
-
-                redirectAttributes.addFlashAttribute("msg", "Signup successful " + signUpDTO.getFirstName() + " ,Please check your email for your password.");
+                redirectAttributes.addFlashAttribute("msg", "Signup successful " + signUpDTO.getFirstName() + "<br>" + "Please check your email for your password.");
                 //return "SignIn";
                 return "redirect:sign-up-success";
-            } else {
-                log.info("service saveAndValidate() in service not successfully:{} ", validate);
+            }
+           else if ("network_error".equals(emailStatus)) {
+                model.addAttribute("SignUpError", "Network issue while sending the email.<br>Please try again later");
+                return "SignUp";
+            }
+
+            else {
+                log.info("service saveAndValidate() in service not successfully:{} ", emailStatus);
             }
 
             //return "SignUp";

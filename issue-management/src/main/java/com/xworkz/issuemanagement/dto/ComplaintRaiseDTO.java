@@ -1,7 +1,6 @@
 package com.xworkz.issuemanagement.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +35,7 @@ public class ComplaintRaiseDTO
     private String description;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_fk", referencedColumnName = "id")
     //@JoinColumn(name = "user_id", nullable = false)
     private SignUpDTO signUpDTO;// Many complaint Raise can be associated with one user

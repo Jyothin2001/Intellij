@@ -30,12 +30,12 @@ public class SignUpServiceImpli implements SignUpService
 
     public SignUpServiceImpli()
     {
-        System.out.println("SignUpServiceImpli constructor");
+        log.info("SignUpServiceImply constructor");
     }
 
     //To store Basic/form user details in db
     @Override
-    public boolean saveAndValidate(SignUpDTO signUpDTO)
+    public String saveAndValidate(SignUpDTO signUpDTO)
     {
         //Set name,time,active data to variables
         String createdBy = signUpDTO.getFirstName(); // or get the current user
@@ -49,8 +49,16 @@ public class SignUpServiceImpli implements SignUpService
 
         //calling Random password generator method
         String generatedPassword= PasswordGenerator.generatePassword();
+
+        signUpDTO.setPassword(generatedPassword);//for user
+        String emailStatus = mailSend.sendPassword(signUpDTO);
+
+        if ("network_error".equals(emailStatus)) {
+            return "network_error"; // return network error status
+        }
+
         //do encode for random generator
-        signUpDTO.setPassword(passwordEncoder.encode(generatedPassword));
+        signUpDTO.setPassword(passwordEncoder.encode(generatedPassword));//for db
 
         //image set default profile
         signUpDTO.setImageName("ProfileIcon.png");
@@ -59,15 +67,12 @@ public class SignUpServiceImpli implements SignUpService
         if(data)
         {
             log.info("repo save() in service successfully: " + data);
-            signUpDTO.setPassword(generatedPassword);
-            mailSend.sendPassword(signUpDTO);
-
-            return data;
-            }
+            return "success";
+        }
         else{
                 log.info("repo save() in service not successfully: " + data);
             }
-        return true;
+        return "success";
     }
 
 //    @Override

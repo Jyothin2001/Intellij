@@ -313,6 +313,7 @@ console.log('New state of b:', b); // Debugging line
 
                                         <li><a class="dropdown-item" href="department-admin-complaintViewPage"><strong>View Complaint Details</strong></a></li>
                                         <li><a class="dropdown-item" href="subAdminProfilePage"><strong>Profile Page</strong></a></li>
+                                        <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
 
                          </ul>
@@ -342,7 +343,7 @@ console.log('New state of b:', b); // Debugging line
 
                <!--Displaying messages -->
 
-                     <div class="text-danger"><h6><b>${passwordResetError}</b></h6></div>
+                     <div class="text-danger"><h6><b>${error}</b></h6></div>
                      <div class="text-success"><h6><b>${msg}</b></h6></div>
 
 

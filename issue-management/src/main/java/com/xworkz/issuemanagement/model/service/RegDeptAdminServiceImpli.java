@@ -36,25 +36,38 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
 
 
     @Override
-    public boolean saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO) {
+    public String saveRegDeptAdmin(RegDeptAdminDTO regDeptAdminDTO) {
 
         //Random password generate and encode and save in db
         String generatePassword=PasswordGenerator.generatePassword();
-        regDeptAdminDTO.setPassword(passwordEncoder.encode(generatePassword));
+
+
+
+        regDeptAdminDTO.setPassword(generatePassword);//send to user
+        String emailStatus= mailSend.sendDeptAdminPassword(regDeptAdminDTO);
+
+        regDeptAdminDTO.setPassword(passwordEncoder.encode(generatePassword));//save in db
+
+
+        if ("network_error".equals(emailStatus)) {
+            return "network_error"; // return network error status
+        }
+
 
         boolean saveRegDeptAdmin=regDeptAdminRepo.saveRegDeptAdmin(regDeptAdminDTO);
         if(saveRegDeptAdmin)
         {
             log.info("regDeptAdminRepo() in RegDeptAdminService successful:{}",saveRegDeptAdmin);
-            regDeptAdminDTO.setPassword(generatePassword);
-            mailSend.sendDeptAdminPassword(regDeptAdminDTO);
-            return saveRegDeptAdmin;
+            return "success";
         }
         else {
             log.info("regDeptAdminRepo() in RegDeptAdminService not successful:");
         }
-        return false;
+        return "error";
     }
+
+
+
     @Override
     public RegDeptAdminDTO getEmailAndPassword(String email, String password, String departmentName) {
         RegDeptAdminDTO emailData = regDeptAdminRepo.getEmail(email);
@@ -197,9 +210,9 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
     }
 
     @Override
-    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status) {
+    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId) {
         log.info("updateStatusAndEmployeeId method running in RaiseComplaintService");
-        return regDeptAdminRepo.updateStatusAndEmployeeId(complaintId, employeeId, status);
+        return regDeptAdminRepo.updateStatusAndEmployeeId(complaintId, employeeId);
 
     }
 @Override
@@ -207,6 +220,12 @@ public class RegDeptAdminServiceImpli implements RegDeptAdminService{
         // Logic to check if the employee is allocated
         // This is just an example; implement according to your needs
         return regDeptAdminRepo.isEmployeeAllocated(employeeId);
+    }
+
+    @Override
+    public boolean updateComplaintForDeactivatedEmployee(ComplaintRaiseDTO complaintRaiseDTO) {
+        log.info("updateComplaintForDeactivatedEmployee method running in RaiseComplaintService");
+       return regDeptAdminRepo.updateComplaintForDeactivatedEmployee(complaintRaiseDTO);
     }
 
 

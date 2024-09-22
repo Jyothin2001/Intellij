@@ -42,7 +42,7 @@ public class ForgotPasswordServiceImpli implements ForgotPasswordService{
 
 
     @Override
-    public boolean forgotPassword(String email)
+    public String forgotPassword(String email)
     {
         log.info("forgotPassword method running in forgotPasswordServiceImpli");
 
@@ -55,41 +55,81 @@ public class ForgotPasswordServiceImpli implements ForgotPasswordService{
 
            forgotPasswordRepo.updatePassword(email,passwordEncoder.encode(newPassword));
            user.setPassword(newPassword);//user generated Password
-           mailSend.forgotPassword(user);//mail
+          String emailStatus= mailSend.forgotPassword(user);//mail
 
+            if ("network_error".equals(emailStatus)) {
+                return "network_error"; // return network error status
+            } else if ("send_error".equals(emailStatus)) {
+                return "send_error"; // return email send failure status
+            }
            //Reset failed attempts
              signInService.resetFailedAttempts(email);
              signInService.unLockAccount(email);
 
-           return true;
-
+            return "success"; // Email sent successfully
         }
-        return false;
+        return "user_not_found"; // User not found
 
     }
-
     @Override
-    public boolean forgotPasswordBySubAdmin(String email) {
-        //just reusing regDeptAdminRepo.getEmail()
-        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
-        if(user!=null)
-        {
-            log.info("regDeptAdminRepo email data in ForgotPasswordServiceImpli:{}  ",user);
+    public String forgotPasswordBySubAdmin(String email) {
+        // Reusing regDeptAdminRepo.getEmail()
+        RegDeptAdminDTO user = regDeptAdminRepo.getEmail(email);
 
-            String newPassword=PasswordGenerator.generatePassword();
+        if (user != null) {
+            log.info("regDeptAdminRepo email data in ForgotPasswordServiceImpli: {} ", user);
 
-            forgotPasswordRepo.updateSubAdminPassword(email,passwordEncoder.encode(newPassword));//db
+            // Generate a new password
+            String newPassword = PasswordGenerator.generatePassword();
 
-             user.setPassword(newPassword);   //user generated Password
-            mailSend.subAdminForgotPassword(user);//mail
+            // Update the password in the database
+            forgotPasswordRepo.updateSubAdminPassword(email, passwordEncoder.encode(newPassword)); // db update
 
-            //Reset failed attempts
+            user.setPassword(newPassword); // Set the generated password for email content
+
+            // Attempt to send email
+            String emailStatus = mailSend.subAdminForgotPassword(user); // mail sending status
+
+            if ("network_error".equals(emailStatus)) {
+                return "network_error"; // return network error status
+            } else if ("send_error".equals(emailStatus)) {
+                return "send_error"; // return email send failure status
+            }
+
+            // Reset failed attempts and unlock account
             regDeptAdminServiceImpli.resetFailedAttempts(email);
             regDeptAdminServiceImpli.unlockAccount(email);
-            return true;
+
+            return "success"; // Email sent successfully
         }
-
-
-        return false;
+        return "user_not_found"; // User not found
     }
+
+
+//    @Override
+//    public boolean forgotPasswordBySubAdmin(String email) {
+//        //just reusing regDeptAdminRepo.getEmail()
+//        RegDeptAdminDTO user= regDeptAdminRepo.getEmail(email);
+//        if(user!=null)
+//        {
+//            log.info("regDeptAdminRepo email data in ForgotPasswordServiceImpli:{}  ",user);
+//
+//            String newPassword=PasswordGenerator.generatePassword();
+//
+//            forgotPasswordRepo.updateSubAdminPassword(email,passwordEncoder.encode(newPassword));//db
+//
+//             user.setPassword(newPassword);   //user generated Password
+//            mailSend.subAdminForgotPassword(user);//mail
+//
+//            //Reset failed attempts
+//            regDeptAdminServiceImpli.resetFailedAttempts(email);
+//            regDeptAdminServiceImpli.unlockAccount(email);
+//            return true;
+//        }
+//
+//
+//        return false;
+//    }
+
+
 }

@@ -134,29 +134,62 @@ public class SignInController {
             return "ChangePassword"; // Redirect to login if session is null
         }
 
-        boolean passwordChanged = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
-        if (passwordChanged) {
-            SimpleMailMessage emailMessage = new SimpleMailMessage();
-            emailMessage.setTo(email);
-            emailMessage.setSubject("Password Reset Successful");
-            emailMessage.setText("Your password has been reset successfully.");
+        String changePasswordStatus = changePasswordService.changePassword(email, oldPassword, newPassword, confirmPassword);
+        switch (changePasswordStatus) {
+            case "success":
+                redirectAttributes.addFlashAttribute("message", "Password updated successfully!");
+                return "redirect:/changePassword"; // Redirect to a success page
 
-            String emailStatus = mailSend.sendEmail(emailMessage);
-            if ("network_error".equals(emailStatus)) {
-                model.addAttribute("passwordResetMessage", "Network issue while sending the reset email. Please try again later.");
-                return "ChangePassword";  // Redirect to a custom error page
-            } else if ("send_error".equals(emailStatus)) {
-                model.addAttribute("passwordResetMessage", "Password reset successful, but email sending failed.");
+            case "password_mismatch":
+                redirectAttributes.addFlashAttribute("error", "New password and confirm password do not match.");
+                return "redirect:/changePassword"; // Redirect back to the change password page
+
+            case "user_not_found":
+                redirectAttributes.addFlashAttribute("error", "User with the provided email was not found.");
+                return "redirect:/changePassword";
+
+            case "old_password_incorrect":
+                redirectAttributes.addFlashAttribute("error", "Old password is incorrect.");
+                return "redirect:/changePassword";
+
+            case "network_error":
+                model.addAttribute("error", "Network issue while sending the email. <br>Please try again later.");
                 return "ChangePassword";
-            } else {
-                redirectAttributes.addFlashAttribute("msg", "Password Reset Successful");
-            }
 
-            return "redirect:/changePassword";
-        } else {
-            redirectAttributes.addFlashAttribute("passwordResetMessage", "Failed to reset password. Please check your old password.");
-            return "redirect:/changePassword";
+            case "send_error":
+                model.addAttribute("error", "An error occurred while sending the email. Please try again.");
+                return "ChangePassword";
+
+            case "update_failed":
+                redirectAttributes.addFlashAttribute("error", "Password update failed. Please try again.");
+                return "redirect:/changePassword";
+
+            default:
+                redirectAttributes.addFlashAttribute("error", "An unknown error occurred.");
+                return "redirect:/changePassword";
         }
+//        if (passwordChanged) {
+//            SimpleMailMessage emailMessage = new SimpleMailMessage();
+//            emailMessage.setTo(email);
+//            emailMessage.setSubject("Password Reset Successful");
+//            emailMessage.setText("Your password has been reset successfully.");
+//
+//            String emailStatus = mailSend.sendEmail(emailMessage);
+//            if ("network_error".equals(emailStatus)) {
+//                model.addAttribute("passwordResetMessage", "Network issue while sending the reset email. Please try again later.");
+//                return "ChangePassword";  // Redirect to a custom error page
+//            } else if ("send_error".equals(emailStatus)) {
+//                model.addAttribute("passwordResetMessage", "Password reset successful, but email sending failed.");
+//                return "ChangePassword";
+//            } else {
+//                redirectAttributes.addFlashAttribute("msg", "Password Reset Successful");
+//            }
+//
+//            return "redirect:/changePassword";
+//        } else {
+//            redirectAttributes.addFlashAttribute("passwordResetMessage", "Failed to reset password. Please check your old password.");
+//            return "redirect:/changePassword";
+//        }
     }
 
     @GetMapping("changePassword")

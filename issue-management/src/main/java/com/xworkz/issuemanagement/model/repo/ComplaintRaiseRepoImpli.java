@@ -25,7 +25,7 @@ public class ComplaintRaiseRepoImpli implements ComplaintRaiseRepo
 
         try {
             entityTransaction.begin();
-            entityManager.persist(complaintRaiseDTO);
+            entityManager.merge(complaintRaiseDTO);
             entityTransaction.commit();
             isSuccess = true;
         } catch (PersistenceException e) {

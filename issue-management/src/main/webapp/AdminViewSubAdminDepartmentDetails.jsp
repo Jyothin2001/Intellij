@@ -48,6 +48,7 @@
                                 <li><a class="dropdown-item" href="AddDepartment"><strong>Add Departments</strong></a></li>
                  <li><a class="dropdown-item" href="viewComplaintRaiseDetails"><strong>View Complaint Raise Details</strong></a></li>
                   <li><a class="dropdown-item" href="getDepartmentName"><strong>Add Department Admin</strong></a></li>
+                  <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li>
 
                   </ul>
                 </div>

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public interface SignUpService {
 
-    public boolean saveAndValidate(SignUpDTO signUpDTO);
+    public String saveAndValidate(SignUpDTO signUpDTO);
 
     public void  setAudit(SignUpDTO signUpDTO, String createdBy, LocalDateTime createdOn,String updatedBy,LocalDateTime updatedOn,boolean isActive);
 

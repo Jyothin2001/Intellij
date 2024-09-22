@@ -258,7 +258,7 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
         return null;
     }
     @Override
-    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId, String status) {
+    public boolean updateStatusAndEmployeeId(int complaintId, int employeeId) {
         log.info("updateStatusAndEmployeeId method running in RaiseComplaintRepoImpl..");
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -266,10 +266,10 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
 
         try {
             transaction.begin();
-            String updateQuery = "UPDATE ComplaintRaiseDTO r SET r.employeeDTO.id =:employeeId , r.status = :status WHERE r.complaintId = :complaintId";
+            String updateQuery = "UPDATE ComplaintRaiseDTO r SET r.employeeDTO.id =:employeeId WHERE r.complaintId = :complaintId";
             Query query = entityManager.createQuery(updateQuery);
             query.setParameter("employeeId", employeeId);
-            query.setParameter("status", status);
+            //query.setParameter("status", status);
             query.setParameter("complaintId", complaintId);
 
             int data = query.executeUpdate();
@@ -312,6 +312,25 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
         }
     }
 
+    @Override
+    public boolean updateComplaintForDeactivatedEmployee(ComplaintRaiseDTO complaintRaiseDTO) {
+        EntityManager entityManager=entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction=entityManager.getTransaction();
+        try
+        {
+            entityTransaction.begin();
+            entityManager.merge(complaintRaiseDTO);
+            entityTransaction.commit();
+            log.info(" update successful complaintDTO for InactiveEmployee in RegDeptAdminRepoImply: ");
+            return true;
+
+        }
+        catch (PersistenceException e)
+        {
+            log.error("error while update complaintDTO for InactiveEmployee: ",e);
+        }
+        return false;
+    }
 
 
 }

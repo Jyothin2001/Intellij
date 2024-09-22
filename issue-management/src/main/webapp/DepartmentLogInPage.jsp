@@ -133,6 +133,16 @@
         }
     }
 
+    const fieldsChecks = {
+        email: false,
+        password: false,
+        departmentName: false
+    };
+
+    function validateAndEnableSubmit() {
+        const isValidForm = Object.values(fieldsChecks).every(check => check);
+        document.getElementById('submitButton').disabled = !isValidForm;
+    }
     function emailValidation() {
         const emailInput = document.getElementById('email');
         const emailError = document.getElementById('emailError');
@@ -140,46 +150,49 @@
 
         if (!emailPattern.test(emailInput.value)) {
             emailError.textContent = 'Please enter a valid email address.';
-            return false;
+            emailError.style.color = "red";
+            fieldsChecks.email = false;
         } else {
             emailError.textContent = '';
-            return true;
+            fieldsChecks.email = true;
         }
+
+        validateAndEnableSubmit();
     }
 
-    function passwordValidation() {
-        const passwordInput = document.getElementById('password');
-        const passwordError = document.getElementById('passwordError');
+function passwordValidation() {
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('passwordError');
 
-        if (passwordInput.value.length < 8) {
-            passwordError.textContent = 'Password must be at least 8 characters long.';
-            return false;
-        } else {
-            passwordError.textContent = '';
-            return true;
-        }
+    if (passwordInput.value.length < 8) {
+        passwordError.textContent = 'Password must be at least 8 characters long.';
+        passwordError.style.color = "red";
+        fieldsChecks.password = false;
+    } else {
+        passwordError.textContent = '';
+        fieldsChecks.password = true;
     }
 
-    function validateDepartmentName() {
-        const departmentInput = document.getElementById('departmentName');
-        const departmentError = document.getElementById('DepartmentNameError');
+    validateAndEnableSubmit();
+}
 
-        if (departmentInput.value === "") {
-            departmentError.textContent = 'Please select a department.';
-            return false;
-        } else {
-            departmentError.textContent = '';
-            return true;
-        }
+
+function validateDepartmentName() {
+    const departmentInput = document.getElementById('departmentName');
+    const departmentError = document.getElementById('DepartmentNameError');
+
+    if (departmentInput.value === "") {
+        departmentError.textContent = 'Please select a department.';
+        departmentError.style.color = "red";
+        fieldsChecks.departmentName = false;
+    } else {
+        departmentError.textContent = '';
+        fieldsChecks.departmentName = true;
     }
 
-    function validateForm() {
-        const isEmailValid = emailValidation();
-        const isPasswordValid = passwordValidation();
-        const isDepartmentValid = validateDepartmentName();
-        const submitButton = document.getElementById('submitButton');
-        submitButton.disabled = !(isEmailValid && isPasswordValid && isDepartmentValid);
-    }
+    validateAndEnableSubmit();
+}
+
 </script>
 
 </head>
@@ -198,8 +211,8 @@
 </nav>
 
 <div class="card border-dark container mt-5 mb-3 justify-content-center border-0 shadow-lg p-3 mb-5 bg-body rounded form-width">
-    <div style="margin-top: 5px;">
-        <h2 style="color:blue;"><center>Login Page</center></h2>
+    <div class="card-header">
+        <h3 style="color:blue;"><center>Login Page</center></h3>
     </div>
 
     <div class="card-body text-dark">
@@ -219,7 +232,7 @@
                 <label for="email" class="form-label">Email:</label>
                 <div class="input-icon">
                     <i class="fa-regular fa-envelope"></i>
-                    <input type="email" class="form-control" id="email" name="email" style="border-radius: 15px;" placeholder="Enter Email" oninput="validateForm()" onblur="validateForm()">
+                    <input type="email" class="form-control" id="email" name="email" style="border-radius: 15px;" placeholder="Enter Email" oninput="emailValidation()" onblur="validateForm()">
                 </div>
             </div>
 
@@ -228,7 +241,7 @@
                 <span class="error-message" id="passwordError" style="color: red;"></span>
                 <label for="password" class="form-label">Password:</label>
                 <div class="password-container">
-                    <input type="password" class="form-control" id="password" name="password" style="border-radius: 15px;" placeholder="Enter Password" oninput="validateForm()" onblur="validateForm()">
+                    <input type="password" class="form-control" id="password" name="password" style="border-radius: 15px;" placeholder="Enter Password" onblur="passwordValidation()" onblur="validateForm()">
                     <img src="https://img.icons8.com/?size=100&id=121539&format=png&color=000000" onclick="pass()" class="pass-icon" id="pass-icon">
                 </div>
             </div>
@@ -237,7 +250,7 @@
             <div class="form-group">
                 <span class="error-message" id="DepartmentNameError" style="color: red;"></span>
                 <label for="departmentName" class="form-label">Department:</label>
-                <select class="form-select custom-select-width" id="departmentName" name="departmentName" style="border-radius: 15px;" oninput="validateForm()" onchange="validateForm()">
+                <select class="form-select custom-select-width" id="departmentName" name="departmentName" style="border-radius: 15px;" onchange="validateDepartmentName()" onchange="validateForm()">
                     <option  value="">Choose..</option>
                     <c:forEach items="${departments}" var="department">
                         <option value="${department.departmentName}">${department.departmentName}</option>

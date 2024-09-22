@@ -250,7 +250,7 @@ function validateAndEnableSubmit() {
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                 <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName}    ${UserLastName}</h4></li>
-                              <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
+                              <li><a class="dropdown-item" href="ChangePassword"><strong>Change Password </strong></a></li>
                               <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
                               <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
                               <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>

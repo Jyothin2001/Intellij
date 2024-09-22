@@ -91,7 +91,7 @@
                         </a>
 
                         <a class="navbar-brand text-light" href="HomePage"><b>Home</b></a>
-                        <a class="navbar-brand text-light" href="LogInPage"><b>Sign IN</b></a>
+                        <a class="navbar-brand text-light" href="LogInPage"><b>SignIn</b></a>
                     </div>
                    <div class="dropdown">
                                <div class=" dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,18 +105,16 @@
 
                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
 
-                                 <!--Retain user entered email in editPage , action=edit, ?=may be to differentiate,email=through email-->
-                                <!--get action = edit?email=${signUpDTO.email} for get=give action name, post=.jsp-->
 
-                                <li><h4 style="display: block; text-align: center; color: blue;">${UserFirstName} ${UserLastName}</h4></li>
-                                 <li><a class="dropdown-item" href="ChangePassword"><strong>Password Reset</strong></a></li>
-                                 <li><a class="dropdown-item" href="view-Page"><strong>View Your Details</strong></a></li>
-                                 <li><a class="dropdown-item" href="ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
-                                 <li><a class="dropdown-item" href="viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
-                                    <li><a class="dropdown-item" href="HomePage"><strong>Log Out</strong></a></li><!--not working get=action(logout)-->
+    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ChangePassword"><strong>Change Password</strong></a></li>
+    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/view-Page"><strong>View Your Details</strong></a></li>
+    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ComplaintRaisePage"><strong>Complaint Raise</strong></a></li>
+    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/viewComplaintRaise"><strong>View ComplaintRaise</strong></a></li>
+    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/HomePage"><strong>Log Out</strong></a></li>
 
 
-                                  <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ViewModal" ><strong> View your Details</strong></a></li>
+
+
                                </ul>
                              </div>
 
