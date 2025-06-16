@@ -138,7 +138,7 @@ function addressValidation() {
   const error = document.getElementById("addressError");
   const value = element.value.trim();
 
-  if (value.length > 3 && value.length < 300) {
+  if (value.length > 3 && value.length < 50) {
     error.innerHTML = "";
     fieldsChecks["address"] = true;
   } else {
@@ -305,6 +305,10 @@ document.getElementById("address").addEventListener("blur", addressValidation);
                         </div>
                     </div>
                     </br>
+<div style="margin-bottom:2px;">
+                    <b>Address:</b>
+                    <input type="text" class="form-control"  style="border-radius: 15px;" id="address" value="${complaintRaiseDTO.address}"style="height: 80px" name="address"  readonly required>
+                </div>
 
           <!-- Employee Designation -->
           <div style="margin-bottom:2px;" class="form-group">

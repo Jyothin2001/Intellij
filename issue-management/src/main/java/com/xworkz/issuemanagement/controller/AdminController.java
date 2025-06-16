@@ -35,6 +35,7 @@ public class AdminController {
     public AdminController()
     {
         log.info("AdminController constructor:");
+        log.info("hello jyothi:");
     }
     @PostMapping("admin")
     public String Admin(@RequestParam String email, @RequestParam  String password, RedirectAttributes redirectAttributes, Model model)

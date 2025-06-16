@@ -18,5 +18,37 @@ public interface EmployeeService {
     EmployeeDTO updateEmployeeDetails(EmployeeDTO employeeDTO);
 
 
+//    @Service
+//    public class OtpService {
+//
+//        public String generateOtp(Integer employeeId) {
+//            // Generate a random 6-digit OTP
+//            Random random = new Random();
+//            int otp = 100000 + random.nextInt(900000);
+//            return String.valueOf(otp);
+//        }
+//
+//        public void saveOtpForEmployee(Integer employeeId, String otp) {
+//            // Save the OTP in the database or session for later validation
+//            // You can use a temporary storage mechanism here
+//        }
+//    }
+
+//
+//    @Service
+//    public class MailService {
+//
+//        @Autowired
+//        private JavaMailSender mailSender;
+//
+//        public void sendOtpEmail(String to, String otp) {
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setTo(to);
+//            message.setSubject("Your OTP Code");
+//            message.setText("Your OTP code is: " + otp);
+//            mailSender.send(message);
+//        }
+//    }
+
 
 }

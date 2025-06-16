@@ -332,5 +332,30 @@ public class RegDeptAdminRepoImpli implements RegDeptAdminRepo{
         return false;
     }
 
+    @Override
+    public List<ComplaintRaiseDTO> findById(Integer employeeId) {
+        EntityManager entityManager = null;
+        List<ComplaintRaiseDTO> complaintRaiseList = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            Query query = entityManager.createQuery("SELECT d FROM ComplaintRaiseDTO d WHERE d.employeeDTO.employee_id = :employeeId");
+            query.setParameter("employeeId", employeeId);
+            complaintRaiseList =  query.getResultList();
+        } catch (NoResultException e) {
+            // Handle case where no result is found
+            log.error("No complaints  found with employeeId: {}", employeeId);
+        } catch (Exception e) {
+            // Handle other exceptions
+            log.error("Error occurred while fetching complaintDTO by employeeId: {}", employeeId, e);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+        return complaintRaiseList;
+
+
+    }
+
 
 }

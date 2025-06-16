@@ -6,6 +6,8 @@ import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.RegDeptAdminDTO;
 import com.xworkz.issuemanagement.emailSending.MailSend;
+import com.xworkz.issuemanagement.model.repo.EmployeeRepo;
+import com.xworkz.issuemanagement.model.repo.RegDeptAdminRepo;
 import com.xworkz.issuemanagement.model.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.PropertyEditorRegistrar;
@@ -51,6 +53,13 @@ public class RegDeptAdminController
 
     @Autowired
     private ComplaintRaiseService complaintRaiseService;
+
+    @Autowired
+    private EmployeeRepo employeeRepo;
+
+    @Autowired
+    private RegDeptAdminRepo regDeptAdminRepo;
+
 
 
 
@@ -420,7 +429,7 @@ public String subAdminForgotPassword()
                 break;
 
             case "success":
-                model.addAttribute("msg", "Password reset successful.<b> A confirmation email has been sent.");
+                model.addAttribute("msg", "Password reset successful. A confirmation email has been sent.");
                 return "SubAdminChangePassword"; // Render the password change page with a success message
 
             default:
@@ -514,7 +523,7 @@ public String SubAdminChangePassword()
     }
 
 @PostMapping("updateEmployee")
-public String updateEmployee(@RequestParam("complaintId") int complaintId,@RequestParam(value = "employee_id",required = false) Integer employeeId,ComplaintRaiseDTO complaintRaiseDTO,RedirectAttributes redirectAttributes,Model model)
+public String updateEmployee(@RequestParam("complaintId") int complaintId,@RequestParam(value = "employee_id",required = false) Integer employeeId,ComplaintRaiseDTO complaintRaiseDTO,HttpSession httpSession,RedirectAttributes redirectAttributes,Model model)
 {
     if (employeeId == null || complaintId ==0) {
         // Handle the case where no employee is selected
@@ -523,9 +532,15 @@ public String updateEmployee(@RequestParam("complaintId") int complaintId,@Reque
     }
     //boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId,complaintRaiseDTO.getStatus());
     boolean data= regDeptAdminService.updateStatusAndEmployeeId(complaintId,employeeId);
+
     if(data)
     {
         log.info("update:"+data);
+        //to store compliantDetails of employee in session to get that complaintsDetails in employeeViewComplaints
+      List<ComplaintRaiseDTO> complaintRaiseDTOList= regDeptAdminRepo.findById(employeeId);
+      httpSession.setAttribute("ParticularEmployeeComplaintsDetails",complaintRaiseDTOList);
+      log.info("ParticularEmployeeComplaintsDetails store in session to get it in employee View ComplaintsDetails");
+
     }
     else
     {
@@ -639,13 +654,34 @@ public String updateEmployee(@RequestParam("complaintId") int complaintId,@Reque
         if (isAllocated) {
             regDeptAdminService.deactivateStatus(empId, Status.INACTIVE);
 
-            ComplaintRaiseDTO makingEmployee_fkNull= complaintRaiseService.findByComplaintId(complaintId);
+            ComplaintRaiseDTO makingEmployee_fkNull = complaintRaiseService.findByComplaintId(complaintId);
             makingEmployee_fkNull.setEmployeeDTO(null);//making null in ComplaintDTO so we can get else part
             complaintRaiseService.saveComplaintRaiseDetails(makingEmployee_fkNull);
 
-            redirectAttributes.addFlashAttribute("message", "Employee Deactivate/Deleted successfully.");
-            log.info( "Employee Deactivate/Deleted successfully.");
-                  }
+            //below three to make update noOfEmployee while inActive in DepartmentDTO
+            // Obtain the department ID from the employeeDTO
+            //int departmentId = employeeDTO.getDepartmentDTO().getId();
+            EmployeeDTO employeeDTO = employeeRepo.findById(empId);
+            int departmentId = employeeDTO.getDepartmentDTO().getId();
+
+
+            // Fetch the updated count of active employees
+            Long noOfActiveEmployees = employeeRepo.countNoOfActiveEmployeeByDeptId(departmentId);
+
+            // Fetch the department entity
+            DepartmentDTO departmentDTO = employeeRepo.findByDepartmentId(departmentId);
+
+            if (departmentDTO != null) {
+                // Update the number of active employees in the department
+                departmentDTO.setNoOfEmployees(noOfActiveEmployees);
+                employeeRepo.updateDepartmentDTO(departmentDTO); // Assuming this method updates the department in the repository
+
+                log.info("Employee details saved and department employee count updated successfully.");
+
+                redirectAttributes.addFlashAttribute("message", "Employee Deactivate/Deleted successfully.");
+                log.info("Employee Deactivate/Deleted successfully.");
+            }
+        }
 
        else
        {

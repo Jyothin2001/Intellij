@@ -336,7 +336,7 @@ document.getElementById("agree").addEventListener("change", agreeValidation);
            <h3 style= "font-family:Lucida Handwriting, cursive;;"><b><center>Sign In Form</center></b></h3>
         </div>-->
 
-              <div style = "margin-top: 15px;">
+              <div class="card-header">
                    <h3 style= "color:blue; "><center>Registration Form</center></h3>
               </div>
 

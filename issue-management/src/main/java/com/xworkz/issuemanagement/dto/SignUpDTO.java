@@ -1,6 +1,7 @@
 package com.xworkz.issuemanagement.dto;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;

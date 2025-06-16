@@ -39,4 +39,6 @@ public interface RegDeptAdminRepo {
 
     boolean updateComplaintForDeactivatedEmployee(ComplaintRaiseDTO complaintRaiseDTO);
 
+    List<ComplaintRaiseDTO> findById(Integer employeeId);
+
 }

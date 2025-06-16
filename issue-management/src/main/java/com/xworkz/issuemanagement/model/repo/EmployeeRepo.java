@@ -22,4 +22,6 @@ public interface EmployeeRepo  {
 
     DepartmentDTO updateDepartmentDTO(DepartmentDTO departmentDTO);
 
+    EmployeeDTO findById(int employeeId);
+
 }

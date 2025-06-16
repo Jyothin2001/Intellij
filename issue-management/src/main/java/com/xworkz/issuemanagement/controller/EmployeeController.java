@@ -3,6 +3,7 @@ package com.xworkz.issuemanagement.controller;
 import com.mysql.cj.xdevapi.ModifyStatement;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xworkz.issuemanagement.constants.Status;
+import com.xworkz.issuemanagement.dto.ComplaintRaiseDTO;
 import com.xworkz.issuemanagement.dto.DepartmentDTO;
 import com.xworkz.issuemanagement.dto.EmployeeDTO;
 import com.xworkz.issuemanagement.dto.SignUpDTO;
@@ -284,6 +285,7 @@ public class EmployeeController {
             if(employeeDetailsByEmail!=null)
             {
                 model.addAttribute("employeeDTO", employeeDetailsByEmail);
+                log.info("employeeDTO for retain in edit employee: {}", employeeDetailsByEmail);
 
                 return "UpdateEmployeeDetails";
             }
@@ -316,6 +318,40 @@ public class EmployeeController {
 }
 
 
+    @GetMapping("employeeViewComplaintDetails")
+    public String employeeViewComplaintDetails(HttpSession httpSession,Model model)
+    {
+        List<ComplaintRaiseDTO> complaintRaiseList= (List<ComplaintRaiseDTO>) httpSession.getAttribute("ParticularEmployeeComplaintsDetails");
+        model.addAttribute("viewComplaintDetailsByEmployee",complaintRaiseList);
+
+        return "EmployeeComplaintDetailsView";
+    }
+
+//    @PostMapping("/sendOtp")
+//    @ResponseBody
+//    public Map<String, String> sendOtp(@RequestParam("employeeId") Integer employeeId, @RequestParam("complaintId") Integer complaintId) {
+//        Map<String, String> response = new HashMap<>();
+//
+//        try {
+//            // Generate OTP
+//            String otp = otpService.generateOtp(employeeId);
+//
+//            // Send OTP via email or SMS
+//            String email = employeeService.getEmployeeEmailById(employeeId); // Assuming you have this method
+//            mailService.sendOtpEmail(email, otp); // Send OTP via email
+//
+//            // You can also save the OTP to validate it later
+//            otpService.saveOtpForEmployee(employeeId, otp);
+//
+//            response.put("status", "success");
+//            response.put("message", "OTP sent successfully.");
+//        } catch (Exception e) {
+//            response.put("status", "error");
+//            response.put("message", "Failed to send OTP.");
+//        }
+//
+//        return response;
+//    }
 
 
 

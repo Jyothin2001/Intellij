@@ -251,6 +251,30 @@ public class EmployeeRepoImpli implements EmployeeRepo{
         return updatedDepartment;
     }
 
+    @Override
+    public EmployeeDTO findById(int employeeId) {
+        EntityManager entityManager = null;
+        EmployeeDTO employeeDTO = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            Query query = entityManager.createQuery("SELECT d FROM EmployeeDTO d WHERE d.employee_id = :employeeId");
+            query.setParameter("employeeId", employeeId);
+            employeeDTO = (EmployeeDTO) query.getSingleResult();
+        } catch (NoResultException e) {
+            // Handle case where no result is found
+            log.error("No employee found with ID: {}", employeeId);
+        } catch (Exception e) {
+            // Handle other exceptions
+            log.error("Error occurred while fetching employee with ID: {}", employeeId, e);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+        return employeeDTO;
+
+    }
+
 
 }
 
