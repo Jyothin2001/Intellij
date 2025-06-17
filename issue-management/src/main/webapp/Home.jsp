@@ -45,6 +45,7 @@
             </div>
             <div class="geek2">
                your central hub for tracking and resolving issues efficiently.
+               your central hub for tracking and resolving issues efficiently.
             </div>
         </marquee>
     </div>
